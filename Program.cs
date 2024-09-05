@@ -97,7 +97,7 @@ namespace BasicLibrary
                         break;
 
                     case "E":
-                        //RemoveBook();
+                        RemoveBook();
                         break;
                     case "F":
                         SaveBooksToFile();
@@ -179,6 +179,36 @@ namespace BasicLibrary
 
             if (flag != true)
             { Console.WriteLine("book not found"); }
+        }
+
+        static void RemoveBook()
+        {
+            ViewAllBooks();
+
+            Console.WriteLine("Choose the id of book you want to delete the book ");
+            int id = int.Parse(Console.ReadLine());
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].ID == id)
+                {
+
+                    Books.Remove((Books[i].BName, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity));
+
+                    Console.WriteLine("SUCCESSFULLY DELETE");
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+
+            {
+                Console.WriteLine("book not found");
+            }
+
         }
         //********************************************
 
@@ -301,7 +331,7 @@ namespace BasicLibrary
 
 
 
-
+        //edits books
         //will added all in editbookmenu .....
         //******************************************************
         static void EditBookMenu()

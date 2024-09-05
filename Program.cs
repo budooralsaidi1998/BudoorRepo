@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Security;
 using System.Text;
 using System.Xml.Linq;
 
@@ -70,9 +71,9 @@ namespace BasicLibrary
                 Console.WriteLine("\n A- Add New Book");
                 Console.WriteLine("\n B- Display All Books");
                 Console.WriteLine("\n C- Search for Book by Name");
-                Console.WriteLine("\n C- Edit the book ");
-                Console.WriteLine("\n C- Remove the book ");
-                Console.WriteLine("\n D- Save and Exit");
+                Console.WriteLine("\n D- Edit the book ");
+                Console.WriteLine("\n E- Remove the book ");
+                Console.WriteLine("\n F- Save and Exit");
 
                 string choice = Console.ReadLine();
 
@@ -91,7 +92,7 @@ namespace BasicLibrary
                         break;
 
                     case "D":
-                        //EditBook();
+                        EditBookMenu();
                         break;
 
                     case "E":
@@ -241,6 +242,68 @@ namespace BasicLibrary
         }
 
 
+        static void EditBookMenu()
+        {
+
+            bool flage = true;
+           
+
+           
+            while (flage)
+            {
+                Console.WriteLine("1. edit name of book ");
+                Console.WriteLine("2. edit author of book ");
+                Console.WriteLine("3. edit quantity of book ");
+                Console.WriteLine("4. Save and exit ");
+                Console.WriteLine(" what you want to edit ?");
+                int choice = int.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+
+                        //EditName();
+
+                        break;
+
+
+
+                    case 2:
+
+                        //EditAuthor();
+
+                        break;
+
+
+
+
+                    case 3:
+
+                        //EditQuantity();
+
+                        break;
+
+
+                    case 4:
+
+                        SaveBooksToFile();
+                        flage = false;
+
+                        break;
+
+
+                    default:
+
+                        Console.WriteLine("invalid number you choose it ");
+
+                        break;
+
+                }
+
+
+
+            }
+        }
+           
 
         static void LoadBooksFromFile()
         {

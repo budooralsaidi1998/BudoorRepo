@@ -267,7 +267,7 @@ namespace BasicLibrary
 
                     case 2:
 
-                        //EditAuthor();
+                        EditAuthor();
 
                         break;
 
@@ -339,8 +339,41 @@ namespace BasicLibrary
         }
 
 
-       
+        static void EditAuthor()
+        {
 
+            ViewAllBooks();
+
+            Console.WriteLine(" ");
+            Console.WriteLine("Enter id book you want :");
+            int id = int.Parse(Console.ReadLine());
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].ID == id)
+                {
+
+                    Console.WriteLine(" enter the Author  you want  to update it : ");
+                    string author = Console.ReadLine();
+
+                    Books[i] = (Books[i].BName, author, Books[i].ID, Books[i].Qunatity);
+                    Console.WriteLine(" successfully Update Author ");
+
+
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+
+            {
+                Console.WriteLine("book not found");
+            }
+
+        }
 
 
 
@@ -378,7 +411,7 @@ namespace BasicLibrary
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
                     foreach (var book in Books)
                     {

@@ -247,8 +247,6 @@ namespace BasicLibrary
 
             bool flage = true;
            
-
-           
             while (flage)
             {
                 Console.WriteLine("1. edit name of book ");
@@ -261,7 +259,7 @@ namespace BasicLibrary
                 {
                     case 1:
 
-                        //EditName();
+                        EditName();
 
                         break;
 
@@ -303,7 +301,48 @@ namespace BasicLibrary
 
             }
         }
+
+
            
+        static void EditName()
+        {
+            ViewAllBooks();
+
+            Console.WriteLine(" ");
+            Console.WriteLine("Enter id book you want :");
+            int id =int.Parse(Console.ReadLine());
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                   if (Books[i].ID == id)
+                       {
+                   
+                        Console.WriteLine(" enter the name you to update : ");
+                        string name = Console.ReadLine();
+                       
+                        Books[i] = (name, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity);
+                        Console.WriteLine(" successfully Update name ");
+                    
+                   
+                        flag = true;
+                        break;
+                       }
+            }
+
+            if (flag != true) 
+
+            { 
+                Console.WriteLine("book not found");
+            }
+        }
+
+
+       
+
+
+
 
         static void LoadBooksFromFile()
         {
@@ -339,7 +378,7 @@ namespace BasicLibrary
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (StreamWriter writer = new StreamWriter(filePath, true))
                 {
                     foreach (var book in Books)
                     {

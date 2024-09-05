@@ -276,7 +276,7 @@ namespace BasicLibrary
 
                     case 3:
 
-                        //EditQuantity();
+                        EditQuantity();
 
                         break;
 
@@ -303,7 +303,7 @@ namespace BasicLibrary
         }
 
 
-           
+          //will added all in editbookmenu .....
         static void EditName()
         {
             ViewAllBooks();
@@ -337,7 +337,6 @@ namespace BasicLibrary
                 Console.WriteLine("book not found");
             }
         }
-
 
         static void EditAuthor()
         {
@@ -375,7 +374,40 @@ namespace BasicLibrary
 
         }
 
+        static void EditQuantity()
+        {
+            ViewAllBooks();
 
+            Console.WriteLine(" ");
+            Console.WriteLine("Enter id book you want :");
+            int id = int.Parse(Console.ReadLine());
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].ID == id)
+                {
+
+                    Console.WriteLine(" enter the Quantity  you want  to update it : ");
+                    int quantity = int.Parse(Console.ReadLine());
+
+                    Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, quantity);
+                    Console.WriteLine(" successfully Update quantity ");
+
+
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+
+            {
+                Console.WriteLine("book not found");
+            }
+
+        }
 
         static void LoadBooksFromFile()
         {

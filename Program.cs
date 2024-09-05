@@ -7,14 +7,14 @@ namespace BasicLibrary
 {
     internal class Program
     {
+        //global structure 
         static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
         static string filePath = "C:\\projects\\book.txt";
      
 
-
-
-
         //Test Check Out
+
+        //********************************************
         static void Main(string[] args)
         {// downloaded form ahmed device 
             LoadBooksFromFile();
@@ -51,12 +51,13 @@ namespace BasicLibrary
             while (ExitFlag != true);
         }
 
+        //********************************************
 
 
 
 
-
-
+        //admin menu with the service admin
+        //*******************************************
         static void AdminMenu()
         {
             bool ExitFlag = false;
@@ -118,10 +119,75 @@ namespace BasicLibrary
             } while (ExitFlag != true);
         }
 
+        static void AddnNewBook()
+        {
+            Console.WriteLine("Enter Book Name");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("Enter Book Author");
+            string author = Console.ReadLine();
+
+            Console.WriteLine("Enter Book ID");
+            int ID = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter quantity");
+            int qun = int.Parse(Console.ReadLine());
+
+            Books.Add((name, author, ID, qun));
+            Console.WriteLine("Book Added Succefully");
+
+        }
+
+        static void ViewAllBooks()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int BookNumber = 0;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                BookNumber = i + 1;
+                sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
+                sb.AppendLine().AppendLine();
+                Console.WriteLine(sb.ToString());
+                sb.Clear();
+
+            }
+        }
+
+        static void SearchForBook()
+        {
+            Console.WriteLine("Enter the book name you want");
+            string name = Console.ReadLine();
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].BName == name)
+                {
+                    Console.WriteLine("Book Author is : " + Books[i].BAuthor);
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+            { Console.WriteLine("book not found"); }
+        }
+        //********************************************
 
 
 
 
+
+        //user menu with service's 
+        //**************************************
         static void UserMenu()
         {
             bool ExitFlag = false;
@@ -169,60 +235,9 @@ namespace BasicLibrary
             } while (ExitFlag != true);
         }
 
-
-
-
-
-        static void AddnNewBook()
+        static void BarrowBooks()
         {
-            Console.WriteLine("Enter Book Name");
-            string name = Console.ReadLine();
 
-            Console.WriteLine("Enter Book Author");
-            string author = Console.ReadLine();
-
-            Console.WriteLine("Enter Book ID");
-            int ID = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter quantity");
-            int qun = int.Parse(Console.ReadLine());
-
-            Books.Add((name, author, ID, qun));
-            Console.WriteLine("Book Added Succefully");
-
-        }
-
-
-
-
-        static void ViewAllBooks()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            int BookNumber = 0;
-
-            for (int i = 0; i < Books.Count; i++)
-            {
-                BookNumber = i + 1;
-                sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
-                sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
-                sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
-                sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
-                sb.AppendLine().AppendLine();
-                Console.WriteLine(sb.ToString());
-                sb.Clear();
-
-            }
-        }
-
-
-
-
-        static void SearchForBook()
-        {
             Console.WriteLine("Enter the book name you want");
             string name = Console.ReadLine();
             bool flag = false;
@@ -231,7 +246,20 @@ namespace BasicLibrary
             {
                 if (Books[i].BName == name)
                 {
-                    Console.WriteLine("Book Author is : " + Books[i].BAuthor);
+                    Console.WriteLine("Book Quantity is : " + Books[i].Qunatity);
+
+                    if (Books[i].Qunatity != 0)
+                    {
+                        Console.WriteLine("How many quantity you want : ");
+                        int quantity = int.Parse(Console.ReadLine());
+                        int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
+                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("IS NOT AVAILABIL ");
+                    }
                     flag = true;
                     break;
                 }
@@ -239,14 +267,48 @@ namespace BasicLibrary
 
             if (flag != true)
             { Console.WriteLine("book not found"); }
+
         }
 
+        static void ReturnBook()
+        {
 
+            Console.WriteLine("Enter the book name you want");
+            string name = Console.ReadLine();
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].BName == name)
+                {
+                    //Console.WriteLine("Book Quantity  : " + Books[i].Qunatity);
+
+
+                    Console.WriteLine("How many quantity you want to return: ");
+                    int quantity = int.Parse(Console.ReadLine());
+                    int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
+                    Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
+                    Console.WriteLine("successfuly added ");
+
+                    flag = true;
+                    break;
+                }
+            }
+
+        }
+        //**************************************
+
+
+
+
+
+        //will added all in editbookmenu .....
+        //******************************************************
         static void EditBookMenu()
         {
 
             bool flage = true;
-           
+
             while (flage)
             {
                 Console.WriteLine("1. edit name of book ");
@@ -263,23 +325,17 @@ namespace BasicLibrary
 
                         break;
 
-
-
                     case 2:
 
                         EditAuthor();
 
                         break;
 
-
-
-
                     case 3:
 
                         EditQuantity();
 
                         break;
-
 
                     case 4:
 
@@ -302,8 +358,6 @@ namespace BasicLibrary
             }
         }
 
-
-          //will added all in editbookmenu .....
         static void EditName()
         {
             ViewAllBooks();
@@ -409,6 +463,14 @@ namespace BasicLibrary
 
         }
 
+        //*****************************************************
+
+
+
+
+
+        //file the read and write
+        //****************************************************
         static void LoadBooksFromFile()
         {
             try
@@ -436,9 +498,6 @@ namespace BasicLibrary
             }
         }
 
-
-
-
         static void SaveBooksToFile()
         {
             try
@@ -458,75 +517,11 @@ namespace BasicLibrary
             }
         }
 
-
+       // ******************************************************
 
 
      
-        static void BarrowBooks()
-        {
-
-            Console.WriteLine("Enter the book name you want");
-            string name = Console.ReadLine();
-            bool flag = false;
-
-            for (int i = 0; i < Books.Count; i++)
-            {
-                if (Books[i].BName == name)
-                {
-                    Console.WriteLine("Book Quantity is : " + Books[i].Qunatity);
-
-                    if (Books[i].Qunatity != 0)
-                    {
-                        Console.WriteLine("How many quantity you want : ");
-                        int quantity = int.Parse(Console.ReadLine());
-                        int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
-                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt); 
-
-                    }
-                    else 
-                    {
-                        Console.WriteLine("IS NOT AVAILABIL ");
-                    }
-                    flag = true;
-                    break;
-                }
-            }
-
-            if (flag != true)
-            { Console.WriteLine("book not found"); }
-
-        }
-
-
-
-
-
-        static void ReturnBook()
-        {
-
-            Console.WriteLine("Enter the book name you want");
-            string name = Console.ReadLine();
-            bool flag = false;
-
-            for (int i = 0; i < Books.Count; i++)
-            {
-                if (Books[i].BName == name)
-                {
-                    //Console.WriteLine("Book Quantity  : " + Books[i].Qunatity);
-
-                  
-                        Console.WriteLine("How many quantity you want to return: ");
-                        int quantity = int.Parse(Console.ReadLine());
-                        int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
-                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
-                       Console.WriteLine("successfuly added ");
-
-                    flag = true;
-                    break;
-                }
-            }
-
-        }
+       
 
 
 

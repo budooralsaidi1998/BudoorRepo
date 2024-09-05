@@ -121,19 +121,26 @@ namespace BasicLibrary
 
         static void AddnNewBook()
         {
+
+           
+          int  id = Books.Count + 0;
+
             Console.WriteLine("Enter Book Name");
             string name = Console.ReadLine();
 
             Console.WriteLine("Enter Book Author");
             string author = Console.ReadLine();
 
-            Console.WriteLine("Enter Book ID");
-            int ID = int.Parse(Console.ReadLine());
+            //Console.WriteLine("Enter Book ID");
+            //int ID = int.Parse(Console.ReadLine());
+
 
             Console.WriteLine("Enter quantity");
             int qun = int.Parse(Console.ReadLine());
 
-            Books.Add((name, author, ID, qun));
+            
+
+            Books.Add((name, author, id , qun));
             Console.WriteLine("Book Added Succefully");
 
         }

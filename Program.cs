@@ -8,19 +8,24 @@ namespace BasicLibrary
     {
         static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
         static string filePath = "C:\\projects\\book.txt";
+     
+
+
+
 
         //Test Check Out
         static void Main(string[] args)
         {// downloaded form ahmed device 
             LoadBooksFromFile();
-            Console.WriteLine("enter the number of the option: ");
-            Console.WriteLine("1. i am admin ");
-            Console.WriteLine("2. i am user ");
-            Console.WriteLine("3. Save and Exit");
-            int num = int.Parse(Console.ReadLine());
             bool ExitFlag = false;
             do
             {
+                Console.WriteLine("enter the number of the option: ");
+                Console.WriteLine("1. i am admin ");
+                Console.WriteLine("2. i am user ");
+                Console.WriteLine("3. Save and Exit");
+                int num = int.Parse(Console.ReadLine());
+
                 switch (num)
                 {
 
@@ -44,6 +49,13 @@ namespace BasicLibrary
 
             while (ExitFlag != true);
         }
+
+
+
+
+
+
+
         static void AdminMenu()
         {
             bool ExitFlag = false;
@@ -77,25 +89,29 @@ namespace BasicLibrary
                         break;
 
                     case "D":
-                     
-                        ExitFlag = false;
+                        SaveBooksToFile();
+                           ExitFlag = true;
                         break;
 
                     default:
                         Console.WriteLine("Sorry your choice was wrong");
                         break;
 
-
-
                 }
 
                 Console.WriteLine("press any key to continue");
+
                 string cont = Console.ReadLine();
 
                 Console.Clear();
 
-            } while (ExitFlag != false);
+            } while (ExitFlag != true);
         }
+
+
+
+
+
         static void UserMenu()
         {
             bool ExitFlag = false;
@@ -119,7 +135,7 @@ namespace BasicLibrary
                         break;
 
                     case "B":
-                        //ReturnBook();
+                        ReturnBook();
                         break;
 
                     case "C":
@@ -140,8 +156,13 @@ namespace BasicLibrary
 
                 Console.Clear();
 
-            } while (ExitFlag != false);
+            } while (ExitFlag != true);
         }
+
+
+
+
+
         static void AddnNewBook()
         {
             Console.WriteLine("Enter Book Name");
@@ -161,6 +182,9 @@ namespace BasicLibrary
 
         }
 
+
+
+
         static void ViewAllBooks()
         {
             StringBuilder sb = new StringBuilder();
@@ -176,13 +200,16 @@ namespace BasicLibrary
                 sb.AppendLine();
                 sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
                 sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].Qunatity);
+                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
                 sb.AppendLine().AppendLine();
                 Console.WriteLine(sb.ToString());
                 sb.Clear();
 
             }
         }
+
+
+
 
         static void SearchForBook()
         {
@@ -203,6 +230,7 @@ namespace BasicLibrary
             if (flag != true)
             { Console.WriteLine("book not found"); }
         }
+
 
 
         static void LoadBooksFromFile()
@@ -232,6 +260,9 @@ namespace BasicLibrary
             }
         }
 
+
+
+
         static void SaveBooksToFile()
         {
             try
@@ -251,6 +282,10 @@ namespace BasicLibrary
             }
         }
 
+
+
+
+     
         static void BarrowBooks()
         {
 
@@ -285,35 +320,38 @@ namespace BasicLibrary
             { Console.WriteLine("book not found"); }
 
         }
-        //static void ReturnBook()
-        //{
-        //    Console.WriteLine("Enter the book name you want to return : ");
-        //    string name = Console.ReadLine();
-        //    bool flag = false;
 
-        //    for (int i = 0; i < Books.Count; i++)
-        //    {
-        //        if (Books[i].BName == name)
-        //        {
-        //            Console.WriteLine("Book Quantity is : " + Books[i].Qunatity);
 
-        //            if (Books[i].Qunatity != 0)
-        //            {
-        //                Console.WriteLine("How many quantity you want : ");
-        //                int quantity = int.Parse(Console.ReadLine());
-        //                int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
-        //                Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
 
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("IS NOT AVAILABIL ");
-        //            }
-        //            flag = true;
-        //            break;
-        //        }
-        //    }
-        //}
+
+
+        static void ReturnBook()
+        {
+
+            Console.WriteLine("Enter the book name you want");
+            string name = Console.ReadLine();
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].BName == name)
+                {
+                    //Console.WriteLine("Book Quantity  : " + Books[i].Qunatity);
+
+                  
+                        Console.WriteLine("How many quantity you want to return: ");
+                        int quantity = int.Parse(Console.ReadLine());
+                        int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
+                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
+                       Console.WriteLine("successfuly added ");
+
+                    flag = true;
+                    break;
+                }
+            }
+
+        }
+
 
 
     }

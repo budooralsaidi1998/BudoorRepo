@@ -70,6 +70,8 @@ namespace BasicLibrary
                 Console.WriteLine("\n A- Add New Book");
                 Console.WriteLine("\n B- Display All Books");
                 Console.WriteLine("\n C- Search for Book by Name");
+                Console.WriteLine("\n C- Edit the book ");
+                Console.WriteLine("\n C- Remove the book ");
                 Console.WriteLine("\n D- Save and Exit");
 
                 string choice = Console.ReadLine();
@@ -89,6 +91,13 @@ namespace BasicLibrary
                         break;
 
                     case "D":
+                        //EditBook();
+                        break;
+
+                    case "E":
+                        //RemoveBook();
+                        break;
+                    case "F":
                         SaveBooksToFile();
                            ExitFlag = true;
                         break;

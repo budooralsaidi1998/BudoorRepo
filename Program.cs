@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Xml.Linq;
@@ -14,23 +15,31 @@ namespace BasicLibrary
         static List<(int Aid, string email, int password)> userReistrtion = new List<(int Aid, string email, int password)>();
         int userId = -1;
         static List<(int userid, int bookid)> borrow = new List<(int userid, int bookid)>();
+        static List<(string username, string password )> master = new List<(string username, string password )>();
         //files
         //******************************************************************************************************************************************
         static string filePath = "C:\\projects\\files\\book.txt";
         static string fileAdminRegistration = "C:\\projects\\files\\AdminRegistarion.txt";
         static string fileUserRegistration = "C:\\projects\\files\\UserRegastratin.txt";
         static string fileBorrowBook = "C:\\projects\\files\\BorrowBooks.txt";
+        static string filemaster = "C:\\projects\\files\\master.txt";
         //******************************************************************************************************************************************
 
         //Test Check Out
 
         //******************************************************************************************************************************************
         static void Main(string[] args)
-        {// downloaded form ahmed device 
+        {
+            // loadeded file  
+            Master();
             LoadBooksFromFile();
             LoadAdminFromFile();
             LoadUserFromFile();
          //   LoadBooksFromFile();
+
+         //setup master************************************************************************************************************* 
+         
+                
             bool ExitFlag = false;
             do
             {
@@ -69,6 +78,57 @@ namespace BasicLibrary
         }
 
         //*******************************************************************************************************************************************
+
+        //setup master************************************************************************************************************* 
+        //to write master one time not opin again 
+        static void Master()
+        {
+
+            if (!File.Exists(filemaster))
+            {
+                File.Create(filemaster).Close();
+                AddMaster();
+
+            }
+        }
+
+       static void AddMaster()
+        { 
+
+            Console.WriteLine("enter username : ");
+            string username = Console.ReadLine();
+
+            Console.WriteLine("enter password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("added master admin ");
+
+            master.Add((username, password));
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filemaster))
+                {
+                    foreach (var m in master)
+                    {
+                        writer.WriteLine($"{m.username}|{m.password}");
+                    }
+                }
+                Console.WriteLine("master saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
+
+
+
+        }
+
+
+
+
+
+
 
 
         //Regastration for admin and user 

@@ -9,7 +9,8 @@ namespace BasicLibrary
     {
         //global structure 
         static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
-       
+        static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
+
         //files
         //******************************************************************************************************************************************
         static string filePath = "C:\\projects\\files\\book.txt";
@@ -31,7 +32,7 @@ namespace BasicLibrary
                 Console.WriteLine("1. i am admin ");
                 Console.WriteLine("2. i am user ");
                 Console.WriteLine("3. Registaration ");
-                Console.WriteLine("3. Save and Exit");
+                Console.WriteLine("4. Save and Exit");
                 int num = int.Parse(Console.ReadLine());
 
                 switch (num)
@@ -45,7 +46,7 @@ namespace BasicLibrary
                         UserMenu();
                         break;
                     case 3:
-                       //Registrataion();
+                        Registration();
                         break;
                     case 4:
                         SaveBooksToFile();
@@ -84,7 +85,7 @@ namespace BasicLibrary
                 {
 
                     case "A":
-                       //AdminRegistration();
+                       AdminRegistration();
                         break;
 
                     case "B":
@@ -114,7 +115,18 @@ namespace BasicLibrary
 
         }
 
+        static void AdminRegistration()
+        {
+            Console.WriteLine("enter the email :");
+            string email = Console.ReadLine();
 
+            Console.WriteLine(" enter the passowrd : ");
+            int password = int.Parse(Console.ReadLine());
+
+            adminRegistration.Add((email, password));
+
+            Console.WriteLine("successfully added ");
+        }
 
 
 

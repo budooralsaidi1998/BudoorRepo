@@ -37,7 +37,7 @@ namespace BasicLibrary
             LoadUserFromFile();
          //   LoadBooksFromFile();
 
-         //setup master************************************************************************************************************* 
+      
          
                 
             bool ExitFlag = false;
@@ -80,7 +80,7 @@ namespace BasicLibrary
         //*******************************************************************************************************************************************
 
         //setup master************************************************************************************************************* 
-        //to write master one time not opin again 
+        //to write master one time not open again 
         static void Master()
         {
 
@@ -93,7 +93,8 @@ namespace BasicLibrary
         }
 
        static void AddMaster()
-        { 
+        {
+            Console.WriteLine("************ Master ************");
 
             Console.WriteLine("enter username : ");
             string username = Console.ReadLine();
@@ -120,10 +121,31 @@ namespace BasicLibrary
                 Console.WriteLine($"Error saving to file: {ex.Message}");
             }
 
-
-
+            try
+            {
+                if (File.Exists(filemaster))
+                {
+                    using (StreamReader reader = new StreamReader(filemaster))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var parts = line.Split('|');
+                            if (parts.Length == 2)
+                            {
+                                master.Add((parts[0], parts[1]));
+                            }
+                        }
+                    }
+                    Console.WriteLine("master loaded from file successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading from file: {ex.Message}");
+            }
         }
-
+        //***********************************************************************************************************************
 
 
 

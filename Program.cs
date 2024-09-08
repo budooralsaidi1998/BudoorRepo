@@ -136,7 +136,7 @@ namespace BasicLibrary
 
         static void UserRegistration()
         {
-            int userId = userReistrtion.Count + 0;
+            int userid = userReistrtion.Count + 0;
 
             Console.WriteLine("enter the email :");
             string email = Console.ReadLine();
@@ -144,48 +144,12 @@ namespace BasicLibrary
             Console.WriteLine(" enter the passowrd : ");
             int password = int.Parse(Console.ReadLine());
 
-            userReistrtion.Add((userId, email, password));
+            userReistrtion.Add((userid, email, password));
 
             Console.WriteLine("successfully added ");
         }
 
-        static void SaveAdminRegToFile()
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(fileAdminRegistration))
-                {
-                    foreach (var admin in adminRegistration)
-                    {
-                        writer.WriteLine($"{admin.email}|{admin.password}");
-                    }
-                }
-                Console.WriteLine("the data admin saved to file successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving to file: {ex.Message}");
-            }
-        }
-
-        static void SaveUserRegToFile()
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(fileUserRegistration, true))
-                {
-                    foreach (var user in userReistrtion)
-                    {
-                        writer.WriteLine($"{user.Aid}|{user.email}|{user.password}");
-                    }
-                }
-                Console.WriteLine("the data user saved to file successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving to file: {ex.Message}");
-            }
-        }
+        
        
         //static void Borrow()
         //{
@@ -811,14 +775,56 @@ namespace BasicLibrary
                     Console.WriteLine($"Error saving to file: {ex.Message}");
                 }
             }
+            static void SaveAdminRegToFile()
+        {
+            try
+            {
+                HashSet<( string email, int password)> uniqe =
+                    new HashSet<( string, int)>(adminRegistration);
 
-            // **********************************************************************************************************************************************
-
-
-
-
-
-
-
+                using (StreamWriter writer = new StreamWriter(fileAdminRegistration))
+                {
+                    foreach (var admin in uniqe)
+                    {
+                        writer.WriteLine($"{admin.email}|{admin.password}");
+                    }
+                }
+                Console.WriteLine("the data admin saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
         }
+            static void SaveUserRegToFile()
+        {
+            try
+            {
+                HashSet<(int Aid, string email , int password)> uniqe =
+                     new HashSet<(int, string,int)>(userReistrtion);
+
+                using (StreamWriter writer = new StreamWriter(fileUserRegistration))
+                {
+                    foreach (var user in uniqe)
+                    {
+                        writer.WriteLine($"{user.Aid}|{user.email}|{user.password}");
+                        
+                    }
+                }
+                Console.WriteLine("the data user saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
+        }
+        // **********************************************************************************************************************************************
+
+
+
+
+
+
+
+    }
     }

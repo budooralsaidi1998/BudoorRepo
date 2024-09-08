@@ -29,6 +29,7 @@ namespace BasicLibrary
         {// downloaded form ahmed device 
             LoadBooksFromFile();
             LoadAdminFromFile();
+            LoadUserFromFile();
          //   LoadBooksFromFile();
             bool ExitFlag = false;
             do
@@ -37,7 +38,7 @@ namespace BasicLibrary
                 Console.WriteLine("1. login admin ");
                 Console.WriteLine("2. login user ");
                 Console.WriteLine("3. Registaration ");
-                Console.WriteLine("4. Save and Exit");
+                Console.WriteLine("4. logout ");
                 int num = int.Parse(Console.ReadLine());
 
                 switch (num)
@@ -54,7 +55,7 @@ namespace BasicLibrary
                         RegistrationMenu();
                         break;
                     case 4:
-                        SaveBooksToFile();
+                        
                         ExitFlag = true;
                         break;
                     default:
@@ -294,14 +295,13 @@ namespace BasicLibrary
 
                     } while (ExitFlag != true);
                 }
-                else
-                {
-                    Console.WriteLine("Invalid login");
+               
+
+
                 }
-
-
-            }
-            }
+            Console.WriteLine("Invalid login ");
+            ExitFlag = false;
+        }
 
             static void AddnNewBook()
             {
@@ -412,49 +412,72 @@ namespace BasicLibrary
             static void UserMenu()
             {
                 bool ExitFlag = false;
+                Console.WriteLine("***************** Login ********************");
+                Console.WriteLine(" ");
 
-                do
+                Console.WriteLine(" enter your email : ");
+                string email = Console.ReadLine();
+
+                 Console.WriteLine(" enter the password : ");
+                 int password = int.Parse(Console.ReadLine());
+
+                for (int i = 0; i < userReistrtion.Count; i++) 
                 {
-                    Console.WriteLine("I am user ....");
-                    Console.WriteLine("\n Enter the char of operation you need :");
-                    //Console.WriteLine("\n A-Search for Book by Name");
-                    Console.WriteLine("\n A- Borrow the book ");
-                    Console.WriteLine("\n B- return the book ");
-                    Console.WriteLine("\n C- Save and Exit");
 
-                    string choice = Console.ReadLine();
-
-                    switch (choice)
-                    {
-
-                        case "A":
-                            BarrowBooks();
-                            break;
-
-                        case "B":
-                            ReturnBook();
-                            break;
-
-                        case "C":
-                            SaveBooksToFile();
-                            ExitFlag = true;
-
-                            break;
-                        default:
-                            Console.WriteLine("Sorry your choice was wrong");
-                            break;
+                   if (userReistrtion[i].email == email && userReistrtion[i].password == password)
+                   {
 
 
+                       do
+                       {
+                       
+                        Console.WriteLine("\n Enter the char of operation you need :");
+                        //Console.WriteLine("\n A-Search for Book by Name");
+                        Console.WriteLine("\n A- Borrow the book ");
+                        Console.WriteLine("\n B- return the book ");
+                        Console.WriteLine("\n C- Save and Exit");
 
-                    }
+                        string choice = Console.ReadLine();
 
-                    Console.WriteLine("press any key to continue");
-                    string cont = Console.ReadLine();
+                           switch (choice)
+                           {
 
-                    Console.Clear();
+                            case "A":
+                                BarrowBooks();
+                                break;
 
-                } while (ExitFlag != true);
-            }
+                            case "B":
+                                ReturnBook();
+                                break;
+
+                            case "C":
+                                SaveBooksToFile();
+                                ExitFlag = true;
+
+                                break;
+                            default:
+                                Console.WriteLine("Sorry your choice was wrong");
+                                break;
+
+
+
+                           }
+
+                        Console.WriteLine("press any key to continue");
+                        string cont = Console.ReadLine();
+
+                        Console.Clear();
+
+                       } while (ExitFlag != true);
+                   }
+                
+
+                }
+            Console.WriteLine("Invalid login ");
+            ExitFlag = false;
+
+        }
+
 
             static void BarrowBooks()
             {
@@ -737,6 +760,32 @@ namespace BasicLibrary
                         }
                     }
                     Console.WriteLine("admin loaded from file successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading from file: {ex.Message}");
+            }
+        }
+            static void LoadUserFromFile()
+        {
+            try
+            {
+                if (File.Exists(fileUserRegistration))
+                {
+                    using (StreamReader reader = new StreamReader(fileUserRegistration))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var parts = line.Split('|');
+                            if (parts.Length == 3)
+                            {
+                                userReistrtion.Add((int.Parse(parts[0]), parts[1], int.Parse(parts[2])));
+                            }
+                        }
+                    }
+                    Console.WriteLine("user loaded from file successfully.");
                 }
             }
             catch (Exception ex)

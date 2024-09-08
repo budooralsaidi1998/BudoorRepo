@@ -87,15 +87,15 @@ namespace BasicLibrary
 
                     case "A":
                        AdminRegistration();
+                        SaveAdminRegToFile();
                         break;
 
                     case "B":
                        UserRegistration();
+                        SaveUserRegToFile();
                         break;
 
                     case "C":
-                        SaveAdminRegToFile();
-                        SaveUserRegToFile();
                         ExitFlag = true;
 
                         break;
@@ -167,7 +167,7 @@ namespace BasicLibrary
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(fileUserRegistration))
+                using (StreamWriter writer = new StreamWriter(fileUserRegistration,true))
                 {
                     foreach (var user in userReistrtion)
                     {
@@ -181,6 +181,10 @@ namespace BasicLibrary
                 Console.WriteLine($"Error saving to file: {ex.Message}");
             }
         }
+
+
+
+
 
         //admin menu with the service admin
         //*******************************************************************************************************************************************

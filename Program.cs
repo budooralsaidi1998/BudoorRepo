@@ -20,7 +20,7 @@ namespace BasicLibrary
 
         //Test Check Out
 
-        //*********************************************************************************************************************************************
+        //******************************************************************************************************************************************
         static void Main(string[] args)
         {// downloaded form ahmed device 
             LoadBooksFromFile();
@@ -30,6 +30,7 @@ namespace BasicLibrary
                 Console.WriteLine("enter the number of the option: ");
                 Console.WriteLine("1. i am admin ");
                 Console.WriteLine("2. i am user ");
+                Console.WriteLine("3. Registaration ");
                 Console.WriteLine("3. Save and Exit");
                 int num = int.Parse(Console.ReadLine());
 
@@ -44,6 +45,9 @@ namespace BasicLibrary
                         UserMenu();
                         break;
                     case 3:
+                       //Registrataion();
+                        break;
+                    case 4:
                         SaveBooksToFile();
                         ExitFlag = true;
                         break;
@@ -60,10 +64,65 @@ namespace BasicLibrary
         //*******************************************************************************************************************************************
 
 
+        //Regastration for admin and user 
+        //*******************************************************************************************************************************************
+
+        static void Registration()
+        {
+            bool ExitFlag = false;
+
+            do
+            {
+                
+                Console.WriteLine("\n A- Admin registration ");
+                Console.WriteLine("\n B- User registrsation ");
+                Console.WriteLine("\n C- Save and Exit");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+
+                    case "A":
+                       //AdminRegistration();
+                        break;
+
+                    case "B":
+                       //UserRegistration();
+                        break;
+
+                    case "C":
+                        //SaveAdminRegToFile();
+                        //SaveUserRegToFile();
+                        ExitFlag = true;
+
+                        break;
+                    default:
+                        Console.WriteLine("Sorry your choice was wrong");
+                        break;
+
+
+
+                }
+
+                Console.WriteLine("press any key to continue");
+                string cont = Console.ReadLine();
+
+                Console.Clear();
+
+            } while (ExitFlag != true);
+
+        }
+
+
+
+
+
+
 
 
         //admin menu with the service admin
-        //*********************************************************************************************************************************************
+        //*******************************************************************************************************************************************
         static void AdminMenu()
         {
             bool ExitFlag = false;

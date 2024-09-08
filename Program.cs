@@ -9,9 +9,8 @@ namespace BasicLibrary
     {
         //global structure 
         static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
-
-
         static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
+        static List<(int Aid,string email ,int password)> userReistrtion = new List<(int Aid, string email, int password)>();
 
         //files
         //******************************************************************************************************************************************
@@ -48,7 +47,7 @@ namespace BasicLibrary
                         UserMenu();
                         break;
                     case 3:
-                        Registration();
+                        RegistrationMenu();
                         break;
                     case 4:
                         SaveBooksToFile();
@@ -70,7 +69,7 @@ namespace BasicLibrary
         //Regastration for admin and user 
         //*******************************************************************************************************************************************
 
-        static void Registration()
+        static void RegistrationMenu()
         {
             bool ExitFlag = false;
 
@@ -91,7 +90,7 @@ namespace BasicLibrary
                         break;
 
                     case "B":
-                       //UserRegistration();
+                       UserRegistration();
                         break;
 
                     case "C":
@@ -130,7 +129,20 @@ namespace BasicLibrary
             Console.WriteLine("successfully added ");
         }
 
+        static void UserRegistration()
+        {
+            int id = userReistrtion.Count + 0;
+                
+            Console.WriteLine("enter the email :");
+            string email = Console.ReadLine();
 
+            Console.WriteLine(" enter the passowrd : ");
+            int password = int.Parse(Console.ReadLine());
+
+            userReistrtion.Add((id ,email, password));
+
+            Console.WriteLine("successfully added ");
+        }
 
 
 

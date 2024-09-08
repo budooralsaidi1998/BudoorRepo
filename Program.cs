@@ -11,7 +11,8 @@ namespace BasicLibrary
         static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
         static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
         static List<(int Aid,string email ,int password)> userReistrtion = new List<(int Aid, string email, int password)>();
-
+        int userId = -1;
+        static List<(int userid,int bookid)>borrow = new List<(int userid, int bookid)>();
         //files
         //******************************************************************************************************************************************
         static string filePath = "C:\\projects\\files\\book.txt";
@@ -131,7 +132,7 @@ namespace BasicLibrary
 
         static void UserRegistration()
         {
-            int id = userReistrtion.Count + 0;
+            int userId = userReistrtion.Count + 0;
                 
             Console.WriteLine("enter the email :");
             string email = Console.ReadLine();
@@ -139,7 +140,7 @@ namespace BasicLibrary
             Console.WriteLine(" enter the passowrd : ");
             int password = int.Parse(Console.ReadLine());
 
-            userReistrtion.Add((id ,email, password));
+            userReistrtion.Add((userId ,email, password));
 
             Console.WriteLine("successfully added ");
         }
@@ -181,9 +182,37 @@ namespace BasicLibrary
                 Console.WriteLine($"Error saving to file: {ex.Message}");
             }
         }
+     
+        //static void Borrow()
+        //{
+
+           
+
+        //    try
+        //    {
+               
+        //        for (int i = 0; i < Books.Count; i++)
+        //        {
+        //            var (BName, BAuthor, ID, Qunatity) = Books[i];
+        //            borrow.Add((userId, ID));
+        //        }
+
+        //        using (StreamWriter writer = new StreamWriter(fileBorrowBook, true))
+        //        {
+        //            foreach (var Borrow in borrow)
+        //            {
+        //                writer.WriteLine($"{Borrow.userid}|{Borrow.bookid}|");
+        //            }
+        //        }
+        //        Console.WriteLine("the data borrow saved to file successfully.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error saving to file: {ex.Message}");
+        //    }
 
 
-
+        //}
 
 
         //admin menu with the service admin

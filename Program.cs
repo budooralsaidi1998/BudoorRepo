@@ -95,7 +95,7 @@ namespace BasicLibrary
 
                     case "C":
                         SaveAdminRegToFile();
-                        //SaveUserRegToFile();
+                        SaveUserRegToFile();
                         ExitFlag = true;
 
                         break;
@@ -163,6 +163,24 @@ namespace BasicLibrary
             }
         }
 
+        static void SaveUserRegToFile()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(fileUserRegistration))
+                {
+                    foreach (var user in userReistrtion)
+                    {
+                        writer.WriteLine($"{user.Aid}|{user.email}|{user.password}");
+                    }
+                }
+                Console.WriteLine("the data user saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
+        }
 
         //admin menu with the service admin
         //*******************************************************************************************************************************************

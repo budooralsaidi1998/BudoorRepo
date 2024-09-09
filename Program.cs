@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -14,7 +15,7 @@ namespace BasicLibrary
         static List<(string BName, string BAuthor, int ID, int Qunatity, int borrow)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity, int borrow)>();
         static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
         static List<(int Aid, string email, int password)> userReistrtion = new List<(int Aid, string email, int password)>();
-        static List<(int userid, int bookid)> borrow = new List<(int userid, int bookid)>();
+        static List<(int userid, int bookid, int returnbook)> borrows = new List<(int userid, int bookid, int returnbook)>();
         static List<(string username, string password)> master = new List<(string username, string password)>();
 
         //files
@@ -36,7 +37,7 @@ namespace BasicLibrary
             LoadBooksFromFile();
             LoadAdminFromFile();
             LoadUserFromFile();
-            
+            LoadborrowFromFile();
 
 
 
@@ -235,36 +236,7 @@ namespace BasicLibrary
 
 
 
-        //static void Borrow()
-        //{
-
-
-
-        //    try
-        //    {
-
-        //        for (int i = 0; i < Books.Count; i++)
-        //        {
-        //            var (BName, BAuthor, ID, Qunatity) = Books[i];
-        //            borrow.Add((userId, ID));
-        //        }
-
-        //        using (StreamWriter writer = new StreamWriter(fileBorrowBook, true))
-        //        {
-        //            foreach (var Borrow in borrow)
-        //            {
-        //                writer.WriteLine($"{Borrow.userid}|{Borrow.bookid}|");
-        //            }
-        //        }
-        //        Console.WriteLine("the data borrow saved to file successfully.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error saving to file: {ex.Message}");
-        //    }
-
-
-        //}
+        
 
 
 
@@ -502,14 +474,7 @@ namespace BasicLibrary
              
             
 
-            Console.WriteLine(" ");
-            for(int i = 0; i<author.Count; i++)
-            {
-                if (i == author[i] )
-                {
-
-                }
-            }
+          
 
            //
 
@@ -564,19 +529,27 @@ namespace BasicLibrary
                             {
 
                                 case "A":
-                                    BarrowBooks();
+
+
+                                Console.WriteLine("user id is :" + userId);
+                                ViewAllBooksUser();
+                                BarrowBooks();
                                     break;
 
                                 case "B":
-                                    ReturnBook();
+                                Console.WriteLine("user id is :" + userId);
+                                ReturnBook();
                                     break;
 
                                 case "C":
                                     SaveBooksToFile();
+                                    SaveborrowToFile();
                                     userId = -1;
                                     ExitFlag = true;
 
                                     break;
+
+                               default:
                                     Console.WriteLine("Sorry your choice was wrong");
                                     break;
 
@@ -599,9 +572,27 @@ namespace BasicLibrary
                 ExitFlag = false;
 
             }
+        static void ViewAllBooksUser()
+        {
+            StringBuilder sb = new StringBuilder();
 
+            int BookNumber = 0;
 
-            static void BarrowBooks()
+            for (int i = 0; i < Books.Count; i++)
+            {
+                BookNumber = i + 1;
+                sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
+                sb.AppendLine();
+                Console.WriteLine(sb.ToString());
+                sb.Clear();
+
+            }
+        }
+           static void BarrowBooks()
             {
 
                 Console.WriteLine("Enter the book name you want");
@@ -623,8 +614,10 @@ namespace BasicLibrary
                             int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
                             int borrow = Books[i].borrow + 1;
                             Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
-                            recomand(Books[i].BAuthor);
-                         
+                        // recomand(Books[i].BAuthor);
+                          
+
+
                         }
                         else
                         {
@@ -647,7 +640,7 @@ namespace BasicLibrary
 
             }
 
-            static void ReturnBook()
+             static void ReturnBook()
             {
 
                 Console.WriteLine("Enter the book name you want");
@@ -658,30 +651,54 @@ namespace BasicLibrary
                 {
                     if (Books[i].BName == name)
                     {
-                        //Console.WriteLine("Book Quantity  : " + Books[i].Qunatity);
+                        if (Books[i].Qunatity >= 0)  //Console.WriteLine("Book Quantity  : " + Books[i].Qunatity);
 
+                        {
+                            Console.WriteLine("How many quantity you want to return: ");
+                            int quantity = int.Parse(Console.ReadLine());
 
-                        Console.WriteLine("How many quantity you want to return: ");
-                        int quantity = int.Parse(Console.ReadLine());
-                        int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
-                        int borrow = Books[i].borrow - 1;
-                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
-                        Console.WriteLine("successfuly added ");
+                            int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
 
+                            int borrow = Books[i].borrow - 1;
+
+                            Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
+
+                            Console.WriteLine("successfuly added ");
+                        int bookid = Books[i].ID;
+                        int returnss = quantity;
+                        borrows.Add((userId, bookid, returnss));
                         flag = true;
-                        break;
+                            break;
+                        }
                     }
                 }
 
             }
-            //***********************************************************************************************************************************************
+
+            //recomand for the author similarity 
+        //    static void recomand(string author)
+        //{
+        //    for (int i = 0; i < Books.Count; i++)
+        //    {
+        //        if (Books[i].BAuthor == author)
+        //        {
+        //            Console.WriteLine("you can choose this book : ");
+        //            Console.WriteLine($"the book : {Books[i].BName}");
+        //        }
+
+        //    }
+
+
+        //}
+
+        //***********************************************************************************************************************************************
 
 
 
 
-            //edits books
-            //will added all in editbookmenu .....
-            //**********************************************************************************************************************************************
+        //edits books
+        //will added all in editbookmenu .....
+        //**********************************************************************************************************************************************
             static void EditBookMenu()
             {
 
@@ -843,20 +860,7 @@ namespace BasicLibrary
 
             //***********************************************************************************************************************************************
 
-            static void recomand(string author)
-        {
-            for (int i = 0; i < Books.Count; i++)
-            {
-                if (Books[i].BAuthor == author)
-                {
-                    Console.WriteLine("you can choose this book : ");
-                    Console.WriteLine($"the book : {Books[i].BName}");
-                }
-
-            }
-
             
-        }
 
 
 
@@ -1001,14 +1005,61 @@ namespace BasicLibrary
                     Console.WriteLine($"Error saving to file: {ex.Message}");
                 }
             }
-            // **********************************************************************************************************************************************
+              static void SaveborrowToFile()
+        {
+            try
+            {
+                HashSet<(int userid, int bookid,int returnbook)> uniqe =
+                    new HashSet<(int, int,int)>(borrows);
 
-
-
-
-
-
-
-
+                using (StreamWriter writer = new StreamWriter(fileBorrowBook))
+                {
+                    foreach (var borr in uniqe)
+                    {
+                        writer.WriteLine($"{borr.userid}|{borr.bookid}|{borr.returnbook}");
+                    }
+                }
+                //Console.WriteLine("the data admin saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
         }
+        static void LoadborrowFromFile()
+        {
+            try
+            {
+                if (File.Exists(fileBorrowBook))
+                {
+                    using (StreamReader reader = new StreamReader(fileBorrowBook))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var parts = line.Split('|');
+                            if (parts.Length == 3)
+                            {
+                                borrows.Add(( int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2])));
+                            }
+                        }
+                    }
+                    //  Console.WriteLine("Books loaded from file successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading from file: {ex.Message}");
+            }
+        }
+        // **********************************************************************************************************************************************
+
+
+
+
+
+
+
+
+    }
     }

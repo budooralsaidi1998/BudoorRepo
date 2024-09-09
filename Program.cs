@@ -606,6 +606,8 @@ namespace BasicLibrary
 
                 Console.WriteLine("Enter the book name you want");
                 string name = Console.ReadLine();
+
+            
                 bool flag = false;
 
                 for (int i = 0; i < Books.Count; i++)
@@ -621,7 +623,8 @@ namespace BasicLibrary
                             int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
                             int borrow = Books[i].borrow + 1;
                             Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
-
+                            recomand(Books[i].BAuthor);
+                         
                         }
                         else
                         {
@@ -632,8 +635,14 @@ namespace BasicLibrary
                         break;
                     }
                 }
+                //seggestion ... 
 
-                if (flag != true)
+            for (int i = 0; i < Books.Count; i++)
+            {
+    
+            }
+
+            if (flag != true)
                 { Console.WriteLine("book not found"); }
 
             }
@@ -834,7 +843,20 @@ namespace BasicLibrary
 
             //***********************************************************************************************************************************************
 
+            static void recomand(string author)
+        {
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].BAuthor == author)
+                {
+                    Console.WriteLine("you can choose this book : ");
+                    Console.WriteLine($"the book : {Books[i].BName}");
+                }
 
+            }
+
+            
+        }
 
 
 

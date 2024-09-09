@@ -10,12 +10,13 @@ namespace BasicLibrary
     internal class Program
     {
         //global structure 
-        static List<(string BName, string BAuthor, int ID, int Qunatity)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity)>();
+        static int userId = -1;
+        static List<(string BName, string BAuthor, int ID, int Qunatity,int borrow)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity, int borrow)>();
         static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
         static List<(int Aid, string email, int password)> userReistrtion = new List<(int Aid, string email, int password)>();
-        int userId = -1;
         static List<(int userid, int bookid)> borrow = new List<(int userid, int bookid)>();
         static List<(string username, string password )> master = new List<(string username, string password )>();
+      
         //files
         //******************************************************************************************************************************************
         static string filePath = "C:\\projects\\files\\book.txt";
@@ -145,6 +146,7 @@ namespace BasicLibrary
                 Console.WriteLine($"Error loading from file: {ex.Message}");
             }
         }
+
         //***********************************************************************************************************************
 
 
@@ -271,7 +273,7 @@ namespace BasicLibrary
         //*******************************************************************************************************************************************
 
 
-        static void AdminMenu()
+           static void AdminMenu()
         {
             bool ExitFlag = false;
             Console.WriteLine("***************** Login ********************");
@@ -369,8 +371,10 @@ namespace BasicLibrary
                 int qun = int.Parse(Console.ReadLine());
 
 
+            
 
-                Books.Add((name, author, id, qun));
+
+                Books.Add((name, author, id, qun,0));
                 Console.WriteLine("Book Added Succefully");
 
             }
@@ -391,6 +395,8 @@ namespace BasicLibrary
                     sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
                     sb.AppendLine();
                     sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
+                    sb.AppendLine();
+                    sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].borrow);
                     sb.AppendLine().AppendLine();
                     Console.WriteLine(sb.ToString());
                     sb.Clear();
@@ -432,7 +438,7 @@ namespace BasicLibrary
                     if (Books[i].ID == id)
                     {
 
-                        Books.Remove((Books[i].BName, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity));
+                        Books.Remove((Books[i].BName, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity, Books[i].borrow));
 
                         Console.WriteLine("SUCCESSFULLY DELETE");
                         flag = true;
@@ -467,21 +473,25 @@ namespace BasicLibrary
                  Console.WriteLine(" enter the password : ");
                  int password = int.Parse(Console.ReadLine());
 
+
+            
                 for (int i = 0; i < userReistrtion.Count; i++) 
                 {
 
                    if (userReistrtion[i].email == email && userReistrtion[i].password == password)
                    {
 
-
+                    userId = userReistrtion[i].Aid;
+                    Console.WriteLine("user id is :" + userId);
+                     
                        do
                        {
-                       
+                        
                         Console.WriteLine("\n Enter the char of operation you need :");
                         //Console.WriteLine("\n A-Search for Book by Name");
                         Console.WriteLine("\n A- Borrow the book ");
                         Console.WriteLine("\n B- return the book ");
-                        Console.WriteLine("\n C- Save and Exit");
+                        Console.WriteLine("\n C- logout ");
 
                         string choice = Console.ReadLine();
 
@@ -498,10 +508,10 @@ namespace BasicLibrary
 
                             case "C":
                                 SaveBooksToFile();
+                                userId = -1;
                                 ExitFlag = true;
 
-                                break;
-                            default:
+                                break; 
                                 Console.WriteLine("Sorry your choice was wrong");
                                 break;
 
@@ -520,6 +530,7 @@ namespace BasicLibrary
 
                 }
             Console.WriteLine("Invalid login ");
+       
             ExitFlag = false;
 
         }
@@ -543,11 +554,13 @@ namespace BasicLibrary
                             Console.WriteLine("How many quantity you want : ");
                             int quantity = int.Parse(Console.ReadLine());
                             int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
-                            Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
-
+                             int borrow = Books[i].borrow + 1;
+                             Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt,borrow);
+                         
                         }
                         else
                         {
+
                             Console.WriteLine("IS NOT AVAILABIL ");
                         }
                         flag = true;
@@ -577,7 +590,8 @@ namespace BasicLibrary
                         Console.WriteLine("How many quantity you want to return: ");
                         int quantity = int.Parse(Console.ReadLine());
                         int NewQunatityAfterTakeIt = Books[i].Qunatity + quantity;
-                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt);
+                    int borrow = Books[i].borrow - 1;
+                      Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt,borrow);
                         Console.WriteLine("successfuly added ");
 
                         flag = true;
@@ -666,7 +680,7 @@ namespace BasicLibrary
                         Console.WriteLine(" enter the name you to update : ");
                         string name = Console.ReadLine();
 
-                        Books[i] = (name, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity);
+                        Books[i] = (name, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity, Books[i].borrow);
                         Console.WriteLine(" successfully Update name ");
 
 
@@ -701,7 +715,7 @@ namespace BasicLibrary
                         Console.WriteLine(" enter the Author  you want  to update it : ");
                         string author = Console.ReadLine();
 
-                        Books[i] = (Books[i].BName, author, Books[i].ID, Books[i].Qunatity);
+                        Books[i] = (Books[i].BName, author, Books[i].ID, Books[i].Qunatity, Books[i].borrow);
                         Console.WriteLine(" successfully Update Author ");
 
 
@@ -736,7 +750,7 @@ namespace BasicLibrary
                         Console.WriteLine(" enter the Quantity  you want  to update it : ");
                         int quantity = int.Parse(Console.ReadLine());
 
-                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, quantity);
+                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, quantity, Books[i].borrow);
                         Console.WriteLine(" successfully Update quantity ");
 
 
@@ -773,9 +787,9 @@ namespace BasicLibrary
                             while ((line = reader.ReadLine()) != null)
                             {
                                 var parts = line.Split('|');
-                                if (parts.Length == 4)
+                                if (parts.Length == 5)
                                 {
-                                    Books.Add((parts[0], parts[1], int.Parse(parts[2]), int.Parse(parts[3])));
+                                    Books.Add((parts[0], parts[1], int.Parse(parts[2]), int.Parse(parts[3]), int.Parse(parts[4])));
                                 }
                             }
                         }
@@ -847,7 +861,7 @@ namespace BasicLibrary
                     {
                         foreach (var book in Books)
                         {
-                            writer.WriteLine($"{book.BName}|{book.BAuthor}|{book.ID}|{book.Qunatity}");
+                            writer.WriteLine($"{book.BName}|{book.BAuthor}|{book.ID}|{book.Qunatity}|{book.borrow}");
                         }
                     }
                     Console.WriteLine("Books saved to file successfully.");
@@ -871,7 +885,7 @@ namespace BasicLibrary
                         writer.WriteLine($"{admin.email}|{admin.password}");
                     }
                 }
-                Console.WriteLine("the data admin saved to file successfully.");
+                //Console.WriteLine("the data admin saved to file successfully.");
             }
             catch (Exception ex)
             {
@@ -901,6 +915,7 @@ namespace BasicLibrary
             }
         }
         // **********************************************************************************************************************************************
+
 
 
 

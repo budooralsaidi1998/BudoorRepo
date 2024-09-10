@@ -166,26 +166,27 @@ namespace BasicLibrary
             do
             {
 
-                Console.WriteLine("\n A- Admin registration ");
-                Console.WriteLine("\n B- User registrsation ");
-                Console.WriteLine("\n C- Save and Exit");
+                Console.WriteLine("\n 1- Admin registration ");
+                Console.WriteLine("\n 2- User registrsation ");
+                Console.WriteLine("\n 3- Save and Exit");
 
-                string choice = Console.ReadLine();
+                int choice = int.Parse(Console.ReadLine());
+                   
 
                 switch (choice)
                 {
 
-                    case "A":
+                    case 1:
                         AdminRegistration();
                         SaveAdminRegToFile();
                         break;
 
-                    case "B":
+                    case 2 :
                         UserRegistration();
                         SaveUserRegToFile();
                         break;
 
-                    case "C":
+                    case 3:
                         ExitFlag = true;
 
                         break;
@@ -197,7 +198,7 @@ namespace BasicLibrary
 
                 }
 
-                Console.WriteLine("press any key to continue");
+                Console.WriteLine("press enter key to continue");
                 string cont = Console.ReadLine();
 
                 Console.Clear();
@@ -266,43 +267,43 @@ namespace BasicLibrary
 
 
                         Console.WriteLine("\n Enter the char of operation you need :");
-                        Console.WriteLine("\n A- Add New Book");
-                        Console.WriteLine("\n B- Display All Books");
-                        Console.WriteLine("\n C- Search for Book by Name");
-                        Console.WriteLine("\n D- Edit the book ");
-                        Console.WriteLine("\n E- Remove the book ");
-                        Console.WriteLine("\n F- Reporting the data ");
-                        Console.WriteLine("\n G- Save and Exit");
+                        Console.WriteLine("\n 1- Add New Book");
+                        Console.WriteLine("\n 2- Display All Books");
+                        Console.WriteLine("\n 3- Search for Book by Name");
+                        Console.WriteLine("\n 4- Edit the book ");
+                        Console.WriteLine("\n 5- Remove the book ");
+                        Console.WriteLine("\n 6- Reporting the data ");
+                        Console.WriteLine("\n 7- Save and Exit");
 
-                        string choice = Console.ReadLine();
+                        int choice = int.Parse(Console.ReadLine());
 
                         switch (choice)
                         {
-                            case "A":
+                            case 1:
                                 AddnNewBook();
                                 break;
 
-                            case "B":
+                            case 2:
                                 ViewAllBooks();
                                 break;
 
-                            case "C":
+                            case 3:
                                 SearchForBook();
                                 break;
 
-                            case "D":
+                            case 4:
                                 EditBookMenu();
                                 break;
 
-                            case "E":
+                            case 5:
                                 RemoveBook();
                                 break;
 
-                            case "F":
+                            case 6:
                                 Reporting();
                                 break;
 
-                            case "G":
+                            case 7:
                                 SaveBooksToFile();
                                 ExitFlag = true;
                                 break;
@@ -313,7 +314,7 @@ namespace BasicLibrary
 
                         }
 
-                        Console.WriteLine("press any key to continue");
+                        Console.WriteLine("press enter key to continue");
 
                         string cont = Console.ReadLine();
 
@@ -519,16 +520,16 @@ namespace BasicLibrary
 
                             Console.WriteLine("\n Enter the char of operation you need :");
                             //Console.WriteLine("\n A-Search for Book by Name");
-                            Console.WriteLine("\n A- Borrow the book ");
-                            Console.WriteLine("\n B- return the book ");
-                            Console.WriteLine("\n C- logout ");
+                            Console.WriteLine("\n 1- Borrow the book ");
+                            Console.WriteLine("\n 2- return the book ");
+                            Console.WriteLine("\n 3- logout ");
 
-                            string choice = Console.ReadLine();
+                            int choice = int.Parse(Console.ReadLine());
 
                             switch (choice)
                             {
 
-                                case "A":
+                                case 1:
 
 
                                 Console.WriteLine("user id is :" + userId);
@@ -536,12 +537,12 @@ namespace BasicLibrary
                                 BarrowBooks();
                                     break;
 
-                                case "B":
+                                case 2:
                                 Console.WriteLine("user id is :" + userId);
                                 ReturnBook();
                                     break;
 
-                                case "C":
+                                case 3:
                                     SaveBooksToFile();
                                     SaveborrowToFile();
                                     userId = -1;
@@ -557,7 +558,7 @@ namespace BasicLibrary
 
                             }
 
-                            Console.WriteLine("press any key to continue");
+                            Console.WriteLine("press enter key to continue");
                             string cont = Console.ReadLine();
 
                             Console.Clear();
@@ -572,7 +573,7 @@ namespace BasicLibrary
                 ExitFlag = false;
 
             }
-        static void ViewAllBooksUser()
+            static void ViewAllBooksUser()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -592,7 +593,7 @@ namespace BasicLibrary
 
             }
         }
-           static void BarrowBooks()
+             static void BarrowBooks()
             {
 
                 Console.WriteLine("Enter the book name you want");

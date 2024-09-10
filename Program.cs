@@ -248,86 +248,96 @@ namespace BasicLibrary
 
         static void AdminMenu()
         {
-            bool ExitFlag = false;
-            Console.WriteLine("***************** Login ********************");
-            Console.WriteLine(" ");
+                    bool Auth = false;
+                    bool ExitFlag = false;
+                    Console.WriteLine("***************** Login ********************");
+                    Console.WriteLine(" ");
 
-            Console.WriteLine(" enter your email : ");
-            string email = Console.ReadLine();
+                    Console.WriteLine(" enter your email : ");
+                    string email = Console.ReadLine();
 
-            Console.WriteLine(" enter the password : ");
-            int password = int.Parse(Console.ReadLine());
+                    Console.WriteLine(" enter the password : ");
+                    int password = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < adminRegistration.Count; i++)
-            {
-                if (adminRegistration[i].email == email && adminRegistration[i].password == password)
-                {
-                    do
+                    for (int i = 0; i < adminRegistration.Count; i++)
                     {
-
-
-                        Console.WriteLine("\n Enter the char of operation you need :");
-                        Console.WriteLine("\n 1- Add New Book");
-                        Console.WriteLine("\n 2- Display All Books");
-                        Console.WriteLine("\n 3- Search for Book by Name");
-                        Console.WriteLine("\n 4- Edit the book ");
-                        Console.WriteLine("\n 5- Remove the book ");
-                        Console.WriteLine("\n 6- Reporting the data ");
-                        Console.WriteLine("\n 7- Save and Exit");
-
-                        int choice = int.Parse(Console.ReadLine());
-
-                        switch (choice)
+                        if (adminRegistration[i].email == email && adminRegistration[i].password == password)
                         {
-                            case 1:
-                                AddnNewBook();
-                                break;
+                            do
+                            {
 
-                            case 2:
-                                ViewAllBooks();
-                                break;
 
-                            case 3:
-                                SearchForBook();
-                                break;
+                                Console.WriteLine("\n Enter the char of operation you need :");
+                                Console.WriteLine("\n 1- Add New Book");
+                                Console.WriteLine("\n 2- Display All Books");
+                                Console.WriteLine("\n 3- Search for Book by Name");
+                                Console.WriteLine("\n 4- Edit the book ");
+                                Console.WriteLine("\n 5- Remove the book ");
+                                Console.WriteLine("\n 6- Reporting the data ");
+                                Console.WriteLine("\n 7- Save and Exit");
 
-                            case 4:
-                                EditBookMenu();
-                                break;
+                                int choice = int.Parse(Console.ReadLine());
 
-                            case 5:
-                                RemoveBook();
-                                break;
+                                switch (choice)
+                                {
+                                    case 1:
+                                        AddnNewBook();
+                                        break;
 
-                            case 6:
-                                Reporting();
-                                break;
+                                    case 2:
+                                        ViewAllBooks();
+                                        break;
 
-                            case 7:
-                                SaveBooksToFile();
-                                ExitFlag = true;
-                                break;
+                                    case 3:
+                                        SearchForBook();
+                                        break;
 
-                            default:
-                                Console.WriteLine("Sorry your choice was wrong");
-                                break;
+                                    case 4:
+                                        EditBookMenu();
+                                        break;
 
-                        }
+                                    case 5:
+                                        RemoveBook();
+                                        break;
 
-                        Console.WriteLine("press enter key to continue");
+                                    case 6:
+                                        Reporting();
+                                        break;
 
-                        string cont = Console.ReadLine();
+                                    case 7:
+                                        SaveBooksToFile();
+                                        ExitFlag = true;
+                                        break;
 
-                        Console.Clear();
+                                    default:
+                                        Console.WriteLine("Sorry your choice was wrong");
+                                        break;
 
-                    } while (ExitFlag != true);
-                }
-                Console.WriteLine(" Invalid login *** ");
+                                }
 
+                                Console.WriteLine("press enter key to continue");
+
+                                string cont = Console.ReadLine();
+
+                                Console.Clear();
+
+                            } while (ExitFlag != true);
+                 
+                          }
+
+                       
+                            //Console.WriteLine(" Invalid login *** ");
+                        
+            
+                    }
+            if (Auth != true)
+            {
+                Console.WriteLine("Invalid login ");
             }
- 
-                ExitFlag = false;
-            }
+
+
+            ExitFlag = false;
+        }
 
             static void AddnNewBook()
             {
@@ -495,6 +505,7 @@ namespace BasicLibrary
             static void UserMenu()
             {
                 bool ExitFlag = false;
+               bool Auth = false;
                 Console.WriteLine("***************** Login ********************");
                 Console.WriteLine(" ");
 
@@ -511,7 +522,7 @@ namespace BasicLibrary
 
                     if (userReistrtion[i].email == email && userReistrtion[i].password == password)
                     {
-
+                        Auth = true;
                         userId = userReistrtion[i].Aid;
                         Console.WriteLine("user id is :" + userId);
 
@@ -565,12 +576,22 @@ namespace BasicLibrary
 
                         } while (ExitFlag != true);
                     }
+
+                    //else
+
+                    // {
+                    //  Console.WriteLine("Invalid login ");
+                         
+                    //}
+
                 }
 
-                
+            if (Auth != true)
+            {
                 Console.WriteLine("Invalid login ");
+            }
 
-                ExitFlag = false;
+            ExitFlag = false;
 
             }
             static void ViewAllBooksUser()

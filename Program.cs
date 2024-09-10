@@ -12,10 +12,10 @@ namespace BasicLibrary
     {
         //global structure 
         static int userId = -1;
-        static List<(string BName, string BAuthor, int ID, int Qunatity, int borrow)> Books = new List<(string BName, string BAuthor, int ID, int Qunatity, int borrow)>();
-        static List<(string email, int password)> adminRegistration = new List<(string email, int password)>();
-        static List<(int Aid, string email, int password)> userReistrtion = new List<(int Aid, string email, int password)>();
-        static List<(int userid, int bookid, int returnbook)> borrows = new List<(int userid, int bookid, int returnbook)>();
+        static List<(int ID, string BName, string BAuthor, int copies,int Borrowedcopies,int price,string category,int borrowperiod )> Books = new List<(int ID, string BName, string BAuthor, int copies, int Borrowedcopies, int price, string category, int borrowperiod)>();
+        static List<(int adminid,string adminname ,string email, int password)> adminRegistration = new List<(int adminid, string adminname, string email, int password)>();
+        static List<(int Aid,string username ,string email, int password)> userReistrtion = new List<(int Aid, string username, string email, int password)>();
+        static List<(int userid, int bookid, DateTime borrowdate , DateTime returndate, DateTime acaualreturndate , int rating,bool isreturn)> borrows = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, DateTime acaualreturndate, int rating, bool isreturn)>();
         static List<(string username, string password)> master = new List<(string username, string password)>();
 
         //files
@@ -171,7 +171,7 @@ namespace BasicLibrary
                 Console.WriteLine("\n 3- Save and Exit");
 
                 int choice = int.Parse(Console.ReadLine());
-                   
+
 
                 switch (choice)
                 {
@@ -181,7 +181,7 @@ namespace BasicLibrary
                         SaveAdminRegToFile();
                         break;
 
-                    case 2 :
+                    case 2:
                         UserRegistration();
                         SaveUserRegToFile();
                         break;
@@ -237,7 +237,7 @@ namespace BasicLibrary
 
 
 
-        
+
 
 
 
@@ -248,88 +248,88 @@ namespace BasicLibrary
 
         static void AdminMenu()
         {
-                    bool Auth = false;
-                    bool ExitFlag = false;
-                    Console.WriteLine("***************** Login ********************");
-                    Console.WriteLine(" ");
+            bool Auth = false;
+            bool ExitFlag = false;
+            Console.WriteLine("***************** Login ********************");
+            Console.WriteLine(" ");
 
-                    Console.WriteLine(" enter your email : ");
-                    string email = Console.ReadLine();
+            Console.WriteLine(" enter your email : ");
+            string email = Console.ReadLine();
 
-                    Console.WriteLine(" enter the password : ");
-                    int password = int.Parse(Console.ReadLine());
+            Console.WriteLine(" enter the password : ");
+            int password = int.Parse(Console.ReadLine());
 
-                    for (int i = 0; i < adminRegistration.Count; i++)
+            for (int i = 0; i < adminRegistration.Count; i++)
+            {
+                if (adminRegistration[i].email == email && adminRegistration[i].password == password)
+                {
+                    do
                     {
-                        if (adminRegistration[i].email == email && adminRegistration[i].password == password)
+
+
+                        Console.WriteLine("\n Enter the char of operation you need :");
+                        Console.WriteLine("\n 1- Add New Book");
+                        Console.WriteLine("\n 2- Display All Books");
+                        Console.WriteLine("\n 3- Search for Book by Name");
+                        Console.WriteLine("\n 4- Edit the book ");
+                        Console.WriteLine("\n 5- Remove the book ");
+                        Console.WriteLine("\n 6- Reporting the data ");
+                        Console.WriteLine("\n 7- Save and Exit");
+
+                        int choice = int.Parse(Console.ReadLine());
+
+                        switch (choice)
                         {
-                            do
-                            {
+                            case 1:
+                                AddnNewBook();
+                                break;
+
+                            case 2:
+                                ViewAllBooks();
+                                break;
+
+                            case 3:
+                                SearchForBook();
+                                break;
+
+                            case 4:
+                                EditBookMenu();
+                                break;
+
+                            case 5:
+                                RemoveBook();
+                                break;
+
+                            case 6:
+                                Reporting();
+                                break;
+
+                            case 7:
+                                SaveBooksToFile();
+                                ExitFlag = true;
+                                break;
+
+                            default:
+                                Console.WriteLine("Sorry your choice was wrong");
+                                break;
+
+                        }
+
+                        Console.WriteLine("press enter key to continue");
+
+                        string cont = Console.ReadLine();
+
+                        Console.Clear();
+
+                    } while (ExitFlag != true);
+
+                }
 
 
-                                Console.WriteLine("\n Enter the char of operation you need :");
-                                Console.WriteLine("\n 1- Add New Book");
-                                Console.WriteLine("\n 2- Display All Books");
-                                Console.WriteLine("\n 3- Search for Book by Name");
-                                Console.WriteLine("\n 4- Edit the book ");
-                                Console.WriteLine("\n 5- Remove the book ");
-                                Console.WriteLine("\n 6- Reporting the data ");
-                                Console.WriteLine("\n 7- Save and Exit");
+                //Console.WriteLine(" Invalid login *** ");
 
-                                int choice = int.Parse(Console.ReadLine());
 
-                                switch (choice)
-                                {
-                                    case 1:
-                                        AddnNewBook();
-                                        break;
-
-                                    case 2:
-                                        ViewAllBooks();
-                                        break;
-
-                                    case 3:
-                                        SearchForBook();
-                                        break;
-
-                                    case 4:
-                                        EditBookMenu();
-                                        break;
-
-                                    case 5:
-                                        RemoveBook();
-                                        break;
-
-                                    case 6:
-                                        Reporting();
-                                        break;
-
-                                    case 7:
-                                        SaveBooksToFile();
-                                        ExitFlag = true;
-                                        break;
-
-                                    default:
-                                        Console.WriteLine("Sorry your choice was wrong");
-                                        break;
-
-                                }
-
-                                Console.WriteLine("press enter key to continue");
-
-                                string cont = Console.ReadLine();
-
-                                Console.Clear();
-
-                            } while (ExitFlag != true);
-                 
-                          }
-
-                       
-                            //Console.WriteLine(" Invalid login *** ");
-                        
-            
-                    }
+            }
             if (Auth != true)
             {
                 Console.WriteLine("Invalid login ");
@@ -339,124 +339,124 @@ namespace BasicLibrary
             ExitFlag = false;
         }
 
-            static void AddnNewBook()
-            {
+        static void AddnNewBook()
+        {
 
 
-                int id = Books.Count + 0;
+            int id = Books.Count + 0;
 
-                Console.WriteLine("Enter Book Name");
-                string name = Console.ReadLine();
+            Console.WriteLine("Enter Book Name");
+            string name = Console.ReadLine();
 
-                Console.WriteLine("Enter Book Author");
-                string author = Console.ReadLine();
+            Console.WriteLine("Enter Book Author");
+            string author = Console.ReadLine();
 
-                //Console.WriteLine("Enter Book ID");
-                //int ID = int.Parse(Console.ReadLine());
-
-
-                Console.WriteLine("Enter quantity");
-                int qun = int.Parse(Console.ReadLine());
+            //Console.WriteLine("Enter Book ID");
+            //int ID = int.Parse(Console.ReadLine());
 
 
+            Console.WriteLine("Enter quantity");
+            int qun = int.Parse(Console.ReadLine());
 
 
 
-                Books.Add((name, author, id, qun, 0));
-                Console.WriteLine("Book Added Succefully");
 
-            }
 
-            static void ViewAllBooks()
-            {
-                StringBuilder sb = new StringBuilder();
+            Books.Add((name, author, id, qun, 0));
+            Console.WriteLine("Book Added Succefully");
 
-                int BookNumber = 0;
+        }
 
-                for (int i = 0; i < Books.Count; i++)
-                {
-                    BookNumber = i + 1;
-                    sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
-                    sb.AppendLine();
-                    sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
-                    sb.AppendLine();
-                    sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
-                    sb.AppendLine();
-                    sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
-                    sb.AppendLine();
-                    sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].borrow);
-                    sb.AppendLine().AppendLine();
-                    Console.WriteLine(sb.ToString());
-                    sb.Clear();
+        static void ViewAllBooks()
+        {
+            StringBuilder sb = new StringBuilder();
 
-                }
-            }
-
-            static void SearchForBook()
-            {
-                Console.WriteLine("Enter the book name you want");
-                string name = Console.ReadLine();
-                bool flag = false;
-
-                for (int i = 0; i < Books.Count; i++)
-                {
-                    if (Books[i].BName == name)
-                    {
-                        Console.WriteLine("Book Author is : " + Books[i].BAuthor);
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag != true)
-                { Console.WriteLine("book not found"); }
-            }
-
-            static void RemoveBook()
-            {
-                ViewAllBooks();
-
-                Console.WriteLine("Choose the id of book you want to delete the book ");
-                int id = int.Parse(Console.ReadLine());
-
-                bool flag = false;
-
-                for (int i = 0; i < Books.Count; i++)
-                {
-                    if (Books[i].ID == id)
-                    {
-
-                        Books.Remove((Books[i].BName, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity, Books[i].borrow));
-
-                        Console.WriteLine("SUCCESSFULLY DELETE");
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag != true)
-
-                {
-                    Console.WriteLine("book not found");
-                }
-
-            }
-
-            static void Reporting()
-             {
-            List<string> nameBook = new List<string>();
-            List<string> author = new List<string>();
-            List<int> borrowBook = new List<int>();
-            List<int> quantity  = new List<int>();
+            int BookNumber = 0;
 
             for (int i = 0; i < Books.Count; i++)
             {
-                var( BName,  BAuthor,  ID,  Qunatity, borrow) = Books[i];
+                BookNumber = i + 1;
+                sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].Qunatity);
+                sb.AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].borrow);
+                sb.AppendLine().AppendLine();
+                Console.WriteLine(sb.ToString());
+                sb.Clear();
+
+            }
+        }
+
+        static void SearchForBook()
+        {
+            Console.WriteLine("Enter the book name you want");
+            string name = Console.ReadLine();
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].BName == name)
+                {
+                    Console.WriteLine("Book Author is : " + Books[i].BAuthor);
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+            { Console.WriteLine("book not found"); }
+        }
+
+        static void RemoveBook()
+        {
+            ViewAllBooks();
+
+            Console.WriteLine("Choose the id of book you want to delete the book ");
+            int id = int.Parse(Console.ReadLine());
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].ID == id)
+                {
+
+                    Books.Remove((Books[i].BName, Books[i].BAuthor, Books[i].ID, Books[i].Qunatity, Books[i].borrow));
+
+                    Console.WriteLine("SUCCESSFULLY DELETE");
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag != true)
+
+            {
+                Console.WriteLine("book not found");
+            }
+
+        }
+
+        static void Reporting()
+        {
+            List<string> nameBook = new List<string>();
+            List<string> author = new List<string>();
+            List<int> borrowBook = new List<int>();
+            List<int> quantity = new List<int>();
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                var (BName, BAuthor, ID, Qunatity, borrow) = Books[i];
                 nameBook.Add(BName);
                 author.Add(BAuthor);
                 borrowBook.Add(borrow);
                 quantity.Add(Qunatity);
-                
+
             }
 
             //total book is available 
@@ -466,7 +466,7 @@ namespace BasicLibrary
 
             //total book is borrowe it 
             int borrowtotal = borrowBook.Sum();
-            Console.WriteLine("the total of book is borrow it = " + borrowtotal );
+            Console.WriteLine("the total of book is borrow it = " + borrowtotal);
 
             Console.WriteLine(" ");
 
@@ -479,112 +479,112 @@ namespace BasicLibrary
             //less borrow 
             int IndexOflessBorrowed = borrowBook.IndexOf(borrowBook.Min());
             if (IndexOflessBorrowed > 0)
-            
+
                 Console.WriteLine($" the book less  borrow is  : {nameBook[IndexOflessBorrowed]}, number borrow is {borrowBook.Min()} ");
-            
-             
-            
 
-          
 
-           //
+
+
+
+
+            //
 
 
 
 
 
         }
-            //********************************************************************************************************************************************
+        //********************************************************************************************************************************************
 
 
 
 
 
-            //user menu with service's 
-            //*********************************************************************************************************************************************
-            static void UserMenu()
+        //user menu with service's 
+        //*********************************************************************************************************************************************
+        static void UserMenu()
+        {
+            bool ExitFlag = false;
+            bool Auth = false;
+            Console.WriteLine("***************** Login ********************");
+            Console.WriteLine(" ");
+
+            Console.WriteLine(" enter your email : ");
+            string email = Console.ReadLine();
+
+            Console.WriteLine(" enter the password : ");
+            int password = int.Parse(Console.ReadLine());
+
+
+
+            for (int i = 0; i < userReistrtion.Count; i++)
             {
-                bool ExitFlag = false;
-               bool Auth = false;
-                Console.WriteLine("***************** Login ********************");
-                Console.WriteLine(" ");
 
-                Console.WriteLine(" enter your email : ");
-                string email = Console.ReadLine();
-
-                Console.WriteLine(" enter the password : ");
-                int password = int.Parse(Console.ReadLine());
-
-
-
-                for (int i = 0; i < userReistrtion.Count; i++)
+                if (userReistrtion[i].email == email && userReistrtion[i].password == password)
                 {
+                    Auth = true;
+                    userId = userReistrtion[i].Aid;
+                    Console.WriteLine("user id is :" + userId);
 
-                    if (userReistrtion[i].email == email && userReistrtion[i].password == password)
+                    do
                     {
-                        Auth = true;
-                        userId = userReistrtion[i].Aid;
-                        Console.WriteLine("user id is :" + userId);
 
-                        do
+                        Console.WriteLine("\n Enter the char of operation you need :");
+                        //Console.WriteLine("\n A-Search for Book by Name");
+                        Console.WriteLine("\n 1- Borrow the book ");
+                        Console.WriteLine("\n 2- return the book ");
+                        Console.WriteLine("\n 3- logout ");
+
+                        int choice = int.Parse(Console.ReadLine());
+
+                        switch (choice)
                         {
 
-                            Console.WriteLine("\n Enter the char of operation you need :");
-                            //Console.WriteLine("\n A-Search for Book by Name");
-                            Console.WriteLine("\n 1- Borrow the book ");
-                            Console.WriteLine("\n 2- return the book ");
-                            Console.WriteLine("\n 3- logout ");
-
-                            int choice = int.Parse(Console.ReadLine());
-
-                            switch (choice)
-                            {
-
-                                case 1:
+                            case 1:
 
 
                                 Console.WriteLine("user id is :" + userId);
                                 ViewAllBooksUser();
                                 BarrowBooks();
-                                    break;
+                                break;
 
-                                case 2:
+                            case 2:
                                 Console.WriteLine("user id is :" + userId);
                                 ReturnBook();
-                                    break;
+                                break;
 
-                                case 3:
-                                    SaveBooksToFile();
-                                    SaveborrowToFile();
-                                    userId = -1;
-                                    ExitFlag = true;
+                            case 3:
+                                SaveBooksToFile();
+                                SaveborrowToFile();
+                                userId = -1;
+                                ExitFlag = true;
 
-                                    break;
+                                break;
 
-                               default:
-                                    Console.WriteLine("Sorry your choice was wrong");
-                                    break;
+                            default:
+                                Console.WriteLine("Sorry your choice was wrong");
+                                break;
 
 
 
-                            }
+                        }
 
-                            Console.WriteLine("press enter key to continue");
-                            string cont = Console.ReadLine();
+                        Console.WriteLine("press enter key to continue");
+                        string cont = Console.ReadLine();
 
-                            Console.Clear();
+                        Console.Clear();
 
-                        } while (ExitFlag != true);
-                    }
-
-                    //else
-
-                    // {
-                    //  Console.WriteLine("Invalid login ");
-                         
-                    //}
-
+                    } while (ExitFlag != true);
                 }
+
+                //else
+
+                // {
+                //  Console.WriteLine("Invalid login ");
+
+                //}
+
+            }
 
             if (Auth != true)
             {
@@ -593,8 +593,8 @@ namespace BasicLibrary
 
             ExitFlag = false;
 
-            }
-            static void ViewAllBooksUser()
+        }
+        static void ViewAllBooksUser()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -614,55 +614,52 @@ namespace BasicLibrary
 
             }
         }
-             static void BarrowBooks()
+        static void BarrowBooks()
+        {
+
+            Console.WriteLine("Enter the book name you want");
+            string name = Console.ReadLine();
+
+
+            bool flag = false;
+
+            for (int i = 0; i < Books.Count; i++)
             {
-
-                Console.WriteLine("Enter the book name you want");
-                string name = Console.ReadLine();
-
-            
-                bool flag = false;
-
-                for (int i = 0; i < Books.Count; i++)
+                if (Books[i].BName == name)
                 {
-                    if (Books[i].BName == name)
+                    Console.WriteLine("Book Quantity is : " + Books[i].Qunatity);
+
+                    if (Books[i].Qunatity >= 0)
                     {
-                        Console.WriteLine("Book Quantity is : " + Books[i].Qunatity);
-
-                        if (Books[i].Qunatity != 0)
-                        {
-                            Console.WriteLine("How many quantity you want : ");
-                            int quantity = int.Parse(Console.ReadLine());
-                            int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
-                            int borrow = Books[i].borrow + 1;
-                            Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
+                        Console.WriteLine("How many quantity you want : ");
+                        int quantity = int.Parse(Console.ReadLine());
+                        int NewQunatityAfterTakeIt = Books[i].Qunatity - quantity;
+                        int borrow = Books[i].borrow + 1;
+                        Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
                         // recomand(Books[i].BAuthor);
-                          
 
 
-                        }
+
+
                         else
                         {
 
                             Console.WriteLine("IS NOT AVAILABIL ");
                         }
                         flag = true;
+
                         break;
                     }
                 }
                 //seggestion ... 
 
-            for (int i = 0; i < Books.Count; i++)
-            {
-    
-            }
 
-            if (flag != true)
+                if (flag != true)
                 { Console.WriteLine("book not found"); }
 
             }
 
-             static void ReturnBook()
+            static void ReturnBook()
             {
 
                 Console.WriteLine("Enter the book name you want");
@@ -686,10 +683,10 @@ namespace BasicLibrary
                             Books[i] = (Books[i].BName, Books[i].BAuthor, Books[i].ID, NewQunatityAfterTakeIt, borrow);
 
                             Console.WriteLine("successfuly added ");
-                        int bookid = Books[i].ID;
-                        int returnss = quantity;
-                        borrows.Add((userId, bookid, returnss));
-                        flag = true;
+                            int bookid = Books[i].ID;
+                            int returnss = quantity;
+                            borrows.Add((userId, bookid, returnss));
+                            flag = true;
                             break;
                         }
                     }
@@ -698,29 +695,29 @@ namespace BasicLibrary
             }
 
             //recomand for the author similarity 
-        //    static void recomand(string author)
-        //{
-        //    for (int i = 0; i < Books.Count; i++)
-        //    {
-        //        if (Books[i].BAuthor == author)
-        //        {
-        //            Console.WriteLine("you can choose this book : ");
-        //            Console.WriteLine($"the book : {Books[i].BName}");
-        //        }
+            //    static void recomand(string author)
+            //{
+            //    for (int i = 0; i < Books.Count; i++)
+            //    {
+            //        if (Books[i].BAuthor == author)
+            //        {
+            //            Console.WriteLine("you can choose this book : ");
+            //            Console.WriteLine($"the book : {Books[i].BName}");
+            //        }
 
-        //    }
-
-
-        //}
-
-        //***********************************************************************************************************************************************
+            //    }
 
 
+            //}
+
+            //***********************************************************************************************************************************************
 
 
-        //edits books
-        //will added all in editbookmenu .....
-        //**********************************************************************************************************************************************
+
+
+            //edits books
+            //will added all in editbookmenu .....
+            //**********************************************************************************************************************************************
             static void EditBookMenu()
             {
 
@@ -882,7 +879,7 @@ namespace BasicLibrary
 
             //***********************************************************************************************************************************************
 
-            
+
 
 
 
@@ -906,7 +903,7 @@ namespace BasicLibrary
                                 }
                             }
                         }
-                      //  Console.WriteLine("Books loaded from file successfully.");
+                        //  Console.WriteLine("Books loaded from file successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -932,7 +929,7 @@ namespace BasicLibrary
                                 }
                             }
                         }
-                       // Console.WriteLine("admin loaded from file successfully.");
+                        // Console.WriteLine("admin loaded from file successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -958,7 +955,7 @@ namespace BasicLibrary
                                 }
                             }
                         }
-                       // Console.WriteLine("user loaded from file successfully.");
+                        // Console.WriteLine("user loaded from file successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -977,7 +974,7 @@ namespace BasicLibrary
                             writer.WriteLine($"{book.BName}|{book.BAuthor}|{book.ID}|{book.Qunatity}|{book.borrow}");
                         }
                     }
-                   // Console.WriteLine("Books saved to file successfully.");
+                    // Console.WriteLine("Books saved to file successfully.");
                 }
                 catch (Exception ex)
                 {
@@ -1020,68 +1017,69 @@ namespace BasicLibrary
 
                         }
                     }
-                   // Console.WriteLine("the data user saved to file successfully.");
+                    // Console.WriteLine("the data user saved to file successfully.");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error saving to file: {ex.Message}");
                 }
             }
-              static void SaveborrowToFile()
-        {
-            try
+            static void SaveborrowToFile()
             {
-                HashSet<(int userid, int bookid,int returnbook)> uniqe =
-                    new HashSet<(int, int,int)>(borrows);
+                try
+                {
+                    HashSet<(int userid, int bookid, int returnbook)> uniqe =
+                        new HashSet<(int, int, int)>(borrows);
 
-                using (StreamWriter writer = new StreamWriter(fileBorrowBook))
-                {
-                    foreach (var borr in uniqe)
+                    using (StreamWriter writer = new StreamWriter(fileBorrowBook))
                     {
-                        writer.WriteLine($"{borr.userid}|{borr.bookid}|{borr.returnbook}");
-                    }
-                }
-                //Console.WriteLine("the data admin saved to file successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving to file: {ex.Message}");
-            }
-        }
-        static void LoadborrowFromFile()
-        {
-            try
-            {
-                if (File.Exists(fileBorrowBook))
-                {
-                    using (StreamReader reader = new StreamReader(fileBorrowBook))
-                    {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
+                        foreach (var borr in uniqe)
                         {
-                            var parts = line.Split('|');
-                            if (parts.Length == 3)
-                            {
-                                borrows.Add(( int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2])));
-                            }
+                            writer.WriteLine($"{borr.userid}|{borr.bookid}|{borr.returnbook}");
                         }
                     }
-                    //  Console.WriteLine("Books loaded from file successfully.");
+                    //Console.WriteLine("the data admin saved to file successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error saving to file: {ex.Message}");
                 }
             }
-            catch (Exception ex)
+            static void LoadborrowFromFile()
             {
-                Console.WriteLine($"Error loading from file: {ex.Message}");
+                try
+                {
+                    if (File.Exists(fileBorrowBook))
+                    {
+                        using (StreamReader reader = new StreamReader(fileBorrowBook))
+                        {
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                var parts = line.Split('|');
+                                if (parts.Length == 3)
+                                {
+                                    borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2])));
+                                }
+                            }
+                        }
+                        //  Console.WriteLine("Books loaded from file successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error loading from file: {ex.Message}");
+                }
             }
+            // **********************************************************************************************************************************************
+
+
+
+
+
+
+
+
         }
-        // **********************************************************************************************************************************************
-
-
-
-
-
-
-
-
     }
-    }
+}

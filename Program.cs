@@ -665,7 +665,8 @@ namespace BasicLibrary
         }
         static void BarrowBooks()
         {
-            int newId = 0;
+            //List<int> newid = new List<int>();
+           // int newId = 0;
             ViewAllBooksUser();
             Console.WriteLine("Enter the book id ");
             int enterId= int.Parse(Console.ReadLine());
@@ -673,19 +674,27 @@ namespace BasicLibrary
             bool flag = false;
 
             bool auth = false;
+           
 
             for (int i = 0; i < Books.Count; i++)
             {
-                if (Books[i].ID == enterId)
+                if (Books[i].ID == enterId )
                 {
-                  
+
+                    //learn some new how to show true and false by ANY()
+                    //It returns true if at least one element matches the condition, and false otherwise
+                    bool borrowbefor = borrows.Any(b => b.userid == userId && b.bookid == enterId & !b.isreturn);
+                    if (borrowbefor)
+                    {
+                        Console.WriteLine("You have already borrowed this book and it has not yet been returned");
+                    }
 
                     if (Books[i].copies > 0 && Books[i].copies < Books[i].Borrowedcopies )
                     {
                         auth = true;
-                        
-                       
 
+
+                        //newid.Add((Books[i].ID));
                         int borrow = Books[i].Borrowedcopies + 1;
 
                         Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, borrow, Books[i].price, Books[i].category, Books[i].borrowperiod);
@@ -1023,7 +1032,7 @@ namespace BasicLibrary
                             string line;
                             while ((line = reader.ReadLine()) != null)
                             {
-                                var parts = line.Split('|');
+                                var parts = line.Split(' ', '|' ,' ');
                                 if (parts.Length == 4)
                                 {
                                     userReistrtion.Add((int.Parse(parts[0]), parts[1], parts[2], parts[3]));

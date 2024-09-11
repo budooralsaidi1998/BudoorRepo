@@ -21,7 +21,7 @@ namespace BasicLibrary
        
         static List<(int Aid,string username ,string email, int password)> userReistrtion = new List<(int Aid, string username, string email, int password)>();
        
-        static List<(int userid, int bookid, DateTime borrowdate , DateTime returndate, DateTime acaualreturndate , int rating,bool isreturn)> borrows = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, DateTime acaualreturndate, int rating, bool isreturn)>();
+        static List<(int userid, int bookid, DateTime borrowdate , DateTime returndate, string acaualreturndate , string rating,bool isreturn)> borrows = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)>();
        
         static List<(string username, string password)> master = new List<(string username, string password)>();
 
@@ -278,6 +278,7 @@ namespace BasicLibrary
             {
                 if (adminRegistration[i].email == email && adminRegistration[i].password == password)
                 {
+                    Auth = true;
                     do
                     {
 
@@ -347,7 +348,7 @@ namespace BasicLibrary
             }
             if (Auth != true)
             {
-                Console.WriteLine("Invalid login ");
+                Console.WriteLine(" Invalid login ");
             }
 
 
@@ -406,19 +407,20 @@ namespace BasicLibrary
                 sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
                 sb.AppendLine();
 
-                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].copies);
+                sb.Append("Book ").Append(BookNumber).Append(" Copies available : ").Append(Books[i].copies);
                 sb.AppendLine();
 
                 sb.Append("Book ").Append(BookNumber).Append(" borrwed copies : ").Append(Books[i].Borrowedcopies);
-                sb.AppendLine().AppendLine();
+                sb.AppendLine();
 
                 sb.Append("Book ").Append(BookNumber).Append(" price : ").Append(Books[i].price);
-                sb.AppendLine().AppendLine();
+                sb.AppendLine();
 
                 sb.Append("Book ").Append(BookNumber).Append(" category : ").Append(Books[i].category);
-                sb.AppendLine().AppendLine();
+                sb.AppendLine();
 
                 sb.Append("Book ").Append(BookNumber).Append(" borrow period  : ").Append(Books[i].borrowperiod);
+                sb.AppendLine().AppendLine();
                 sb.AppendLine().AppendLine();
 
                 Console.WriteLine(sb.ToString());
@@ -639,22 +641,24 @@ namespace BasicLibrary
             for (int i = 0; i < Books.Count; i++)
             {
                 BookNumber = i + 1;
+                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
+                sb.AppendLine();
+
                 sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
                 sb.AppendLine();
+
                 sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
                 sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" Quantity : ").Append(Books[i].copies);
+
+                sb.Append("Book ").Append(BookNumber).Append(" Copies available : ").Append(Books[i].copies);
                 sb.AppendLine();
-                sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].price);
-                sb.AppendLine().AppendLine();
 
-                sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].category);
-                sb.AppendLine().AppendLine();
+                sb.Append("Book ").Append(BookNumber).Append(" price : ").Append(Books[i].price);
+                sb.AppendLine();
 
-                sb.Append("Book ").Append(BookNumber).Append(" borrow : ").Append(Books[i].borrowperiod);
+                sb.Append("Book ").Append(BookNumber).Append(" category : ").Append(Books[i].category);
+                sb.AppendLine();
                 sb.AppendLine().AppendLine();
-
-                Console.WriteLine(sb.ToString());
                 sb.Clear();
 
             }
@@ -662,60 +666,73 @@ namespace BasicLibrary
         static void BarrowBooks()
         {
 
-            Console.WriteLine("Enter the book name you want");
-            string name = Console.ReadLine();
 
+            int newId = 0;
+            Console.WriteLine("Enter the book id ");
+            int enterId= int.Parse(Console.ReadLine());
 
             bool flag = false;
 
+            bool auth = false;
+
             for (int i = 0; i < Books.Count; i++)
             {
-                if (Books[i].BName == name)
+                if (Books[i].ID == enterId)
                 {
-                    Console.WriteLine("Book Quantity is : " + Books[i].copies);
+                  
 
-                    if (Books[i].copies >= 0)
+                    if (Books[i].copies > 0 && Books[i].copies != Books[i].Borrowedcopies )
                     {
+                        auth = true;
                         
-                        Console.WriteLine("How many quantity you want : ");
-                        int quantity = int.Parse(Console.ReadLine());
-
-                        int NewQunatityAfterTakeIt = Books[i].copies - quantity;
+                       
 
                         int borrow = Books[i].Borrowedcopies + 1;
 
-                        Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, NewQunatityAfterTakeIt, borrow, Books[i].price, Books[i].category, Books[i].borrowperiod);
+                        Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, borrow, Books[i].price, Books[i].category, Books[i].borrowperiod);
                         int Bookid = Books[i].ID;
+
                         DateTime dateBorrow = DateTime.Now;
                         //to sum date with int 
-                        System.TimeSpan timeSpan = new System.TimeSpan(Books[i].borrowperiod);
-                        DateTime returndate = dateBorrow + timeSpan;
+      
+                        DateTime returndate = dateBorrow.AddDays(Books[i].borrowperiod);
 
-                        borrows.Add((userId, Bookid, dateBorrow, returndate, returndate, -1, false));
+                        borrows.Add((userId, Bookid, dateBorrow, returndate,"N/A" ,"N/A", false));
 
 
                         // recomand(Books[i].BAuthor);
                     }
 
-
-
-                    else
+                    if (auth != true)
                     {
-
-                        Console.WriteLine("IS NOT AVAILABIL ");
+                        Console.WriteLine(" No copies");
                     }
-                        flag = true;
 
-                        break;
-                    }
+
+                    flag = true;
+                    //break;
                 }
-                //seggestion ... 
 
 
-                if (flag != true)
-                { Console.WriteLine("book not found"); }
+                //else
+                //{
+
+                //    Console.WriteLine("IS NOT AVAILABIL ");
+                //}
+                
 
             }
+
+            if (flag != true)
+            { Console.WriteLine("book not found"); }
+
+
+            //seggestion ... 
+
+            // flag = true;
+
+
+        }
 
             static void ReturnBook()
             {
@@ -1008,7 +1025,7 @@ namespace BasicLibrary
                             while ((line = reader.ReadLine()) != null)
                             {
                                 var parts = line.Split('|');
-                                if (parts.Length == 3)
+                                if (parts.Length == 4)
                                 {
                                     userReistrtion.Add((int.Parse(parts[0]), parts[1], parts[2], int.Parse(parts[3])));
                                 }
@@ -1087,8 +1104,8 @@ namespace BasicLibrary
             {
                 try
                 {
-                    HashSet<(int userid, int bookid, DateTime borrowdate, DateTime returndate, DateTime acaualreturndate, int rating, bool isreturn)> uniqe =
-                        new HashSet<(int , int , DateTime , DateTime , DateTime , int , bool )>(borrows);
+                    HashSet<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string  acaualreturndate, string rating, bool isreturn)> uniqe =
+                        new HashSet<(int , int , DateTime , DateTime , string , string, bool )>(borrows);
 
                     using (StreamWriter writer = new StreamWriter(fileBorrowBook))
                     {
@@ -1118,7 +1135,7 @@ namespace BasicLibrary
                                 var parts = line.Split('|');
                                 if (parts.Length == 7)
                                 {
-                                    borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]),DateTime.Parse(parts[2]), DateTime.Parse(parts[3]), DateTime.Parse(parts[4]), int.Parse(parts[5]),bool.Parse( parts[6])));
+                                    borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]),DateTime.Parse(parts[2]), DateTime.Parse(parts[3]), parts[4],parts[5],bool.Parse( parts[6])));
                                 }
                             }
                         }

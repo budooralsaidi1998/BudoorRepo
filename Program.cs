@@ -27,12 +27,11 @@ namespace BasicLibrary
 
         //files
         //******************************************************************************************************************************************
-        static string filePath = "C:\\projects\\files\\book.txt";
-        static string fileAdminRegistration = "C:\\projects\\files\\AdminRegistarion.txt";
-        static string fileUserRegistration = "C:\\projects\\files\\UserRegastratin.txt";
-        static string fileBorrowBook = "C:\\projects\\files\\BorrowBooks.txt";
-
-        static string filemaster = "C:\\projects\\files\\master.txt";
+        static string filePath = "C:\\Users\\budoo\\Desktop\\files\\BooksFile.txt";
+        static string fileAdminRegistration = "C:\\Users\\budoo\\Desktop\\files\\AdminsFile.txt";
+        static string fileUserRegistration = "C:\\Users\\budoo\\Desktop\\files\\UsersFile.txt";
+        static string fileBorrowBook = "C:\\Users\\budoo\\Desktop\\files\\BorrowingFile.txt";
+        static string filemaster = "C:\\Users\\budoo\\Desktop\\files\\master.txt";
         //******************************************************************************************************************************************
 
         //Test Check Out
@@ -666,9 +665,8 @@ namespace BasicLibrary
         }
         static void BarrowBooks()
         {
-
-
             int newId = 0;
+            ViewAllBooksUser();
             Console.WriteLine("Enter the book id ");
             int enterId= int.Parse(Console.ReadLine());
 
@@ -682,7 +680,7 @@ namespace BasicLibrary
                 {
                   
 
-                    if (Books[i].copies > 0 && Books[i].copies != Books[i].Borrowedcopies )
+                    if (Books[i].copies > 0 && Books[i].copies < Books[i].Borrowedcopies )
                     {
                         auth = true;
                         
@@ -706,7 +704,7 @@ namespace BasicLibrary
 
                     if (auth != true)
                     {
-                        Console.WriteLine(" No copies");
+                        Console.WriteLine(" Can't borrow ");
                     }
 
 

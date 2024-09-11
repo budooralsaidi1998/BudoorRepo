@@ -15,11 +15,11 @@ namespace BasicLibrary
         //global structure 
         static int userId = -1;
        
-        static List<(int ID, string BName, string BAuthor, int copies,int Borrowedcopies,int price,string category,int borrowperiod )> Books = new List<(int ID, string BName, string BAuthor, int copies, int Borrowedcopies, int price, string category, int borrowperiod)>();
+        static List<(int ID, string BName, string BAuthor, int copies,int Borrowedcopies,decimal price,string category,int borrowperiod )> Books = new List<(int ID, string BName, string BAuthor, int copies, int Borrowedcopies, decimal price, string category, int borrowperiod)>();
         
-        static List<(int adminid,string adminname ,string email, int password)> adminRegistration = new List<(int adminid, string adminname, string email, int password)>();
+        static List<(int adminid,string adminname ,string email, string password)> adminRegistration = new List<(int adminid, string adminname, string email, string password)>();
        
-        static List<(int Aid,string username ,string email, int password)> userReistrtion = new List<(int Aid, string username, string email, int password)>();
+        static List<(int Aid,string username ,string email, string password)> userReistrtion = new List<(int Aid, string username, string email, string password)>();
        
         static List<(int userid, int bookid, DateTime borrowdate , DateTime returndate, string acaualreturndate , string rating,bool isreturn)> borrows = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)>();
        
@@ -225,7 +225,7 @@ namespace BasicLibrary
             string email = Console.ReadLine();
 
             Console.WriteLine(" enter the passowrd : ");
-            int password = int.Parse(Console.ReadLine());
+            string password = Console.ReadLine();
 
             adminRegistration.Add((id,name,email, password));
 
@@ -243,7 +243,7 @@ namespace BasicLibrary
             string email = Console.ReadLine();
 
             Console.WriteLine(" enter the passowrd : ");
-            int password = int.Parse(Console.ReadLine());
+            string password = Console.ReadLine();
 
             userReistrtion.Add((userid,name , email, password));
 
@@ -272,7 +272,7 @@ namespace BasicLibrary
             string email = Console.ReadLine();
 
             Console.WriteLine(" enter the password : ");
-            int password = int.Parse(Console.ReadLine());
+            string password = Console.ReadLine();
 
             for (int i = 0; i < adminRegistration.Count; i++)
             {
@@ -551,7 +551,7 @@ namespace BasicLibrary
             string email = Console.ReadLine();
 
             Console.WriteLine(" enter the password : ");
-            int password = int.Parse(Console.ReadLine());
+            string password = Console.ReadLine();
 
 
 
@@ -974,7 +974,7 @@ namespace BasicLibrary
                                 var parts = line.Split('|');
                                 if (parts.Length == 8)
                                 {
-                                    Books.Add((int.Parse(parts[0]),parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]),parts[6], int.Parse(parts[7])));
+                                    Books.Add((int.Parse(parts[0]),parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), decimal.Parse(parts[5]),parts[6], int.Parse(parts[7])));
                                 }
                             }
                         }
@@ -1000,7 +1000,7 @@ namespace BasicLibrary
                                 var parts = line.Split('|');
                                 if (parts.Length == 4)
                                 {
-                                    adminRegistration.Add((int.Parse(parts[0]), parts[1], parts[2],int.Parse(parts[3])));
+                                    adminRegistration.Add((int.Parse(parts[0]), parts[1], parts[2],parts[3]));
                                 }
                             }
                         }
@@ -1026,7 +1026,7 @@ namespace BasicLibrary
                                 var parts = line.Split('|');
                                 if (parts.Length == 4)
                                 {
-                                    userReistrtion.Add((int.Parse(parts[0]), parts[1], parts[2], int.Parse(parts[3])));
+                                    userReistrtion.Add((int.Parse(parts[0]), parts[1], parts[2], parts[3]));
                                 }
                             }
                         }
@@ -1060,8 +1060,8 @@ namespace BasicLibrary
             {
                 try
                 {
-                    HashSet<(int id,string username,string email, int password)> uniqe =
-                        new HashSet<(int, string,string, int)>(adminRegistration);
+                    HashSet<(int id,string username,string email, string password)> uniqe =
+                        new HashSet<(int, string,string, string)>(adminRegistration);
 
                     using (StreamWriter writer = new StreamWriter(fileAdminRegistration))
                     {
@@ -1081,8 +1081,8 @@ namespace BasicLibrary
             {
                 try
                 {
-                    HashSet<(int Aid,string username, string email, int password)> uniqe =
-                         new HashSet<(int, string , string, int)>(userReistrtion);
+                    HashSet<(int Aid,string username, string email, string password)> uniqe =
+                         new HashSet<(int, string , string, string)>(userReistrtion);
 
                     using (StreamWriter writer = new StreamWriter(fileUserRegistration))
                     {

@@ -31,6 +31,7 @@ namespace BasicLibrary
         static string fileAdminRegistration = "C:\\projects\\files\\AdminRegistarion.txt";
         static string fileUserRegistration = "C:\\projects\\files\\UserRegastratin.txt";
         static string fileBorrowBook = "C:\\projects\\files\\BorrowBooks.txt";
+
         static string filemaster = "C:\\projects\\files\\master.txt";
         //******************************************************************************************************************************************
 

@@ -640,11 +640,14 @@ namespace BasicLibrary
 
                        // Console.WriteLine("user id is :" + userId);
                         BarrowBooks();
+                        SaveborrowToFile();
                         break;
 
                     case 2:
                        // Console.WriteLine("user id is :" + userId);
+
                         ReturnBook();
+                        SaveborrowToFile();
                         break;
 
                     case 3:
@@ -789,71 +792,8 @@ namespace BasicLibrary
         //    }
         //}
 
-        static void BarrowBooks()
-        {
-            Console.Clear();
-
-            // Define column widths for neat alignment
-            int idWidth = 10;
-            int nameWidth = 30;
-            int authorWidth = 20;
-            int copiesWidth = 20;
-            int borrowedWidth = 20;
-            int priceWidth = 10;
-            int categoryWidth = 15;
-            int periodWidth = 15;
-
-            // Header
-            //padright = add colums with width 
-            Console.WriteLine($"{"BookID".PadRight(idWidth)}{"Name".PadRight(nameWidth)}{"Author".PadRight(authorWidth)}{"Available Copies".PadRight(copiesWidth)}{"Borrowed Copies".PadRight(borrowedWidth)}{"Price".PadRight(priceWidth)}{"Category".PadRight(categoryWidth)}{"Borrow Period".PadRight(periodWidth)}");
-            Console.WriteLine(new string('-', idWidth + nameWidth + authorWidth + copiesWidth + borrowedWidth + priceWidth + categoryWidth + periodWidth));
-
-            foreach (var book in Books)
-            {
-                // Check if the user has borrowed this book before and it has not yet been returned
-                bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == book.ID && !b.isreturn);
-
-                if (!borrowedBefore)
-                {
-                    // Display book details in tabular format
-                    Console.WriteLine($"{book.ID.ToString().PadRight(idWidth)}{book.BName.PadRight(nameWidth)}{book.BAuthor.PadRight(authorWidth)}{book.copies.ToString().PadRight(copiesWidth)}{book.Borrowedcopies.ToString().PadRight(borrowedWidth)}{book.price.ToString("C").PadRight(priceWidth)}{book.category.PadRight(categoryWidth)}{book.borrowperiod.ToString().PadRight(periodWidth)}");
-                }
-            }
-            //suggestion for the most book is borrowed 
-
-            Console.WriteLine("\n\nEnter the book ID you want to borrow:");
-            int enterId = int.Parse(Console.ReadLine());
-
-            bool bookFound = false;
-            bool canBorrow = false;
-
-            for (int i = 0; i < Books.Count; i++)
-            {
-                if (Books[i].ID == enterId)
-                {
-                    bookFound = true;
-                    bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == enterId && !b.isreturn);
-
-                    if (borrowedBefore)
-                    {
-                        Console.WriteLine("You have already borrowed this book and it has not yet been returned.");
-                    }
-                    else if (Books[i].copies > Books[i].Borrowedcopies)
-                    {
-                        canBorrow = true;
-
-                        // Update the book's borrowed copies
-                        Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies + 1, Books[i].price, Books[i].category, Books[i].borrowperiod);
-
-                        // Add to borrows list
-                        DateTime dateBorrow = DateTime.Now;
-                        DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod);
-
-                        borrows.Add((userId, enterId, dateBorrow, returnDate, "N/A", "N/A", false));
-
-                        Console.WriteLine("Book borrowed successfully!");
-                        static void BarrowBooks()
-                    {
+          static void BarrowBooks()
+          {
                         Console.Clear();
     
                         // Define column widths for neat alignment
@@ -865,8 +805,10 @@ namespace BasicLibrary
                         int priceWidth = 10;
                         int categoryWidth = 15;
                         int periodWidth = 15;
-    
-                        // Header
+
+            // Header
+            Console.WriteLine("\n\n              ***** THE BOOK IS AVAILABLE TO BORROW IT ***** ");
+            Console.WriteLine(" ");
                         Console.WriteLine($"{"Book ID".PadRight(idWidth)}{"Name".PadRight(nameWidth)}{"Author".PadRight(authorWidth)}{"Available Copies".PadRight(copiesWidth)}{"Borrowed Copies".PadRight(borrowedWidth)}{"Price".PadRight(priceWidth)}{"Category".PadRight(categoryWidth)}{"Borrow Period".PadRight(periodWidth)}");
                         Console.WriteLine(new string('-', idWidth + nameWidth + authorWidth + copiesWidth + borrowedWidth + priceWidth + categoryWidth + periodWidth));
 
@@ -878,7 +820,7 @@ namespace BasicLibrary
                             if (!borrowedBefore)
                             {
                                 // Display book details in tabular format
-                                Console.WriteLine($"{book.ID.ToString().PadRight(idWidth)}{book.BName.PadRight(nameWidth)}{book.BAuthor.PadRight(authorWidth)}{(book.copies - book.Borrowedcopies).ToString().PadRight(copiesWidth)}{book.Borrowedcopies.ToString().PadRight(borrowedWidth)}{book.price.ToString("C").PadRight(priceWidth)}{book.category.PadRight(categoryWidth)}{book.borrowperiod.ToString().PadRight(periodWidth)}");
+                                Console.WriteLine($"{book.ID.ToString().PadRight(idWidth)}{book.BName.PadRight(nameWidth)}{book.BAuthor.PadRight(authorWidth)}{book.copies.ToString().PadRight(copiesWidth)}{book.Borrowedcopies.ToString().PadRight(borrowedWidth)}{book.price.ToString("C").PadRight(priceWidth)}{book.category.PadRight(categoryWidth)}{book.borrowperiod.ToString().PadRight(periodWidth)}");
                             }
                         }
 
@@ -907,8 +849,8 @@ namespace BasicLibrary
                                                 Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies + 1, Books[i].price, Books[i].category, Books[i].borrowperiod);
                 
                                                 // Add to borrows list
-                                                DateTime dateBorrow = DateTime.Now;
-                                                DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod);
+                                                DateTime dateBorrow = DateTime.Now.Date;
+                                                DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod).Date;
                 
                                                 borrows.Add((userId, enterId, dateBorrow, returnDate, "N/A", "N/A", false));
                 
@@ -916,7 +858,7 @@ namespace BasicLibrary
                                         
                                                 //suggstion for the author similriaty 
 
-                                                Console.WriteLine("\nOther books by the same author:");
+                                                Console.WriteLine("\n **** Other books Can borrow by the same author if you want : ****");
                                         // to filter elements from the Books collection
                                         //only returns the elements that satisfy this condition.
                                         //his part checks if the current book (b) has the same author as the book that was just borrowed
@@ -951,20 +893,7 @@ namespace BasicLibrary
                     }
 
 
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Cannot borrow this book as there are no available copies.");
-                                        }
-                                        break;
-                                    }
-                                }
-
-            if (!bookFound)
-            {
-                Console.WriteLine("Book not found.");
-            }
-        }
+                                        
 
 
         static void ReturnBook()
@@ -1369,7 +1298,7 @@ namespace BasicLibrary
                             var parts = line.Split(" | ");
                             if (parts.Length == 7)
                             {
-                                borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]), DateTime.Parse(parts[2]), DateTime.Parse(parts[3]), parts[4], parts[5], bool.Parse(parts[6])));
+                                borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]), DateTime.Parse(parts[2]).Date, DateTime.Parse(parts[3]).Date, parts[4], parts[5], bool.Parse(parts[6])));
                             }
                         }
                     }

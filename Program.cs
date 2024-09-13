@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BasicLibrary
@@ -40,6 +42,7 @@ namespace BasicLibrary
         static void Main(string[] args)
         {
             // loadeded file  
+            Console.Clear();
             Master();
             LoadBooksFromFile();
             LoadAdminFromFile();
@@ -63,81 +66,105 @@ namespace BasicLibrary
                 {
 
                     case 1:
+                        bool IsLogin = false;
 
-                        Console.Clear();
-                     bool flag = false; 
-                        Console.WriteLine(" ");
-                        Console.WriteLine("***************** Login admin  ********************");
-                        Console.WriteLine(" ");
-
-                        Console.WriteLine(" enter your email : ");
-                        string emailadmin = Console.ReadLine();
-
-                        Console.WriteLine(" enter the password : ");
-                        string passwordadmin = Console.ReadLine();
-
-
-                        for (int i = 0; i < adminRegistration.Count; i++)
+                        while (!IsLogin)
                         {
-                            if (adminRegistration[i].email == emailadmin && adminRegistration[i].password == passwordadmin)
+                            Console.Clear();
+                            bool flag = false;
+                            Console.WriteLine(" ");
+                            Console.WriteLine("***************** Login admin  ********************");
+                            Console.WriteLine(" ");
+
+                            Console.WriteLine(" enter your email : ");
+                            string emailadmin = Console.ReadLine();
+
+                            Console.WriteLine(" enter the password : ");
+                            string passwordadmin = Console.ReadLine();
+
+
+                            for (int i = 0; i < adminRegistration.Count; i++)
                             {
-                                flag = true;
-                                
-                                adminId = adminRegistration[i].adminid;
-                                
-                                AdminMenu();
+                                if (adminRegistration[i].email == emailadmin && adminRegistration[i].password == passwordadmin)
+                                {
+                                    flag = true;
+
+                                    adminId = adminRegistration[i].adminid;
+
+                                    AdminMenu();
+                                    IsLogin = true;
+                                    break;
+                                }
+
+
                             }
 
-                            //else
-                            //{
-                            //    Console.WriteLine(" ");
-                            //    Console.WriteLine("*********** Invalid login ***********");
-                            //    break;
-                            //    Console.WriteLine("press enter key ");
-                            //    Console.ReadKey();
-                            //}
+                            if (flag != true)
+                            {
+                                string ask;
+                                Console.WriteLine("*********** Invalid login ***********");
+
+                                Console.WriteLine("Do you want login again ? yes or no  ");
+                                ask = Console.ReadLine();
+
+                                if (ask[0] != 'y')
+                                {
+                                    Console.Clear ();
+                                    break;
+                                }
+
+                               
+                                //Console.ReadKey();
 
 
-                          
-                        }
-                        if(flag != true)
-                        {
-                            Console.WriteLine("*********** Invalid login ***********");
-                            Console.WriteLine("press enter key ");
-                            Console.ReadKey();
+                            }
                         }
                         break;
 
                     case 2:
-                        bool flaguser = false;
-                        Console.Clear();
-                        Console.WriteLine(" ");
-                        Console.WriteLine("***************** Login user  ********************");
-                        Console.WriteLine(" ");
-
-                        Console.WriteLine(" enter your email : ");
-                        string email = Console.ReadLine();
-
-                        Console.WriteLine(" enter the password : ");
-                        string password = Console.ReadLine();
-
-                        for (int i = 0; i < userReistrtion.Count; i++)
+                        bool Isloginuser=false;
+                        while (!Isloginuser)
                         {
-                            if (userReistrtion[i].email == email && userReistrtion[i].password == password)
+                            Console.Clear();
+                            bool flaguser = false;
+                            Console.WriteLine(" ");
+                            Console.WriteLine("***************** Login user  ********************");
+                            Console.WriteLine(" ");
+
+                            Console.WriteLine(" enter your email : ");
+                            string email = Console.ReadLine();
+
+                            Console.WriteLine(" enter the password : ");
+                            string password = Console.ReadLine();
+
+                            for (int i = 0; i < userReistrtion.Count; i++)
                             {
-                                flag = true;
+                                if (userReistrtion[i].email == email && userReistrtion[i].password == password)
+                                {
+                                    flaguser = true;
 
-                               userId = userReistrtion[i].Aid;
+                                    userId = userReistrtion[i].Aid;
 
-                                UserMenu();
+                                    UserMenu();
+                                    Isloginuser=true;
+                                }
+                            }
+                            if (flaguser != true)
+                            {
+                                string ask;
+                                Console.WriteLine("*********** Invalid login ***********");
+
+                                Console.WriteLine("Do you want login again ? yes or no  ");
+                                ask = Console.ReadLine();
+
+                                if (ask[0] != 'y')
+                                {
+                                    Console.Clear();
+                                    break;
+                                }
+
                             }
                         }
-                            if(flaguser != true)
-                            {
-                                Console.WriteLine("*********** Invalid login ***********");
-                                Console.WriteLine("press enter key ");
-                                Console.ReadKey();
-                            }
                         break;
 
 
@@ -588,6 +615,7 @@ namespace BasicLibrary
         //*********************************************************************************************************************************************
         static void UserMenu()
         {
+            Console.Clear();
             bool ExitFlag = false;
             bool Auth = false;
 
@@ -610,12 +638,12 @@ namespace BasicLibrary
                     case 1:
 
 
-                        Console.WriteLine("user id is :" + userId);
+                       // Console.WriteLine("user id is :" + userId);
                         BarrowBooks();
                         break;
 
                     case 2:
-                        Console.WriteLine("user id is :" + userId);
+                       // Console.WriteLine("user id is :" + userId);
                         ReturnBook();
                         break;
 
@@ -643,13 +671,7 @@ namespace BasicLibrary
             } while (ExitFlag != true);
 
 
-            //else
-
-            // {
-            //  Console.WriteLine("Invalid login ");
-
-            //}
-
+   
 
 
             if (Auth != true)
@@ -695,8 +717,17 @@ namespace BasicLibrary
         {
             //List<int> newid = new List<int>();
             // int newId = 0;
+            Console.Clear();
             ViewAllBooksUser();
-            Console.WriteLine("Enter the book id ");
+            Console.WriteLine("\n\n\n\t ***************************** the borrow book *************************");
+
+            Console.WriteLine("\n\n  Enter the book id  ");
+            Console.WriteLine("\t *           ");
+            Console.WriteLine("\t *           ");
+            Console.WriteLine("\t *           ");
+            Console.WriteLine("\t *           ");
+            Console.WriteLine("\t V           ");
+           
             int enterId = int.Parse(Console.ReadLine());
 
             bool flag = false;

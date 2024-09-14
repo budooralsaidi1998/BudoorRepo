@@ -64,167 +64,193 @@ namespace BasicLibrary
                 Console.WriteLine("4. logout ");
                 int num = int.Parse(Console.ReadLine());
 
-                switch (num)
+                switch(num)
                 {
 
                     case 1:
-                        bool IsLogin = false;
+                       bool IsLogin = false;
 
-                        while (!IsLogin)
-                        {
-                            Console.Clear();
-                            bool flag = false;
-                            Console.WriteLine(" ");
-                            Console.WriteLine("***************** Login admin  ********************");
-                            Console.WriteLine(" ");
+                       while (!IsLogin)
+                       {
+                                Console.Clear();
+                                Console.WriteLine(" ");
+                                Console.WriteLine("***************** Login admin  ********************");
+                                Console.WriteLine(" ");
 
-                            Console.WriteLine(" enter your email : ");
-                            string emailadmin = Console.ReadLine();
+                                Console.WriteLine("Enter your email: ");
+                                string emailAdmin = Console.ReadLine();
 
-                            Console.WriteLine(" enter the password : ");
-                            string passwordadmin = Console.ReadLine();
+                                Console.WriteLine("Enter the password: ");
+                                string passwordAdmin = Console.ReadLine();
 
-                            Console.WriteLine(" re - enter the password : ");
-                           string  reenterPasswordadmin=Console.ReadLine();
-                                if (passwordadmin != reenterPasswordadmin)
+                                Console.WriteLine("Re-enter the password: ");
+                                string reEnterPasswordAdmin = Console.ReadLine();
+
+                                // Check if the passwords match
+                                if (passwordAdmin != reEnterPasswordAdmin)
                                 {
-
                                     Console.WriteLine("Passwords do not match. Please try again.");
-                                Console.WriteLine("enter enter key");
-                                Console.ReadKey();
-                                        IsLogin = false ;
-                                break;
-
+                                    Console.WriteLine("Press any key to continue.");
+                                    Console.ReadKey();
+                                    break;  // Restart the loop
                                 }
-                               
 
-                            
-                            
+                                bool emailFound1 = false;
+                                bool passwordCorrect1 = false;
+                                int adminId = -1;
 
-
-                            for (int i = 0; i < adminRegistration.Count; i++)
-                            {
-                                if (adminRegistration[i].email == emailadmin && adminRegistration[i].password == passwordadmin)
+                                // Loop through admin registrations to check email and password
+                                for (int i = 0; i < adminRegistration.Count; i++)
                                 {
-                                    flag = true;
-
-                                    adminId = adminRegistration[i].adminid;
-
-                                    AdminMenu();
-                                    IsLogin = true;
-                                    break;
+                                    if (adminRegistration[i].email == emailAdmin)
+                                    {
+                                        emailFound1 = true;  // Email exists
+                                        if (adminRegistration[i].password == passwordAdmin)
+                                        {
+                                            passwordCorrect1 = true;  // Email and password both match
+                                            adminId = adminRegistration[i].adminid;
+                                            break;
+                                        }
+                                    }
                                 }
 
-
-                            }
-
-                            if (flag != true)
-                            {
-                                string ask;
-                                Console.WriteLine("*********** Invalid login ***********");
-
-                                Console.WriteLine("Do you want login again ? yes or no  ");
-                                ask = Console.ReadLine();
-
-                                if (ask[0] != 'y')
+                                if (!emailFound1)
                                 {
-                                    Console.Clear();
-                                    break;
+                                    Console.WriteLine("Admin email not found. Do you want to try logging in again? (yes or no)");
+                                    string ask = Console.ReadLine();
+
+                                    if (ask.ToLower() != "yes" && ask.ToLower() != "y")
+                                    {
+                                        Console.Clear();
+                                        break;  // Exit the login loop
+                                    }
+                                }
+                                else if (!passwordCorrect1)
+                                {
+                                    Console.WriteLine("Password is incorrect. Please try again.");
+                                    Console.WriteLine("Press any key to continue.");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                Console.Clear();
+                                IsLogin = true;  // Successful login
+                                    AdminMenu();  // Redirect to the admin menu
+
+
+
                                 }
 
+                }
+            
+                break;
 
-                                //Console.ReadKey();
 
-
-                            }
-                        }
-                        break;
 
                     case 2:
+                        
                         bool Isloginuser = false;
-                        while (!Isloginuser)
+                    while (!Isloginuser)
+                    {
+                        Console.Clear();
+                        bool flaguser = false;
+                        Console.WriteLine(" ");
+                        Console.WriteLine("***************** Login user  ********************");
+                        Console.WriteLine(" ");
+
+                        Console.WriteLine(" enter your email : ");
+                        string email = Console.ReadLine();
+
+                        Console.WriteLine(" enter the password : ");
+                        string password = Console.ReadLine();
+
+
+                        Console.WriteLine(" re - enter the password : ");
+                        string reenterPasswordadmin = Console.ReadLine();
+
+                        if (password != reenterPasswordadmin)
                         {
-                            Console.Clear();
-                            bool flaguser = false;
-                            Console.WriteLine(" ");
-                            Console.WriteLine("***************** Login user  ********************");
-                            Console.WriteLine(" ");
 
-                            Console.WriteLine(" enter your email : ");
-                            string email = Console.ReadLine();
+                            Console.WriteLine("Passwords do not match. Please try again.");
+                            Console.WriteLine("enter enter key");
+                            Console.ReadKey();
+                            IsLogin = false;
+                            break;
 
-                            Console.WriteLine(" enter the password : ");
-                            string password = Console.ReadLine();
-
-
-                            Console.WriteLine(" re - enter the password : ");
-                            string reenterPasswordadmin = Console.ReadLine();
-
-                            if (password != reenterPasswordadmin)
-                            {
-
-                                Console.WriteLine("Passwords do not match. Please try again.");
-                                Console.WriteLine("enter enter key");
-                                Console.ReadKey();
-                                IsLogin = false;
-                                break;
-
-                            }
+                        }
+                            bool emailFound = false;
+                            bool passwordCorrect = false;
                             for (int i = 0; i < userReistrtion.Count; i++)
                             {
-                                if (userReistrtion[i].email == email && userReistrtion[i].password == password)
+                                if (userReistrtion[i].email == email)
                                 {
-                                    flaguser = true;
-
-                                    userId = userReistrtion[i].Aid;
-
-                                    UserMenu();
-                                    Isloginuser = true;
+                                    emailFound = true;  // Email exists
+                                    if (userReistrtion[i].password == password)
+                                    {
+                                        userId = userReistrtion[i].Aid;
+                                        passwordCorrect = true;  // Email and password both match
+                                      
+                                        break;
+                                    }
                                 }
                             }
-                            if (flaguser != true)
+
+                            if (!emailFound)
                             {
-                                string ask;
-                                Console.WriteLine("*********** Invalid login ***********");
+                                Console.WriteLine("User email not found. Do you want to try logging in again? (yes or no)");
+                                string ask = Console.ReadLine();
 
-                                Console.WriteLine("Do you want login again ? yes or no  ");
-                                ask = Console.ReadLine();
-
-                                if (ask[0] != 'y')
+                                if (ask.ToLower() != "yes" && ask.ToLower() != "y")
                                 {
                                     Console.Clear();
-                                    break;
+                                    break;  // Exit the login loop
                                 }
+                            }
+                            else if (!passwordCorrect)
+                            {
+                                Console.WriteLine("Password is incorrect. Please try again.");
+                                Console.WriteLine("Press any key to continue.");
+                                Console.ReadKey();
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                IsLogin = true;  // Successful login
+                                UserMenu();  
+
+
 
                             }
+
                         }
                         break;
 
 
-                    case 3:
-                        Console.Clear();
-                        RegistrationMenu();
-                        break;
+                case 3:
+                    Console.Clear();
+                    RegistrationMenu();
+                    break;
 
-                    case 4:
+                case 4:
 
-                        ExitFlag = true;
-                        break;
+                    ExitFlag = true;
+                    break;
 
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Incorrect choice. Please enter a number between 1 and 4.");
-                        
-                        Console.WriteLine("Press enter key to try again...");
-                        Console.ReadKey();
-                        break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Incorrect choice. Please enter a number between 1 and 4.");
+
+                    Console.WriteLine("Press enter key to try again...");
+                    Console.ReadKey();
+                    break;
 
                 }
             }
+            
 
             while (ExitFlag != true);
         }
-
+    
         //*******************************************************************************************************************************************
 
         //setup master************************************************************************************************************* 
@@ -809,6 +835,7 @@ namespace BasicLibrary
                 do
                 {
                     Console.Clear();
+                    Console.WriteLine(" U ARE USER : "+ userId);
                     Console.WriteLine("\nEnter the number of the operation you need:");
                     Console.WriteLine("\n1. Borrow a book");
                     Console.WriteLine("\n2. Return a book");
@@ -877,6 +904,7 @@ namespace BasicLibrary
             int periodWidth = 15;
 
             // Header
+            Console.WriteLine("U are user : " + userId);
             Console.WriteLine("\n\n              ***** THE BOOK IS AVAILABLE TO BORROW IT ***** ");
             Console.WriteLine(" ");
             Console.WriteLine($"{"Book ID".PadRight(idWidth)}{"Name".PadRight(nameWidth)}{"Author".PadRight(authorWidth)}{"Available Copies".PadRight(copiesWidth)}{"Borrowed Copies".PadRight(borrowedWidth)}{"Price".PadRight(priceWidth)}{"Category".PadRight(categoryWidth)}{"Borrow Period".PadRight(periodWidth)}");

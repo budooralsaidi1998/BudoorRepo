@@ -771,7 +771,7 @@ namespace BasicLibrary
                 
                                                 // Update the book's borrowed copies
                                                 Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies + 1, Books[i].price, Books[i].category, Books[i].borrowperiod);
-                
+
                                                 // Add to borrows list
                                                 DateTime dateBorrow = DateTime.Now.Date;
                                                 DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod).Date;
@@ -795,19 +795,20 @@ namespace BasicLibrary
                                                         foreach (var book in otherBooks)
                                                           {
                                                             Console.WriteLine($"{book.BName} by {book.BAuthor}");
-                                                              }
-                                                         }
+                                                           }
+                                                     }
                                                   else
                                                       {
                                                          Console.WriteLine("No other books by this author.");
                                                        }
-                                                     }
-                                                else
-                                                {
-                                                    Console.WriteLine("Cannot borrow this book as there are no available copies.");
-                                                }
-                                                break;
-                                            }
+                                }
+                                else
+                                  {
+                                    Console.WriteLine("Cannot borrow this book as there are no available copies.");
+                                   }
+                                              
+                                break;
+                             }
                         }
 
                         if (!bookFound)
@@ -888,7 +889,7 @@ namespace BasicLibrary
                 // Handle actual return date and rating process
                 if (flag)
                 {
-                    DateTime actualReturnDate = DateTime.Now.Date;
+                   
                     bool ratingValid = false;
 
                     // Loop through the borrows list to update the return information
@@ -896,8 +897,11 @@ namespace BasicLibrary
                     {
                         if (borrows[i].bookid == id && !borrows[i].isreturn)
                         {
+                            DateTime actualReturnDate = DateTime.Now.Date;
+                            //string actualReturnDateStr = actualReturnDate.ToString("yyyy-MM-dd");
+
                             // Ensure the rating is within the valid range
-                            string rateuser = "No Rating"; // Default value if no valid rating is provided
+                            string rateuser = "N/A"; // Default value if no valid rating is provided
 
                             // Prompt the user for a valid rating between 1 and 5
                             while (!ratingValid)
@@ -915,9 +919,9 @@ namespace BasicLibrary
                                     Console.WriteLine("Invalid rating. Please enter a value between 1 and 5.");
                                 }
                             }
-
+                            
                             // Update the borrow entry with the return date, rating, and isreturn flag
-                            borrows[i] = (borrows[i].userid, id, borrows[i].borrowdate, borrows[i].returndate, actualReturnDate.ToString(), rateuser, true);
+                            borrows[i] = (borrows[i].userid, id, borrows[i].borrowdate, borrows[i].returndate, actualReturnDate.ToString("yyyy-MM-dd"), rateuser, true);
 
                             Console.WriteLine("Successfully returned the book.");
                             break;
@@ -1258,11 +1262,12 @@ namespace BasicLibrary
                 HashSet<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)> uniqe =
                     new HashSet<(int, int, DateTime, DateTime, string, string, bool)>(borrows);
 
+
                 using (StreamWriter writer = new StreamWriter(fileBorrowBook))
                 {
                     foreach (var borr in uniqe)
                     {
-                        writer.WriteLine($"{borr.userid} | {borr.bookid} | {borr.borrowdate} | {borr.returndate} | {borr.acaualreturndate} | {borr.rating} | {borr.isreturn}");
+                        writer.WriteLine($"{borr.userid} | {borr.bookid} | {borr.borrowdate.ToString("yyyy-MM-dd")} | {borr.returndate.ToString("yyyy-MM-dd")} | {borr.acaualreturndate} | {borr.rating} | {borr.isreturn}");
                     }
                 }
                 //Console.WriteLine("the data admin saved to file successfully.");
@@ -1286,6 +1291,11 @@ namespace BasicLibrary
                             var parts = line.Split(" | ");
                             if (parts.Length == 7)
                             {
+                                
+                                //DateTime borrowDate = DateTime.Parse(parts[2], "yyyy-MM-dd");
+                               // DateTime returnDate = DateTime.ParseExact(parts[3], "yyyy-MM-dd", null);
+                                // Convert actualReturnDate string to DateTime
+                              //  DateTime actualReturnDate = DateTime.ParseExact(parts[4], "yyyy-MM-dd", null);
                                 borrows.Add((int.Parse(parts[0]), int.Parse(parts[1]), DateTime.Parse(parts[2]).Date, DateTime.Parse(parts[3]).Date, parts[4], parts[5], bool.Parse(parts[6])));
                             }
                         }

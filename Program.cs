@@ -109,11 +109,11 @@ namespace BasicLibrary
 
                                 if (ask[0] != 'y')
                                 {
-                                    Console.Clear ();
+                                    Console.Clear();
                                     break;
                                 }
 
-                               
+
                                 //Console.ReadKey();
 
 
@@ -122,7 +122,7 @@ namespace BasicLibrary
                         break;
 
                     case 2:
-                        bool Isloginuser=false;
+                        bool Isloginuser = false;
                         while (!Isloginuser)
                         {
                             Console.Clear();
@@ -146,7 +146,7 @@ namespace BasicLibrary
                                     userId = userReistrtion[i].Aid;
 
                                     UserMenu();
-                                    Isloginuser=true;
+                                    Isloginuser = true;
                                 }
                             }
                             if (flaguser != true)
@@ -169,7 +169,7 @@ namespace BasicLibrary
 
 
                     case 3:
-                         Console.Clear();
+                        Console.Clear();
                         RegistrationMenu();
                         break;
                     case 4:
@@ -365,66 +365,66 @@ namespace BasicLibrary
         {
             bool Auth = false;
             bool ExitFlag = false;
-                   
-                    do
-                    {
-                        Console.WriteLine("\n Enter the char of operation you need :");
-                        Console.WriteLine("\n 1- Add New Book");
-                        Console.WriteLine("\n 2- Display All Books");
-                        Console.WriteLine("\n 3- Search for Book by Name");
-                        Console.WriteLine("\n 4- Edit the book ");
-                        Console.WriteLine("\n 5- Remove the book ");
-                        Console.WriteLine("\n 6- Reporting the data ");
-                        Console.WriteLine("\n 7- Save and Exit");
 
-                        int choice = int.Parse(Console.ReadLine());
+            do
+            {
+                Console.WriteLine("\n Enter the char of operation you need :");
+                Console.WriteLine("\n 1- Add New Book");
+                Console.WriteLine("\n 2- Display All Books");
+                Console.WriteLine("\n 3- Search for Book by Name");
+                Console.WriteLine("\n 4- Edit the book ");
+                Console.WriteLine("\n 5- Remove the book ");
+                Console.WriteLine("\n 6- Reporting the data ");
+                Console.WriteLine("\n 7- Save and Exit");
 
-                        switch (choice)
-                        {
-                            case 1:
-                                AddnNewBook();
-                                break;
+                int choice = int.Parse(Console.ReadLine());
 
-                            case 2:
-                                ViewAllBooks();
-                                break;
+                switch (choice)
+                {
+                    case 1:
+                        AddnNewBook();
+                        break;
 
-                            case 3:
-                                SearchForBook();
-                                break;
+                    case 2:
+                        ViewAllBooks();
+                        break;
 
-                            case 4:
-                                EditBookMenu();
-                                break;
+                    case 3:
+                        SearchForBook();
+                        break;
 
-                            case 5:
-                                RemoveBook();
-                                break;
+                    case 4:
+                        EditBookMenu();
+                        break;
 
-                            case 6:
-                                Reporting();
-                                break;
+                    case 5:
+                        RemoveBook();
+                        break;
 
-                            case 7:
-                                SaveBooksToFile();
-                                ExitFlag = true;
-                                break;
+                    case 6:
+                        Reporting();
+                        break;
 
-                            default:
-                                Console.WriteLine("Sorry your choice was wrong");
-                                break;
+                    case 7:
+                        SaveBooksToFile();
+                        ExitFlag = true;
+                        break;
 
-                        }
+                    default:
+                        Console.WriteLine("Sorry your choice was wrong");
+                        break;
 
-                        Console.WriteLine("press enter key to continue");
+                }
 
-                        string cont = Console.ReadLine();
+                Console.WriteLine("press enter key to continue");
 
-                        Console.Clear();
+                string cont = Console.ReadLine();
 
-                    } while (ExitFlag != true);
+                Console.Clear();
 
-           
+            } while (ExitFlag != true);
+
+
             ExitFlag = false;
         }
 
@@ -617,118 +617,109 @@ namespace BasicLibrary
         {
             Console.Clear();
             bool ExitFlag = false;
-            bool Auth = false;
 
-            Console.WriteLine("user id is :" + userId);
+            Console.WriteLine("User ID is: " + userId);
 
-            do
+            DateTime nowdate = DateTime.Now.Date;
+
+            // Check for overdue books first
+            for (int i = 0; i < borrows.Count; i++)
             {
-
-                Console.WriteLine("\n Enter the char of operation you need :");
-                //Console.WriteLine("\n A-Search for Book by Name");
-                Console.WriteLine("\n 1- Borrow the book ");
-                Console.WriteLine("\n 2- return the book ");
-                Console.WriteLine("\n 3- logout ");
-
-                int choice = int.Parse(Console.ReadLine());
-
-                switch (choice)
+                if (borrows[i].userid == userId && !borrows[i].isreturn && borrows[i].returndate < nowdate)
                 {
+                    Console.WriteLine("YOU MUST RETURN THE BOOKS THAT YOU ARE LATE IN RETURNING.");
+                    Console.WriteLine("\n1. ** Return the book which is late **");
+                    int num = int.Parse(Console.ReadLine());
 
-                    case 1:
-
-
-                       // Console.WriteLine("user id is :" + userId);
-                        BarrowBooks();
-                        SaveborrowToFile();
-                        break;
-
-                    case 2:
-                       // Console.WriteLine("user id is :" + userId);
-
-                        ReturnBook();
-                        SaveborrowToFile();
-                        break;
-
-                    case 3:
-                        SaveBooksToFile();
-                        SaveborrowToFile();
-                        userId = -1;
-                        ExitFlag = true;
-
-                        break;
-
-                    default:
-                        Console.WriteLine("Sorry your choice was wrong");
-                        break;
-
-
-
+                    switch (num)
+                    {
+                        case 1:
+                            //Console.Clear();
+                            ReturnBookLate();
+                            SaveborrowToFile();
+                            ExitFlag = true;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice. Please try again.");
+                            break;
+                    }
+                    ExitFlag = false;
+                    
                 }
+            }
 
-                Console.WriteLine("\t press enter key to continue            ");
-                string cont = Console.ReadLine();
+            // After checking for late books, show the main user menu
+            if (!ExitFlag) // Only show the menu if there are no overdue books or after handling overdue books
+            {
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nEnter the number of the operation you need:");
+                    Console.WriteLine("\n1. Borrow a book");
+                    Console.WriteLine("\n2. Return a book");
+                    Console.WriteLine("\n3. Logout");
 
-                Console.Clear();
+                    int choice;
+                    bool validInput = int.TryParse(Console.ReadLine(), out choice);
 
-            } while (ExitFlag != true);
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid input. Please enter a number.");
+                        continue;
+                    }
 
+                    switch (choice)
+                    {
+                        case 1:
+                            BarrowBooks();
+                            SaveborrowToFile();
+                            break;
 
-   
+                        case 2:
+                            ReturnBook();
+                            SaveborrowToFile();
+                            break;
 
+                        case 3:
+                            Console.Clear();
+                            SaveBooksToFile();
+                            SaveborrowToFile();
+                            userId = -1; // Reset the user ID to indicate a logout
+                            ExitFlag = true; // Set exit flag to true to break out of the loop
+                            break;
 
-            //if (Auth != true)
-            //{
-            //    Console.WriteLine("Invalid login ");
-            //}
+                        default:
+                            Console.WriteLine("Sorry, your choice was wrong. Please try again.");
+                            break;
+                    }
 
+                    if (!ExitFlag)
+                    {
+                        Console.WriteLine("\tPress enter key to continue...");
+                        Console.ReadLine(); // Pause before clearing the screen
+                    }
+
+                } while (!ExitFlag); // Exit the loop only when ExitFlag is true
+            }
+
+            // Reset ExitFlag in case it's needed for future sessions
             ExitFlag = false;
-
         }
-        //static void ViewAllBooksUser()
-        //{
-        //    StringBuilder sb = new StringBuilder();
 
-        //    int BookNumber = 0;
 
-        //    for (int i = 0; i < Books.Count; i++)
-        //    {
-        //        BookNumber = i + 1;
-        //        sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
-        //        sb.AppendLine();
+        static void BarrowBooks()
+        {
+            Console.Clear();
 
-        //        sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
-        //        sb.AppendLine();
-
-        //        sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
-        //        sb.AppendLine();
-
-        //        sb.Append("Book ").Append(BookNumber).Append(" Copies available : ").Append(Books[i].copies);
-        //        sb.AppendLine();
-
-        //        sb.Append("Book ").Append(BookNumber).Append(" price : ").Append(Books[i].price);
-        //        sb.AppendLine();
-
-        //        sb.Append("Book ").Append(BookNumber).Append(" category : ").Append(Books[i].category);
-        //        sb.AppendLine();
-        //        sb.AppendLine().AppendLine();
-        //        sb.Clear();
-
-        //    }
-        //}
-         static void BarrowBooks()
-          {
-                        Console.Clear();
-    
-                        // Define column widths for neat alignment
-                        int idWidth = 10;
-                        int nameWidth = 25;
-                        int authorWidth = 20;
-                        int copiesWidth = 15;
-                        int borrowedWidth = 20;
-                        int priceWidth = 10;
-                        int categoryWidth = 15;
-                        int periodWidth = 15;
+            // Define column widths for neat alignment
+            int idWidth = 10;
+            int nameWidth = 25;
+            int authorWidth = 20;
+            int copiesWidth = 15;
+            int borrowedWidth = 20;
+            int priceWidth = 10;
+            int categoryWidth = 15;
+            int periodWidth = 15;
 
             // Header
             Console.WriteLine("\n\n              ***** THE BOOK IS AVAILABLE TO BORROW IT ***** ");
@@ -736,87 +727,87 @@ namespace BasicLibrary
             Console.WriteLine($"{"Book ID".PadRight(idWidth)}{"Name".PadRight(nameWidth)}{"Author".PadRight(authorWidth)}{"Available Copies".PadRight(copiesWidth)}{"Borrowed Copies".PadRight(borrowedWidth)}{"Price".PadRight(priceWidth)}{"Category".PadRight(categoryWidth)}{"Borrow Period".PadRight(periodWidth)}");
             Console.WriteLine(new string('-', idWidth + nameWidth + authorWidth + copiesWidth + borrowedWidth + priceWidth + categoryWidth + periodWidth));
 
-                        foreach (var book in Books)
+            foreach (var book in Books)
+            {
+                // Check if the user has borrowed this book before and it has not yet been returned
+                bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == book.ID && !b.isreturn);
+
+                if (!borrowedBefore)
+                {
+                    // Display book details in tabular format
+                    Console.WriteLine($"{book.ID.ToString().PadRight(idWidth)}{book.BName.PadRight(nameWidth)}{book.BAuthor.PadRight(authorWidth)}{book.copies.ToString().PadRight(copiesWidth)}{book.Borrowedcopies.ToString().PadRight(borrowedWidth)}{book.price.ToString("C").PadRight(priceWidth)}{book.category.PadRight(categoryWidth)}{book.borrowperiod.ToString().PadRight(periodWidth)}");
+                }
+            }
+
+            Console.WriteLine("\n\nEnter the book ID you want to borrow:");
+            int enterId = int.Parse(Console.ReadLine());
+
+            bool bookFound = false;
+            bool canBorrow = false;
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                if (Books[i].ID == enterId)
+                {
+                    bookFound = true;
+                    bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == enterId && !b.isreturn);
+
+                    if (borrowedBefore)
+                    {
+                        Console.WriteLine("You have already borrowed this book and it has not yet been returned.");
+                    }
+                    else if (Books[i].copies > Books[i].Borrowedcopies)
+                    {
+                        canBorrow = true;
+
+                        // Update the book's borrowed copies
+                        Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies + 1, Books[i].price, Books[i].category, Books[i].borrowperiod);
+
+                        // Add to borrows list
+                        DateTime dateBorrow = DateTime.Now.Date;
+                        DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod).Date;
+
+                        borrows.Add((userId, enterId, dateBorrow, returnDate, "N/A", "N/A", false));
+
+                        Console.WriteLine("Book borrowed successfully!");
+
+                        //suggstion for the author similriaty 
+
+                        Console.WriteLine("\n **** Other books Can borrow by the same author if you want : ****");
+                        // to filter elements from the Books collection
+                        //only returns the elements that satisfy this condition.
+                        //his part checks if the current book (b) has the same author as the book that was just borrowed
+                        //b.ID != Books[i].ID: This condition ensures that the current book (b) is not the same book as the one that was just borrowed
+                        //(since you don't want to suggest the same book again)
+                        var otherBooks = Books.Where(b => b.BAuthor == Books[i].BAuthor && b.ID != Books[i].ID);
+
+                        if (otherBooks.Any())
                         {
-                            // Check if the user has borrowed this book before and it has not yet been returned
-                            bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == book.ID && !b.isreturn);
-        
-                            if (!borrowedBefore)
+                            foreach (var book in otherBooks)
                             {
-                                // Display book details in tabular format
-                                Console.WriteLine($"{book.ID.ToString().PadRight(idWidth)}{book.BName.PadRight(nameWidth)}{book.BAuthor.PadRight(authorWidth)}{book.copies.ToString().PadRight(copiesWidth)}{book.Borrowedcopies.ToString().PadRight(borrowedWidth)}{book.price.ToString("C").PadRight(priceWidth)}{book.category.PadRight(categoryWidth)}{book.borrowperiod.ToString().PadRight(periodWidth)}");
+                                Console.WriteLine($"{book.BName} by {book.BAuthor}");
                             }
                         }
-
-                        Console.WriteLine("\n\nEnter the book ID you want to borrow:");
-                        int enterId = int.Parse(Console.ReadLine());
-
-                        bool bookFound = false;
-                        bool canBorrow = false;
-
-                        for (int i = 0; i < Books.Count; i++)
+                        else
                         {
-                            if (Books[i].ID == enterId)
-                            {
-                                bookFound = true;
-                                bool borrowedBefore = borrows.Any(b => b.userid == userId && b.bookid == enterId && !b.isreturn);
-
-                                if (borrowedBefore)
-                                {
-                                    Console.WriteLine("You have already borrowed this book and it has not yet been returned.");
-                                }
-                                else if (Books[i].copies > Books[i].Borrowedcopies)
-                                {
-                                                canBorrow = true;
-                
-                                                // Update the book's borrowed copies
-                                                Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies + 1, Books[i].price, Books[i].category, Books[i].borrowperiod);
-
-                                                // Add to borrows list
-                                                DateTime dateBorrow = DateTime.Now.Date;
-                                                DateTime returnDate = dateBorrow.AddDays(Books[i].borrowperiod).Date;
-                
-                                                borrows.Add((userId, enterId, dateBorrow, returnDate, "N/A", "N/A", false));
-                
-                                                Console.WriteLine("Book borrowed successfully!"); 
-                                        
-                                                //suggstion for the author similriaty 
-
-                                                Console.WriteLine("\n **** Other books Can borrow by the same author if you want : ****");
-                                        // to filter elements from the Books collection
-                                        //only returns the elements that satisfy this condition.
-                                        //his part checks if the current book (b) has the same author as the book that was just borrowed
-                                        //b.ID != Books[i].ID: This condition ensures that the current book (b) is not the same book as the one that was just borrowed
-                                        //(since you don't want to suggest the same book again)
-                                        var otherBooks = Books.Where(b => b.BAuthor == Books[i].BAuthor && b.ID != Books[i].ID);
-
-                                                  if (otherBooks.Any())
-                                                    {
-                                                        foreach (var book in otherBooks)
-                                                          {
-                                                            Console.WriteLine($"{book.BName} by {book.BAuthor}");
-                                                           }
-                                                     }
-                                                  else
-                                                      {
-                                                         Console.WriteLine("No other books by this author.");
-                                                       }
-                                }
-                                else
-                                  {
-                                    Console.WriteLine("Cannot borrow this book as there are no available copies.");
-                                   }
-                                              
-                                break;
-                             }
-                        }
-
-                        if (!bookFound)
-                        {
-                            Console.WriteLine("Book not found.");
+                            Console.WriteLine("No other books by this author.");
                         }
                     }
-         static void ReturnBook()
+                    else
+                    {
+                        Console.WriteLine("Cannot borrow this book as there are no available copies.");
+                    }
+
+                    break;
+                }
+            }
+
+            if (!bookFound)
+            {
+                Console.WriteLine("Book not found.");
+            }
+        }
+        static void ReturnBook()
         {
 
             Console.Clear();
@@ -859,8 +850,8 @@ namespace BasicLibrary
                     if (borrow.userid == userId && !borrow.isreturn)
                     {
                         Console.WriteLine($"{borrow.bookid.ToString().PadRight(idWidth)}" +
-                                          $"{borrow.borrowdate.ToString().PadRight(DateBorrowWidth)}" +
-                                          $"{borrow.returndate.ToString().PadRight(DateReturnWidth)}" +
+                                          $"{borrow.borrowdate.ToString("yyyy-MM-dd").PadRight(DateBorrowWidth)}" +
+                                          $"{borrow.returndate.ToString("yyyy-MM-dd").PadRight(DateReturnWidth)}" +
                                           $"{borrow.isreturn.ToString().PadRight(IsReturnWidth)}");
                     }
                 }
@@ -889,7 +880,7 @@ namespace BasicLibrary
                 // Handle actual return date and rating process
                 if (flag)
                 {
-                   
+
                     bool ratingValid = false;
 
                     // Loop through the borrows list to update the return information
@@ -919,7 +910,7 @@ namespace BasicLibrary
                                     Console.WriteLine("Invalid rating. Please enter a value between 1 and 5.");
                                 }
                             }
-                            
+
                             // Update the borrow entry with the return date, rating, and isreturn flag
                             borrows[i] = (borrows[i].userid, id, borrows[i].borrowdate, borrows[i].returndate, actualReturnDate.ToString("yyyy-MM-dd"), rateuser, true);
 
@@ -938,6 +929,122 @@ namespace BasicLibrary
 
         }
 
+        static void ReturnBookLate()
+        {
+            Console.Clear();
+            bool flaglate = false;
+            bool hasBooksToReturnlate = false;
+            DateTime datelate = DateTime.Now.Date;
+
+            // First, check if the user has any late books
+            for (int i = 0; i < borrows.Count; i++)
+            {
+                if (borrows[i].userid == userId && !borrows[i].isreturn && borrows[i].returndate < datelate)
+                {
+                    hasBooksToReturnlate = true;
+                    break;
+                }
+            }
+
+            // If user has late books, proceed
+            if (hasBooksToReturnlate)
+            {
+                flaglate = true;
+                int idWidth = 10;
+                int DateBorrowWidth = 25;
+                int DateReturnWidth = 25;
+                int IsReturnWidth = 25;
+                int numberofdatelate = 10;
+
+                Console.WriteLine("U ARE USER ID : " + userId);
+                // Header for the table of late books
+                Console.WriteLine("\n\n                         ***** BOOKS AVAILABLE THAT YOU ARE LATE IN RETURNING ***** ");
+                Console.WriteLine(" ");
+                Console.WriteLine($"{"Book ID".PadRight(idWidth)}{"Date Borrow".PadRight(DateBorrowWidth)}{"Date Return".PadRight(DateReturnWidth)}{"IsReturned".PadRight(IsReturnWidth)}{"DayLate".PadRight(numberofdatelate)}");
+                Console.WriteLine(new string('-', idWidth + DateBorrowWidth + DateReturnWidth + IsReturnWidth + numberofdatelate));
+
+                // Display all late books for this user
+                foreach (var borrow in borrows)
+                {
+                    if (borrow.userid == userId && !borrow.isreturn && borrow.returndate < datelate)
+                    {
+                        var numlate = (datelate - borrow.returndate).Days;
+                        Console.WriteLine($"{borrow.bookid.ToString().PadRight(idWidth)}" +
+                                          $"{borrow.borrowdate.ToString("yyyy-MM-dd").PadRight(DateBorrowWidth)}" +
+                                          $"{borrow.returndate.ToString("yyyy-MM-dd").PadRight(DateReturnWidth)}" +
+                                          $"{borrow.isreturn.ToString().PadRight(IsReturnWidth)}" +
+                                          $"{numlate.ToString().PadRight(numberofdatelate)}days");
+                    }
+                }
+
+                // Ask user for the book ID to return
+                Console.WriteLine("Enter the book ID you want to return:");
+                int id = int.Parse(Console.ReadLine());
+                bool flag = false;
+
+                // Find the book by ID in the Books list
+                for (int i = 0; i < Books.Count; i++)
+                {
+                    if (Books[i].ID == id)
+                    {
+                        int updatedBorrowedCopies = Books[i].Borrowedcopies - 1;
+                        Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, updatedBorrowedCopies, Books[i].price, Books[i].category, Books[i].borrowperiod);
+                        flag = true; // Book found
+                        break;
+                    }
+                }
+
+                if (!flag)
+                {
+                    // If book ID wasn't found in the Books list
+                    Console.WriteLine("Book ID not found.");
+                    return;
+                }
+
+                // If the book was found, proceed to return
+                bool ratingValid = false;
+
+                // Loop through borrows to update the return info
+                for (int i = 0; i < borrows.Count; i++)
+                {
+                    if (borrows[i].bookid == id && !borrows[i].isreturn)
+                    {
+                        DateTime actualReturnDate = DateTime.Now.Date;
+                        string rateuser = "N/A"; // Default value if no rating is given
+
+                        // Prompt user for rating, ensure it's valid
+                        while (!ratingValid)
+                        {
+                            Console.WriteLine("Enter the rating of the book (1-5):");
+                            int rate = int.Parse(Console.ReadLine());
+
+                            if (rate >= 1 && rate <= 5)
+                            {
+                                rateuser = rate.ToString();
+                                ratingValid = true; // Exit loop if rating is valid
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid rating. Please enter a value between 1 and 5.");
+                            }
+                        }
+
+                        // Update the borrow record
+                        borrows[i] = (borrows[i].userid, id, borrows[i].borrowdate, borrows[i].returndate, actualReturnDate.ToString("yyyy-MM-dd"), rateuser, true);
+
+                        Console.WriteLine("Successfully returned the book.");
+                        return; // Exit after successful return
+                    }
+                }
+
+                // If the borrow record wasn't found
+                Console.WriteLine("Error: No matching borrow record found for this book.");
+            }
+            else
+            {
+                Console.WriteLine("No late books found to return.");
+            }
+        }
 
 
         //***********************************************************************************************************************************************

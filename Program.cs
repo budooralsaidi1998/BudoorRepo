@@ -72,7 +72,7 @@ namespace BasicLibrary
 
                         while (!IsLogin)
                         {
-                          
+                            Console.Clear();
                             bool flag = false;
                             Console.WriteLine(" ");
                             Console.WriteLine("***************** Login admin  ********************");
@@ -83,6 +83,23 @@ namespace BasicLibrary
 
                             Console.WriteLine(" enter the password : ");
                             string passwordadmin = Console.ReadLine();
+
+                            Console.WriteLine(" re - enter the password : ");
+                           string  reenterPasswordadmin=Console.ReadLine();
+                                if (passwordadmin != reenterPasswordadmin)
+                                {
+
+                                    Console.WriteLine("Passwords do not match. Please try again.");
+                                Console.WriteLine("enter enter key");
+                                Console.ReadKey();
+                                        IsLogin = false ;
+                                break;
+
+                                }
+                               
+
+                            
+                            
 
 
                             for (int i = 0; i < adminRegistration.Count; i++)
@@ -139,6 +156,20 @@ namespace BasicLibrary
                             Console.WriteLine(" enter the password : ");
                             string password = Console.ReadLine();
 
+
+                            Console.WriteLine(" re - enter the password : ");
+                            string reenterPasswordadmin = Console.ReadLine();
+
+                            if (password != reenterPasswordadmin)
+                            {
+
+                                Console.WriteLine("Passwords do not match. Please try again.");
+                                Console.WriteLine("enter enter key");
+                                Console.ReadKey();
+                                IsLogin = false;
+                                break;
+
+                            }
                             for (int i = 0; i < userReistrtion.Count; i++)
                             {
                                 if (userReistrtion[i].email == email && userReistrtion[i].password == password)
@@ -271,7 +302,7 @@ namespace BasicLibrary
 
 
 
-        //Regastration for admin and user 
+        //Regastration for admin and user with validate 
         //*******************************************************************************************************************************************
 
         static void RegistrationMenu()
@@ -321,12 +352,7 @@ namespace BasicLibrary
             } while (ExitFlag != true);
 
         }
-        //to store uniq value ..
-        
       
-       
-        
-
         static void AdminRegistration()
         {
              List<string> existingNames = new List<string>();

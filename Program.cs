@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -55,6 +56,7 @@ namespace BasicLibrary
             bool ExitFlag = false;
             do
             {
+                Console.Clear();
                 Console.WriteLine("enter the number of the option: ");
                 Console.WriteLine("1. login admin ");
                 Console.WriteLine("2. login user ");
@@ -70,7 +72,7 @@ namespace BasicLibrary
 
                         while (!IsLogin)
                         {
-                            Console.Clear();
+                          
                             bool flag = false;
                             Console.WriteLine(" ");
                             Console.WriteLine("***************** Login admin  ********************");
@@ -172,12 +174,18 @@ namespace BasicLibrary
                         Console.Clear();
                         RegistrationMenu();
                         break;
+
                     case 4:
 
                         ExitFlag = true;
                         break;
-                    default:
 
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Incorrect choice. Please enter a number between 1 and 4.");
+                        
+                        Console.WriteLine("Press enter key to try again...");
+                        Console.ReadKey();
                         break;
 
                 }
@@ -313,44 +321,164 @@ namespace BasicLibrary
             } while (ExitFlag != true);
 
         }
+        //to store uniq value ..
+        
+      
+       
+        
 
         static void AdminRegistration()
         {
-            int id = adminRegistration.Count + 1;
+             List<string> existingNames = new List<string>();
+             List<string> existingEmails = new List<string>();
 
-            Console.WriteLine("enter the name  :");
-            string name = Console.ReadLine();
+            for (int i = 0; i < adminRegistration.Count; i++)
+            {
+                var (id, name, email, pass) = adminRegistration[i];
+             
+                existingNames.Add((name));
+                existingEmails.Add((email));
 
-            Console.WriteLine("enter the email :");
-            string email = Console.ReadLine();
+            }
+           
+            // Regex patterns
+            string emailPattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
 
-            Console.WriteLine(" enter the passowrd : ");
-            string password = Console.ReadLine();
+            while (true)
+            {
+                int id = adminRegistration.Count + 1;
 
-            adminRegistration.Add((id, name, email, password));
+                
+                Console.WriteLine("Enter the name:");
+                string name = Console.ReadLine();
 
-            Console.WriteLine("successfully added ");
+                // Check for duplicate name
+                if (existingNames.Contains(name))
+                {
+                    Console.WriteLine("Name already exists. Try again.");
+                    break;
+                }
+
+               
+                Console.WriteLine("Enter the email:");
+                string email = Console.ReadLine();
+
+                // Validate email
+                if (!IsValidEmail(email, emailPattern))
+                {
+                    Console.WriteLine("Invalid email format. Try again.");
+                    break; 
+                }
+
+                // Check for duplicate email
+                if (existingEmails.Contains(email))
+                {
+                    Console.WriteLine("Email already exists. Try again.");
+                    break; 
+                }
+
+               
+                Console.WriteLine("Enter the password:");
+                string password = Console.ReadLine();
+
+                // Validate password
+                if (!IsValidPassword(password, passwordPattern))
+                {
+                    Console.WriteLine("Invalid password format. Try again.");
+                    break;
+                }
+
+                // Add registration
+                adminRegistration.Add((id, name, email, password));
+                
+
+                Console.WriteLine("Successfully added");
+                break; 
+            }
+        }
+        static bool IsValidEmail(string email, string pattern)
+        {
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(email);
         }
 
+        static bool IsValidPassword(string password, string pattern)
+        {
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(password);
+        }
         static void UserRegistration()
         {
-            int userid = userReistrtion.Count + 1;
+            List<string> existingNames = new List<string>();
+            List<string> existingEmails = new List<string>();
 
-            Console.WriteLine("enter the name :");
-            string name = Console.ReadLine();
+            for (int i = 0; i < userReistrtion.Count; i++)
+            {
+                var (id, name, email, pass) = userReistrtion[i];
 
-            Console.WriteLine("enter the email :");
-            string email = Console.ReadLine();
+                existingNames.Add((name));
+                existingEmails.Add((email));
 
-            Console.WriteLine(" enter the passowrd : ");
-            string password = Console.ReadLine();
+            }
 
-            userReistrtion.Add((userid, name, email, password));
+            // Regex patterns
+            string emailPattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
 
-            Console.WriteLine("successfully added ");
+            while (true)
+            {
+                int userid = adminRegistration.Count + 1;
+
+
+                Console.WriteLine("Enter the name:");
+                string name = Console.ReadLine();
+
+                // Check for duplicate name
+                if (existingNames.Contains(name))
+                {
+                    Console.WriteLine("Name already exists. Try again.");
+                    break;
+                }
+
+
+                Console.WriteLine("Enter the email:");
+                string email = Console.ReadLine();
+
+                // Validate email
+                if (!IsValidEmail(email, emailPattern))
+                {
+                    Console.WriteLine("Invalid email format. Try again.");
+                    break;
+                }
+
+                // Check for duplicate email
+                if (existingEmails.Contains(email))
+                {
+                    Console.WriteLine("Email already exists. Try again.");
+                    break;
+                }
+
+
+                Console.WriteLine("Enter the password:");
+                string password = Console.ReadLine();
+
+                // Validate password
+                if (!IsValidPassword(password, passwordPattern))
+                {
+                    Console.WriteLine("Invalid password format. Try again.");
+                    break;
+                }
+
+                // Add registration
+                userReistrtion.Add((userid, name, email, password));
+
+
+                Console.WriteLine("Successfully added");
+                break;
+            }
+
         }
-
-
 
 
 
@@ -605,6 +733,7 @@ namespace BasicLibrary
 
 
         }
+
         //********************************************************************************************************************************************
 
 

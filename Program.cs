@@ -554,7 +554,7 @@ namespace BasicLibrary
                
 
 
-                Console.WriteLine("\n Enter the char of operation you need :");
+                Console.WriteLine("\n Enter the option of operation you need :");
                 Console.WriteLine("\n 1- Add New Book");
                 Console.WriteLine("\n 2- Display All Books");
                 Console.WriteLine("\n 3- Search for Book by Name");
@@ -721,44 +721,61 @@ namespace BasicLibrary
             int borrowedPadding = 10;
             int pricePadding = 10;
             int categoryPadding = 15;
-            int periodPadding = 10;
+            int periodPadding = 15;
 
             // Add headers
-            sb.Append(" \n\n\t ");
-            sb.Append("ID".PadRight(idPadding))
-              .Append("Name".PadRight(namePadding))
-              .Append("Author".PadRight(authorPadding))
-              .Append("Copies".PadRight(copiesPadding))
-              .Append("Borrowed".PadRight(borrowedPadding))
-              .Append("Price".PadRight(pricePadding))
-              .Append("Category".PadRight(categoryPadding))
-              .Append("Borrow Period".PadRight(periodPadding))
+            sb.Append("\n\n\t|");
+            sb.Append(CenterText("ID", idPadding)).Append("|");
+            sb.Append(CenterText("Name", namePadding)).Append("|");
+            sb.Append(CenterText("Author", authorPadding)).Append("|");
+            sb.Append(CenterText("Copies", copiesPadding)).Append("|");
+            sb.Append(CenterText("Borrowed", borrowedPadding)).Append("|");
+            sb.Append(CenterText("Price", pricePadding)).Append("|");
+            sb.Append(CenterText("Category", categoryPadding)).Append("|");
+            sb.Append(CenterText("Borrow Period", periodPadding)).Append("|")
               .AppendLine();
 
             // Add a separator line
-            sb.Append("\n\t");
-            sb.Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding))
+            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9 * 2 + 8))
               .AppendLine();
-          
+
+            // Loop through each book and display its details
             for (int i = 0; i < Books.Count; i++)
             {
                 BookNumber = i + 1;
-                sb.Append("\n\t");
-                sb.Append(Books[i].ID.ToString().PadRight(idPadding))
-                  .Append(Books[i].BName.PadRight(namePadding))
-                  .Append(Books[i].BAuthor.PadRight(authorPadding))
-                  .Append(Books[i].copies.ToString().PadRight(copiesPadding))
-                  .Append(Books[i].Borrowedcopies.ToString().PadRight(borrowedPadding))
-                  .Append(Books[i].price.ToString().PadRight(pricePadding))
-                  .Append(Books[i].category.PadRight(categoryPadding))
-                  .Append(Books[i].borrowperiod.ToString().PadRight(periodPadding))
+                sb.Append("\t|");
+                sb.Append(CenterText(Books[i].ID.ToString(), idPadding)).Append("|");
+                sb.Append(CenterText(Books[i].BName, namePadding)).Append("|");
+                sb.Append(CenterText(Books[i].BAuthor, authorPadding)).Append("|");
+                sb.Append(CenterText(Books[i].copies.ToString(), copiesPadding)).Append("|");
+                sb.Append(CenterText(Books[i].Borrowedcopies.ToString(), borrowedPadding)).Append("|");
+                sb.Append(CenterText(Books[i].price.ToString(), pricePadding)).Append("|");
+                sb.Append(CenterText(Books[i].category, categoryPadding)).Append("|");
+                sb.Append(CenterText(Books[i].borrowperiod.ToString(), periodPadding)).Append("|")
                   .AppendLine();
             }
 
+            // Add another separator line at the bottom
+            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9 * 2 + 8))
+              .AppendLine();
+
             // Display the final result
             Console.WriteLine(sb.ToString());
-
         }
+
+        // Method to center text within a given width
+        static string CenterText(string text, int width)
+        {
+            if (text.Length >= width)
+            {
+                return text;
+            }
+
+            int padding = (width - text.Length) / 2;
+            int paddingRight = width - text.Length - padding;
+            return new string(' ', padding) + text + new string(' ', paddingRight);
+        }
+
 
         static void SearchForBook()
         {
@@ -782,33 +799,56 @@ namespace BasicLibrary
 
         static void RemoveBook()
         {
+            // Display all books before attempting to remove one
             ViewAllBooks();
 
-            Console.WriteLine("Choose the id of book you want to delete the book ");
-            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine(" ");
+            Console.WriteLine("Choose the ID of the book you want to delete:");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid ID. Please enter a valid number.");
+                return; // Exit if the input is not a valid number
+            }
 
-            bool flag = false;
+            bool bookFound = false;
 
+            // Loop through the books to find the one with the given ID
             for (int i = 0; i < Books.Count; i++)
             {
                 if (Books[i].ID == id)
                 {
+                    bookFound = true; // Mark the book as found
 
-                    Books.Remove((Books[i].ID, Books[i].BName, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies, Books[i].price, Books[i].category, Books[i].borrowperiod));
+                    // Check if the book has borrowed copies
+                    if (Books[i].Borrowedcopies != 0)
+                    {
+                        Console.WriteLine("Can't remove the book because someone has borrowed it.");
+                        return; // Exit if the book can't be deleted
+                    }
+                    else
+                    {
+                      
+                        Books.RemoveAt(i);
 
-                    Console.WriteLine("SUCCESSFULLY DELETE");
-                    flag = true;
-                    break;
+                        Console.WriteLine("Book successfully deleted.");
+
+                        
+                        Console.WriteLine("Press Enter to continue...");
+                        Console.ReadKey();
+                        Console.Clear();
+
+                        return; 
+                    }
                 }
             }
 
-            if (flag != true)
-
+            // If the book with the given ID was not found, display a message
+            if (!bookFound)
             {
-                Console.WriteLine("book not found");
+                Console.WriteLine("Book not found.");
             }
-
         }
+
 
         static void Reporting()
         {

@@ -620,11 +620,38 @@ namespace BasicLibrary
         static void AddnNewBook()
         {
 
+            List<string> existingNames = new List<string>();
 
+            
+          
+
+            for (int i = 0; i < Books.Count; i++)
+            {
+                var (ID, BName, BAuthor, copiesd, Borrowedcopies, priced, category, borrowperiod) = Books[i];
+
+                existingNames.Add((BName));
+            }
             int id = Books.Count + 1;
-            Console.WriteLine("Enter Book Name :");
 
-            string name = Console.ReadLine();
+
+
+            string name;
+            while (true) // Keep asking for the book name until a valid one is provided
+            {
+                Console.WriteLine("Enter Book Name:");
+                name = Console.ReadLine();
+
+                if (existingNames.Contains(name))
+                {
+                    Console.WriteLine("Name already exists. Try again.");
+                }
+                else
+                {
+                    // If the name is valid, add it to the existing names list and break the loop
+                    existingNames.Add(name);
+                    break;
+                }
+            }
 
             Console.WriteLine("Enter Book Author :");
             string author = Console.ReadLine();
@@ -853,7 +880,7 @@ namespace BasicLibrary
                         validCategory = true;
                         break;
                     default:
-                        Console.Clear();
+                       
                         Console.WriteLine("Incorrect choice, please try again...");
                         break;
                 }

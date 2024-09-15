@@ -574,22 +574,27 @@ namespace BasicLibrary
                         break;
 
                     case 2:
+                        Console.Clear();
                         ViewAllBooks();
                         break;
 
                     case 3:
+                        Console.Clear();
                         SearchForBook();
                         break;
 
                     case 4:
+                        Console.Clear();
                         EditBookMenu();
                         break;
 
                     case 5:
+                        Console.Clear();
                         RemoveBook();
                         break;
 
                     case 6:
+                        Console.Clear();
                         Reporting();
                         break;
 
@@ -631,12 +636,14 @@ namespace BasicLibrary
 
                 existingNames.Add((BName));
             }
+
+
             int id = Books.Count + 1;
 
 
 
             string name;
-            while (true) // Keep asking for the book name until a valid one is provided
+            while (true) 
             {
                 Console.WriteLine("Enter Book Name:");
                 name = Console.ReadLine();
@@ -700,42 +707,57 @@ namespace BasicLibrary
 
         static void ViewAllBooks()
         {
+            Console.WriteLine("\n\n\n\n\t\t\t\t\t\t******   DETAILS OF BOOKS    ******");
+            Console.WriteLine("   ");
             StringBuilder sb = new StringBuilder();
 
             int BookNumber = 0;
 
+            // Define padding width for each column
+            int idPadding = 10;
+            int namePadding = 30;
+            int authorPadding = 20;
+            int copiesPadding = 10;
+            int borrowedPadding = 10;
+            int pricePadding = 10;
+            int categoryPadding = 15;
+            int periodPadding = 10;
+
+            // Add headers
+            sb.Append(" \n\n\t ");
+            sb.Append("ID".PadRight(idPadding))
+              .Append("Name".PadRight(namePadding))
+              .Append("Author".PadRight(authorPadding))
+              .Append("Copies".PadRight(copiesPadding))
+              .Append("Borrowed".PadRight(borrowedPadding))
+              .Append("Price".PadRight(pricePadding))
+              .Append("Category".PadRight(categoryPadding))
+              .Append("Borrow Period".PadRight(periodPadding))
+              .AppendLine();
+
+            // Add a separator line
+            sb.Append("\n\t");
+            sb.Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding))
+              .AppendLine();
+          
             for (int i = 0; i < Books.Count; i++)
             {
                 BookNumber = i + 1;
-                sb.Append("Book ").Append(BookNumber).Append(" ID : ").Append(Books[i].ID);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" name : ").Append(Books[i].BName);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" Author : ").Append(Books[i].BAuthor);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" Copies available : ").Append(Books[i].copies);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" borrwed copies : ").Append(Books[i].Borrowedcopies);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" price : ").Append(Books[i].price);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" category : ").Append(Books[i].category);
-                sb.AppendLine();
-
-                sb.Append("Book ").Append(BookNumber).Append(" borrow period  : ").Append(Books[i].borrowperiod);
-                sb.AppendLine().AppendLine();
-                sb.AppendLine().AppendLine();
-
-                Console.WriteLine(sb.ToString());
-                sb.Clear();
-
+                sb.Append("\n\t");
+                sb.Append(Books[i].ID.ToString().PadRight(idPadding))
+                  .Append(Books[i].BName.PadRight(namePadding))
+                  .Append(Books[i].BAuthor.PadRight(authorPadding))
+                  .Append(Books[i].copies.ToString().PadRight(copiesPadding))
+                  .Append(Books[i].Borrowedcopies.ToString().PadRight(borrowedPadding))
+                  .Append(Books[i].price.ToString().PadRight(pricePadding))
+                  .Append(Books[i].category.PadRight(categoryPadding))
+                  .Append(Books[i].borrowperiod.ToString().PadRight(periodPadding))
+                  .AppendLine();
             }
+
+            // Display the final result
+            Console.WriteLine(sb.ToString());
+
         }
 
         static void SearchForBook()
@@ -1344,7 +1366,7 @@ namespace BasicLibrary
         //**********************************************************************************************************************************************
         static void EditBookMenu()
         {
-
+            Console.Clear();
             bool flage = true;
 
             while (flage)
@@ -1398,41 +1420,71 @@ namespace BasicLibrary
 
         static void EditName()
         {
+            Console.Clear();
+            // List to store existing book names
+            List<string> existingNames = new List<string>();
+
+            // Display all books (assuming ViewAllBooks is a method to show all books)
             ViewAllBooks();
 
             Console.WriteLine(" ");
-            Console.WriteLine("Enter id book you want :");
+
+            Console.WriteLine("Enter the ID of the book you want to edit:");
             int id = int.Parse(Console.ReadLine());
 
-            bool flag = false;
+            bool bookFound = false;
 
+            // Loop through all books to find the book by its ID
             for (int i = 0; i < Books.Count; i++)
             {
                 if (Books[i].ID == id)
                 {
+                    // Populate the existingNames list with all current book names
+                    foreach (var book in Books)
+                    {
+                        existingNames.Add(book.BName);
+                    }
 
-                    Console.WriteLine(" enter the name you to update : ");
-                    string name = Console.ReadLine();
+                    string name;
+                    while (true) // Loop to get a valid book name
+                    {
+                        Console.WriteLine("Enter a new book name:");
+                        name = Console.ReadLine();
 
+                        if (existingNames.Contains(name))
+                        {
+                            Console.WriteLine("Name already exists. Try again.");
+                        }
+                        else
+                        {
+                            // If the name is valid, break the loop and proceed
+                            existingNames.Add(name);
+                            break;
+                        }
+                    }
+
+                    // Update the book's name in the list
                     Books[i] = (Books[i].ID, name, Books[i].BAuthor, Books[i].copies, Books[i].Borrowedcopies, Books[i].price, Books[i].category, Books[i].borrowperiod);
-                    Console.WriteLine(" successfully Update name ");
+                    Console.WriteLine("Successfully updated the book name.");
 
-
-                    flag = true;
-                    break;
+                    Console.WriteLine("Press Enter to continue...");
+                    Console.ReadKey(); 
+                    Console.Clear();
+                    bookFound = true;
+                    break; // Exit the loop since the book was found and updated
                 }
             }
 
-            if (flag != true)
-
+            // If the book ID was not found, inform the user
+            if (!bookFound)
             {
-                Console.WriteLine("book not found");
+                Console.WriteLine("Book not found.");
             }
         }
 
         static void EditAuthor()
         {
-
+            Console.Clear();
             ViewAllBooks();
 
             Console.WriteLine(" ");
@@ -1452,6 +1504,9 @@ namespace BasicLibrary
                     Books[i] = (Books[i].ID, Books[i].BName, author, Books[i].copies, Books[i].Borrowedcopies, Books[i].price, Books[i].category, Books[i].borrowperiod);
                     Console.WriteLine(" successfully Update Author ");
 
+                    Console.WriteLine("Press Enter to continue...");
+                    Console.ReadKey(); // Wait for the user to press any key
+                    Console.Clear();
 
                     flag = true;
                     break;
@@ -1468,6 +1523,7 @@ namespace BasicLibrary
 
         static void EditQuantity()
         {
+            Console.Clear();
             ViewAllBooks();
 
             Console.WriteLine(" ");
@@ -1487,7 +1543,9 @@ namespace BasicLibrary
                     Books[i] = (Books[i].ID, Books[i].BName, Books[i].BAuthor, copies, Books[i].Borrowedcopies, Books[i].price, Books[i].category, Books[i].borrowperiod);
                     Console.WriteLine(" successfully Update quantity ");
 
-
+                    Console.WriteLine("Press Enter to continue...");
+                    Console.ReadKey(); // Wait for the user to press any key
+                    Console.Clear();
                     flag = true;
                     break;
                 }

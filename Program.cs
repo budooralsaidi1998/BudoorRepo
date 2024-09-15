@@ -871,54 +871,149 @@ namespace BasicLibrary
             List<string> nameBook = new List<string>();
             List<string> author = new List<string>();
             List<int> borrowBook = new List<int>();
-
             List<int> quantity = new List<int>();
+            List<(string category, int count)> categoryCounts = new List<(string category, int count)>(); // List of tuples for categories
 
+            int totalCopies = 0;   
+            int totalBorrowed = 0; 
+            int totalReturned = 0; 
+
+            // Loop through all books
             for (int i = 0; i < Books.Count; i++)
             {
                 var (ID, BName, BAuthor, copies, Borrowedcopies, price, category, borrowperiod) = Books[i];
+
                 nameBook.Add(BName);
                 author.Add(BAuthor);
                 borrowBook.Add(Borrowedcopies);
                 quantity.Add(copies);
 
+                // Update total number of copies and borrowed books
+                totalCopies += copies;
+                totalBorrowed += Borrowedcopies;
+                totalReturned += (copies - Borrowedcopies); // to get return book 
+
+                // Update category count using a list of tuples
+                bool categoryExists = false;
+                for (int j = 0; j < categoryCounts.Count; j++)
+                {
+                    if (categoryCounts[j].category == category)
+                    {
+                        categoryCounts[j] = (categoryCounts[j].category, categoryCounts[j].count + 1); // Increment the book count for the existing category
+                        categoryExists = true;
+                        break;
+                    }
+                }
+                if (!categoryExists)
+                {
+                    categoryCounts.Add((category, 1)); // Add a new category with an initial count of 1
+                }
             }
 
-            //total book is available 
-            int totalBook = nameBook.Count();
-            Console.WriteLine("the total of book is available = " + totalBook);
-            Console.WriteLine(" ");
+            int consoleWidth = Console.WindowWidth;
 
-            //total book is borrowe it 
-            int borrowtotal = borrowBook.Sum();
-            Console.WriteLine("the total of book is borrow it = " + borrowtotal);
+            // Helper method to center text in the console
+            void CenterText(string text)
+            {
+                int padding = (consoleWidth - text.Length) / 2;
+                Console.WriteLine(new string(' ', padding) + text);
+            }
+            Console.WriteLine();
+            CenterText("-^-^-^-^-^-^-^-^-^-^-^-^ THE REPORT OF THE BOOK -^-^-^-^-^-^-^-^-^-^-^-^");
+            Console.WriteLine();
+            CenterText("*******************************************************");
 
-            Console.WriteLine(" ");
+            // Display the total number of books in the library
+            int totalBooks = nameBook.Count;
+            CenterText($"Total number of books in the library: {totalBooks}");
+            Console.WriteLine();
 
-            //most borrowed 
-            int IndexOfMostBorrowed = borrowBook.IndexOf(borrowBook.Max());
-            Console.WriteLine($" the book is most borrow it : {nameBook[IndexOfMostBorrowed]}");
+            CenterText("*******************************************************");
 
-            Console.WriteLine(" ");
+            // Display the number of categories and count of books in each category
+            int totalCategories = categoryCounts.Count;
+            CenterText($"Total number of categories: {totalCategories}");
+            CenterText("Categories and the number of books in each:");
+            foreach (var category in categoryCounts)
+            {
+                CenterText($"- {category.category}: {category.count} books");
+            }
+            Console.WriteLine();
 
-            //less borrow 
-            int IndexOflessBorrowed = borrowBook.IndexOf(borrowBook.Min());
-            if (IndexOflessBorrowed > 0)
+            CenterText("*******************************************************");
 
-                Console.WriteLine($" the book less  borrow is  : {nameBook[IndexOflessBorrowed]}, number borrow is {borrowBook.Min()} ");
+            // Display the total number of copies of all books
+            CenterText($"Total number of copies of all books: {totalCopies}");
+            Console.WriteLine();
 
+            CenterText("*******************************************************");
 
+            // Display the total number of borrowed books
+            CenterText($"Total number of borrowed books: {totalBorrowed}");
+            Console.WriteLine();
 
+            CenterText("*******************************************************");
 
+            // Display the total number of returned books
+            CenterText($"Total number of returned books: {totalReturned}");
+            Console.WriteLine();
 
+            CenterText("*******************************************************");
 
-            //
+            // Display the most borrowed book
+            if (borrowBook.Count > 0)
+            {
+                // Find the maximum borrowed count
+                int maxBorrowed = borrowBook.Max();
 
+                List<int> mostBorrowedIndices = new List<int>();
 
+                // collect the book is max 
+                for (int i = 0; i < borrowBook.Count; i++)
+                {
+                    if (borrowBook[i] == maxBorrowed)
+                    {
+                        mostBorrowedIndices.Add(i);
+                    }
+                }
 
+                // maximum borrowed count
+                CenterText($"The book(s) most borrowed (Borrowed {maxBorrowed} times):");
+                foreach (int index in mostBorrowedIndices)
+                {
+                    CenterText($"- {nameBook[index]}");
+                }
+            }
+            Console.WriteLine();
 
+            CenterText("*******************************************************");
 
+            // Display the least borrowed book
+            if (borrowBook.Count > 0)
+            {
+                // Find the minimum borrowed count
+                int minBorrowed = borrowBook.Min();
+                List<int> leastBorrowedIndices = new List<int>();
+
+                // Collect all books that have the minimum borrowed count
+                for (int i = 0; i < borrowBook.Count; i++)
+                {
+                    if (borrowBook[i] == minBorrowed)
+                    {
+                        leastBorrowedIndices.Add(i);
+                    }
+                }
+
+                // Display all books with the minimum borrowed count
+                CenterText($"The book(s) least borrowed (Borrowed {minBorrowed} times):");
+                foreach (int index in leastBorrowedIndices)
+                {
+                    CenterText($"- {nameBook[index]}");
+                }
+            }
         }
+
+
         static string CategorBookMenu()
         {
             bool validCategory = false;

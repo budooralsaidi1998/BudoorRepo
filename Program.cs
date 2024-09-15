@@ -28,6 +28,8 @@ namespace BasicLibrary
 
         static List<(string username, string password)> master = new List<(string username, string password)>();
 
+        static List<(int Cid, string NameCat , int NumofBook )> Category = new List<(int Cid, string NameCat, int NumofBook)>();
+
         //files
         //******************************************************************************************************************************************
         static string filePath = "C:\\Users\\budoo\\Desktop\\files\\BooksFile.txt";
@@ -35,6 +37,7 @@ namespace BasicLibrary
         static string fileUserRegistration = "C:\\Users\\budoo\\Desktop\\files\\Usersfile.txt";
         static string fileBorrowBook = "C:\\Users\\budoo\\Desktop\\files\\BorrowingFile.txt";
         static string filemaster = "C:\\Users\\budoo\\Desktop\\files\\master.txt";
+        static string fileCategory = "C:\\Users\\budoo\\Desktop\\files\\CategoriesFile.txt";
         //******************************************************************************************************************************************
 
         //Test Check Out
@@ -49,7 +52,7 @@ namespace BasicLibrary
             LoadAdminFromFile();
             LoadUserFromFile();
             LoadborrowFromFile();
-
+            LoadCategory();
 
 
 
@@ -548,6 +551,9 @@ namespace BasicLibrary
 
             do
             {
+               
+
+
                 Console.WriteLine("\n Enter the char of operation you need :");
                 Console.WriteLine("\n 1- Add New Book");
                 Console.WriteLine("\n 2- Display All Books");
@@ -562,7 +568,9 @@ namespace BasicLibrary
                 switch (choice)
                 {
                     case 1:
+                        Console.Clear();
                         AddnNewBook();
+                        SaveCategory();
                         break;
 
                     case 2:
@@ -587,6 +595,7 @@ namespace BasicLibrary
 
                     case 7:
                         SaveBooksToFile();
+                        SaveCategory();
                         ExitFlag = true;
                         break;
 
@@ -628,17 +637,37 @@ namespace BasicLibrary
             Console.WriteLine("Enter the price : ");
             int price = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter Book category :");
-            string category = Console.ReadLine();
+            Console.WriteLine("Enter Book category:");
+         
+            string Categoryselect = CategorBookMenu();
 
+           //to get the category name and check it after that count the book
+            for (int i = 0; i < Category.Count; i++)
+            {
+                if (Category[i].NameCat.Trim() == Categoryselect.Trim()) // Trim() to handle extra spaces
+                {
+                    
+                    int updatedNumOfBooks = Category[i].NumofBook + 1;
+
+                    
+                    Category[i] = (Category[i].Cid, Category[i].NameCat, updatedNumOfBooks);
+
+                    
+                    break;
+                }
+            }
             Console.WriteLine("Enter the borrow period  : ");
             int borrowporied = int.Parse(Console.ReadLine());
 
 
-            Books.Add((id, name, author, copies, 0, price, category, borrowporied));
+            Books.Add((id, name, author, copies, 0, price, Categoryselect, borrowporied));
 
+            
+            
 
+          
             Console.WriteLine("Book Added Succefully");
+
 
         }
 
@@ -785,6 +814,54 @@ namespace BasicLibrary
 
 
         }
+        static string CategorBookMenu()
+        {
+            bool validCategory = false;
+            string ch1 = "";  // Initialize the variable
+
+            while (!validCategory)
+            {
+                Console.WriteLine("Choose the category of book:");
+                Console.WriteLine(" 1. ** History **");
+                Console.WriteLine(" 2. ** IT **");
+                Console.WriteLine(" 3. ** Software **");
+                Console.WriteLine(" 4. ** Science **");
+                Console.WriteLine(" 5. ** Stories **");
+
+                string chooseCate = Console.ReadLine();
+
+                switch (chooseCate)
+                {
+                    case "1":
+                        ch1 = "History";
+                        validCategory = true; // Mark as valid and exit the loop
+                        break;
+                    case "2":
+                        ch1 = "IT";
+                        validCategory = true;
+                        break;
+                    case "3":
+                        ch1 = "Software";
+                        validCategory = true;
+                        break;
+                    case "4":
+                        ch1 = "Science";
+                        validCategory = true;
+                        break;
+                    case "5":
+                        ch1 = "Stories";
+                        validCategory = true;
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Incorrect choice, please try again...");
+                        break;
+                }
+            }
+
+            return ch1; // Return the selected category
+        }
+
 
         //********************************************************************************************************************************************
 
@@ -1598,8 +1675,52 @@ namespace BasicLibrary
                 Console.WriteLine($"Error loading from file: {ex.Message}");
             }
         }
-      
-   
+
+        static void LoadCategory()
+        {
+            try
+            {
+                if (File.Exists(fileCategory))
+                {
+                    using (StreamReader reader = new StreamReader(fileCategory))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var parts = line.Split(" | ");
+                            if (parts.Length == 3)
+                            {
+                                Category.Add((int.Parse(parts[0]), parts[1], int.Parse(parts[2])));
+                            }
+                        }
+                    }
+                    // Console.WriteLine("admin loaded from file successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading from file: {ex.Message}");
+            }
+        }
+
+        static void SaveCategory()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(fileCategory))
+                {
+                    foreach (var cat in Category)
+                    {
+                        writer.WriteLine($"{cat.Cid} | {cat.NameCat} | {cat.NumofBook}");
+                    }
+                }
+                // Console.WriteLine("Books saved to file successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving to file: {ex.Message}");
+            }
+        }
     }
             // **********************************************************************************************************************************************
 

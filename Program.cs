@@ -736,7 +736,7 @@ namespace BasicLibrary
               .AppendLine();
 
             // Add a separator line
-            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9 * 2 + 8))
+            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9 ))
               .AppendLine();
 
             // Loop through each book and display its details
@@ -756,7 +756,7 @@ namespace BasicLibrary
             }
 
             // Add another separator line at the bottom
-            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9 * 2 + 8))
+            sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9))
               .AppendLine();
 
             // Display the final result
@@ -779,22 +779,38 @@ namespace BasicLibrary
 
         static void SearchForBook()
         {
-            Console.WriteLine("Enter the book name you want");
-            string name = Console.ReadLine();
-            bool flag = false;
+            Console.WriteLine("Enter the book name or part of the name you want to search for:");
+            string keyword = Console.ReadLine().ToLower(); // Convert input to lowercase for case-insensitive search
+            bool found = false;
 
+            Console.WriteLine("\n\n\n\t\t\t\t\tSearch Results");
+            Console.WriteLine("   ");
+
+            // Iterate through the list of books to find any book with a name that contains the keyword
             for (int i = 0; i < Books.Count; i++)
             {
-                if (Books[i].BName == name)
+                if (Books[i].BName.ToLower().Contains(keyword)) 
                 {
-                    Console.WriteLine("Book Author is : " + Books[i].BAuthor);
-                    flag = true;
-                    break;
+                    // If a match is found, display all book details
+                    Console.WriteLine("\nBook ID: " + Books[i].ID);
+                    Console.WriteLine("Book Name: " + Books[i].BName);
+                    Console.WriteLine("Book Author: " + Books[i].BAuthor);
+                    Console.WriteLine("Copies Available: " + Books[i].copies);
+                    Console.WriteLine("Borrowed Copies: " + Books[i].Borrowedcopies);
+                    Console.WriteLine("Price: " + Books[i].price);
+                    Console.WriteLine("Category: " + Books[i].category);
+                    Console.WriteLine("Borrow Period: " + Books[i].borrowperiod);
+                    Console.WriteLine("-------------------------------------------");
+
+                    found = true;
                 }
             }
 
-            if (flag != true)
-            { Console.WriteLine("book not found"); }
+            // If no book was found
+            if (!found)
+            {
+                Console.WriteLine("No books found matching the keyword '" + keyword + "'.");
+            }
         }
 
         static void RemoveBook()
@@ -1003,9 +1019,11 @@ namespace BasicLibrary
                     Console.Clear();
                     Console.WriteLine(" U ARE USER : "+ userId);
                     Console.WriteLine("\nEnter the number of the operation you need:");
-                    Console.WriteLine("\n1. Borrow a book");
-                    Console.WriteLine("\n2. Return a book");
-                    Console.WriteLine("\n3. Logout");
+                    Console.WriteLine("\n1. Borrow a books");
+                    Console.WriteLine("\n2. Return a books");
+                    Console.WriteLine("\n3. search a books");
+                    Console.WriteLine("\n4. view all  books");
+                    Console.WriteLine("\n5. Logout");
 
                     int choice;
                     bool validInput = int.TryParse(Console.ReadLine(), out choice);
@@ -1029,6 +1047,16 @@ namespace BasicLibrary
                             break;
 
                         case 3:
+                            Console.Clear();
+                            SearchForBook();
+                            break;
+
+                        case 4:
+                            Console.Clear();
+                            ViewAllBooks();
+                            break;
+
+                        case 5:
                             Console.Clear();
                             SaveBooksToFile();
                             SaveborrowToFile();

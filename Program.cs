@@ -1118,7 +1118,8 @@ namespace BasicLibrary
                     Console.WriteLine("\n2. Return a books");
                     Console.WriteLine("\n3. search a books");
                     Console.WriteLine("\n4. view all  books");
-                    Console.WriteLine("\n5. Logout");
+                    Console.WriteLine("\n5. view profile user ");
+                    Console.WriteLine("\n6. Logout");
 
                     int choice;
                     bool validInput = int.TryParse(Console.ReadLine(), out choice);
@@ -1152,6 +1153,11 @@ namespace BasicLibrary
                             break;
 
                         case 5:
+                            Console.Clear();
+                            ViewProfile(userId);
+                            break;
+
+                        case 6:
                             Console.Clear();
                             SaveBooksToFile();
                             SaveborrowToFile();
@@ -1517,6 +1523,119 @@ namespace BasicLibrary
                 Console.WriteLine("No late books found to return.");
             }
         }
+        static void ViewProfile(int userId)
+        {
+            Console.Clear();
+            // Find the user by ID in the userReistrtion list
+            //new thing i learn it by "FirstOrDefault"..s used to find the first book in the Books list that matches a given condition
+            var user = userReistrtion.FirstOrDefault(u => u.Aid == userId);
+            //by defualt mean that is null if is null the list no value inside it 
+            if (user == default)
+            {
+                Console.WriteLine("User not found.");
+                return;
+            }
+
+            // Display user profile details
+            Console.WriteLine("\n\n\t\t******   USER PROFILE    ******\n");
+            Console.WriteLine($"User ID: {user.Aid}");
+            Console.WriteLine($"Name: {user.username}");
+            Console.WriteLine($"Email: {user.email}");
+
+
+            List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)> currentBorrows = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)>();
+
+
+            // Books that the user has borrowed but not yet returned
+            for (int i = 0; i < borrows.Count; i++)
+            {
+                // Check if the borrow entry belongs to the specific user and hasn't been returned
+                if (borrows[i].userid == userId && !borrows[i].isreturn)
+                {
+                    // Add the current borrow record to the result list
+                    currentBorrows.Add(borrows[i]);
+                }
+            }
+
+
+            List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)> returnedBooks = new List<(int userid, int bookid, DateTime borrowdate, DateTime returndate, string acaualreturndate, string rating, bool isreturn)>();
+            // Books that the user has borrowed and returned
+            for (int i = 0; i < borrows.Count; i++)
+            {
+                // Check if the borrow entry belongs to the specific user and has been returned
+                if (borrows[i].userid == userId && borrows[i].isreturn)
+                {
+                    // Add the returned borrow record to the result list
+                    returnedBooks.Add(borrows[i]);
+                }
+            }
+            //padRight mean the width size of container the value 
+            Console.WriteLine("\nBooks Currently Borrowed (Not Returned):");
+            if (currentBorrows.Count > 0)
+            {
+                Console.WriteLine("-------------------------------------------------------------------------------");
+                Console.WriteLine($"| {"Book Name".PadRight(25)} | {"Borrow Date".PadRight(20)} | {"Return Date".PadRight(20)} |");
+                Console.WriteLine("-------------------------------------------------------------------------------");
+
+                foreach (var borrow in currentBorrows)
+                {
+                    // Find the book details using bookid
+                    var book = Books.FirstOrDefault(b => b.ID == borrow.bookid);
+                    string bookName = book.BName;
+
+                    Console.WriteLine($"| {bookName.PadRight(25)} | {borrow.borrowdate.ToString("yyyy-MM-dd").PadRight(20)} | {borrow.returndate.ToString("yyyy-MM-dd").PadRight(20)} |");
+                }
+                Console.WriteLine("-------------------------------------------------------------------------------");
+            }
+            else
+            {
+                Console.WriteLine("No books currently borrowed.");
+            }
+
+            Console.WriteLine("\nBooks Previously Borrowed and Returned:");
+            if (returnedBooks.Count > 0)
+            {
+                Console.WriteLine("----------------------------------------------------------------------------------------------------------");
+                Console.WriteLine($"| {"Book Name".PadRight(25)} | {"Borrow Date".PadRight(20)} | {"Return Date".PadRight(20)} | {"Actual Return Date".PadRight(20)} | {"On Time?".PadRight(10)} |");
+                Console.WriteLine("----------------------------------------------------------------------------------------------------------");
+
+                foreach (var borrow in returnedBooks)
+                {
+                    // Find the book details using bookid
+                    var book = Books.FirstOrDefault(b => b.ID == borrow.bookid);
+                    string bookName = book.BName;
+
+                    // Parse the actual return date from string to DateTime
+                    DateTime actualReturnDate;
+                    if (!DateTime.TryParse(borrow.acaualreturndate, out actualReturnDate))
+                    {
+                      
+                        Console.WriteLine("Error: Invalid return date format.");
+                        continue;
+                    }
+
+                    // Check if the book was returned on time
+                    string onTime;
+                    if (actualReturnDate <= borrow.returndate)
+                    {
+                        onTime = "Yes";
+                    }
+                    else
+                    {
+                        onTime = "No";
+                    }
+
+                    // Display the book details
+                    Console.WriteLine($"| {bookName.PadRight(25)} | {borrow.borrowdate.ToString("yyyy-MM-dd").PadRight(20)} | {borrow.returndate.ToString("yyyy-MM-dd").PadRight(20)} | {actualReturnDate.ToString("yyyy-MM-dd").PadRight(20)} | {onTime.PadRight(10)} |");
+                }
+                Console.WriteLine("----------------------------------------------------------------------------------------------------------");
+            }
+            else
+            {
+                Console.WriteLine("No books previously borrowed and returned.");
+            }
+        }
+
 
 
         //***********************************************************************************************************************************************

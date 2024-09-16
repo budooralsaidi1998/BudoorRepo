@@ -55,23 +55,55 @@ namespace BasicLibrary
             LoadCategory();
 
 
+            Console.WriteLine();
+            Drowing();
+            // Save the current console color
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\t\t\t\t\t\t\t             ... Click enter key ...");
+            Console.ForegroundColor = originalColor;
+            Console.ReadLine();
 
             bool ExitFlag = false;
-            do
+            do 
             {
                 Console.Clear();
 
                 Console.WriteLine();
-                Drowing();
+               
+                drwingeyeclose();
+               
+                Console.WriteLine();
+                ConsoleColor orgnalColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Cyan;
 
-                Console.WriteLine("enter the number of the option: ");
-                Console.WriteLine("1. login admin ");
-                Console.WriteLine("2. login user ");
-                Console.WriteLine("3. Registaration ");
-                Console.WriteLine("4. logout ");
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t1. login admin ");
+                Console.WriteLine();
+
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t-----------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t2. login user ");
+                Console.WriteLine();
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t3. Registaration ");
+                Console.WriteLine();
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t-------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t 4. logout  ");
+                Console.ForegroundColor = orgnalColor;
+                Console.WriteLine();
+                Console.WriteLine();
+                ConsoleColor orginalColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("\t\t\t\t\t\t\t\tenter the number of the option: ");
                 int num = int.Parse(Console.ReadLine());
+                Console.ForegroundColor = orginalColor;
 
-                switch(num)
+
+
+
+
+                switch (num)
                 {
 
                     case 1:
@@ -556,9 +588,10 @@ namespace BasicLibrary
 
             do
             {
-               
                 Console.WriteLine();
-                Drowingadmin();
+                drwingeyeopen();
+                Console.WriteLine();
+
                 Console.WriteLine(" Iam Admin : " + adminId);
                 Console.WriteLine("\n Enter the option of operation you need :");
                 Console.WriteLine("\n 1- Add New Book");
@@ -568,9 +601,11 @@ namespace BasicLibrary
                 Console.WriteLine("\n 5- Remove the book ");
                 Console.WriteLine("\n 6- Reporting the data ");
                 Console.WriteLine("\n 7- Save and Exit");
+                Console.WriteLine();
+                drwingeyeopen();
 
                 int choice = int.Parse(Console.ReadLine());
-
+                 
                 switch (choice)
                 {
                     case 1:
@@ -627,6 +662,8 @@ namespace BasicLibrary
 
 
             ExitFlag = false;
+          
+         
         }
 
         static void AddnNewBook()
@@ -985,7 +1022,7 @@ namespace BasicLibrary
                 }
 
                 // maximum borrowed count
-                CenterText($"The book(s) most borrowed (Borrowed {maxBorrowed} times):");
+                CenterText($"The books most borrowed (Borrowed {maxBorrowed} times):");
                 foreach (int index in mostBorrowedIndices)
                 {
                     CenterText($"- {nameBook[index]}");
@@ -1012,7 +1049,7 @@ namespace BasicLibrary
                 }
 
                 // Display all books with the minimum borrowed count
-                CenterText($"The book(s) least borrowed (Borrowed {minBorrowed} times):");
+                CenterText($"The books least borrowed (Borrowed {minBorrowed} times):");
                 foreach (int index in leastBorrowedIndices)
                 {
                     CenterText($"- {nameBook[index]}");
@@ -1127,7 +1164,8 @@ namespace BasicLibrary
                     Console.WriteLine("\n4. View all books");
                     Console.WriteLine("\n5. View profile user");
                     Console.WriteLine("\n6. Logout");
-
+                    Console.WriteLine();
+                    drwingeyeopen();
                     int choice;
                     bool validInput = int.TryParse(Console.ReadLine(), out choice);
 
@@ -1186,8 +1224,6 @@ namespace BasicLibrary
             // Reset the flag (though it will not be used as the loop has ended)
             shouldLogout = false;
         }
-
-
 
         static void BarrowBooks()
         {
@@ -1646,7 +1682,7 @@ namespace BasicLibrary
         //***********************************************************************************************************************************************
 
 
-
+        
 
         //edits books
         //will added all in editbookmenu .....
@@ -1848,20 +1884,36 @@ namespace BasicLibrary
 
         static void Drowing()
         {
+            // Save the current console color
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
+
             string dr = @"
 
-                       _                          _ _ _                           
-        __      _____| | ___ ___  _ __ ___      | (_) |__  _ __ __ _ _ __ _   _  
-        \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \     | | | '_ \| '__/ _` | '__| | | | 
-         \ V  V /  __/ | (_| (_) | | | | | |    | | | |_) | | | (_| | |  | |_| | 
-          \_/\_/ \___|_|\___\___/|_| |_| |_|    |_|_|_.__/|_|  \__,_|_|   \__, | 
-                                                                          |___/  
 
 
+
+
+
+
+
+
+
+
+                                                             ____        ____              _          
+                                                            | __ )      | __ )  ___   ___ | | __  ___ 
+                                                            |  _ \      |  _ \ / _ \ / _ \| |/ / / __|
+                                                            | |_) |  _  | |_) | (_) | (_) |   <  \__ \
+                                                            |____/  (_) |____/ \___/ \___/|_|\_\ |___/
 
 ";
-            Console.WriteLine(dr);
+           Console.WriteLine( "\n\n\n\n\n\t\t\t\t\t\t " + dr + "\n\n\n\n");
+            // Console.WriteLine("\n\n\t\t\t\t\t\t "+ dr +"\n\n");
+            Console.ForegroundColor = originalColor;
         }
+        
         static void Drowinguser()
         {
             string dr = @"
@@ -1890,6 +1942,69 @@ namespace BasicLibrary
 
 ";
             Console.WriteLine(dr);
+        }
+        static void drwingeyeopen() 
+        {
+
+            // Save the current console color
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
+            string eye = @"
+                          
+ 
+
+
+
+
+
+
+
+
+                         -----        -----
+                     /\ |     |      |     | /\
+                       \|  /\ |------|  /\ |/
+                        |     |      |     |
+                         -----        -----
+                             _         _
+                              \       /
+                               ------- 
+                             WokeUp robot
+                        ";
+            Console.WriteLine("\t\t\t" + eye);
+            Console.ForegroundColor = originalColor;
+        }
+
+        static void drwingeyeclose()
+        {
+            // Save the current console color
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            // Define the ASCII art
+            string eye = @"
+                                                                '\./' 
+                                                                          _.-'''''-._
+                                                     '\./'              .'  _     _  '.       '\./' 
+                                 '\./'                                 /   ---   ---   \                   '\./'
+                                                                      |                 |
+                                          '\./'                       |  \           /  |
+                                                               '\./'   \  '.       .'  /      '\./'                     '\./'
+                                                      '\./'             '.  `'---'`  .'
+                                                                          '-._____.-'                    '\./' 
+                                                                                      Zzz   
+                                                                          Sleep Robot              
+
+                 ";
+
+            // Print the text in the new color
+            Console.WriteLine("\t" + eye);
+
+            // Reset the color back to the original
+            Console.ForegroundColor = originalColor;
         }
         //***********************************************************************************************************************************************
 

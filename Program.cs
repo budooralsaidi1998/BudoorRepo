@@ -802,8 +802,13 @@ namespace BasicLibrary
 
         static void ViewAllBooks()
         {
+            ConsoleColor orglColo = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\n\n\n\t\t\t\t\t\t******   DETAILS OF BOOKS    ******");
+            Console.ForegroundColor = orglColo;
             Console.WriteLine("   ");
+            ConsoleColor orglCol = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
             StringBuilder sb = new StringBuilder();
 
             int BookNumber = 0;
@@ -817,7 +822,7 @@ namespace BasicLibrary
             int pricePadding = 10;
             int categoryPadding = 15;
             int periodPadding = 15;
-
+           
             // Add headers
             sb.Append("\n\n\t|");
             sb.Append(CenterText("ID", idPadding)).Append("|");
@@ -853,9 +858,10 @@ namespace BasicLibrary
             // Add another separator line at the bottom
             sb.Append("\t").Append(new string('-', idPadding + namePadding + authorPadding + copiesPadding + borrowedPadding + pricePadding + categoryPadding + periodPadding + 9))
               .AppendLine();
-
+           
             // Display the final result
             Console.WriteLine(sb.ToString());
+            Console.ForegroundColor = orglCol;
         }
 
         // Method to center text within a given width
@@ -876,6 +882,7 @@ namespace BasicLibrary
         {
             Console.WriteLine();
             Console.WriteLine();
+
             Console.WriteLine("Enter the book name or part of the name you want to search for:");
             string keyword = Console.ReadLine().ToLower(); // Convert input to lowercase for case-insensitive search
             bool found = false;
@@ -916,13 +923,15 @@ namespace BasicLibrary
             ViewAllBooks();
 
             Console.WriteLine(" ");
+            ConsoleColor orglClor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Choose the ID of the book you want to delete:");
             if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("Invalid ID. Please enter a valid number.");
                 return; // Exit if the input is not a valid number
             }
-
+            Console.ForegroundColor = orglClor;
             bool bookFound = false;
 
             // Loop through the books to find the one with the given ID
@@ -935,7 +944,10 @@ namespace BasicLibrary
                     // Check if the book has borrowed copies
                     if (Books[i].Borrowedcopies != 0)
                     {
+                        ConsoleColor orglClo = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Can't remove the book because someone has borrowed it.");
+                        Console.ForegroundColor = orglClo;
                         return; // Exit if the book can't be deleted
                     }
                     else
@@ -943,7 +955,7 @@ namespace BasicLibrary
                       
                         Books.RemoveAt(i);
 
-                        Console.WriteLine("Book successfully deleted.");
+                        Console.WriteLine("---Book successfully deleted---");
 
                         
                         Console.WriteLine("Press Enter to continue...");
@@ -1016,43 +1028,62 @@ namespace BasicLibrary
                 Console.WriteLine(new string(' ', padding) + text);
             }
             Console.WriteLine();
+            ConsoleColor orglCl = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
             CenterText("-^-^-^-^-^-^-^-^-^-^-^-^ THE REPORT OF THE BOOK -^-^-^-^-^-^-^-^-^-^-^-^");
+            Console.ForegroundColor = orglCl;
             Console.WriteLine();
             CenterText("*******************************************************");
-
+            ConsoleColor orglC = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
             // Display the total number of books in the library
             int totalBooks = nameBook.Count;
             CenterText($"Total number of books in the library: {totalBooks}");
             Console.WriteLine();
-
+            Console.ForegroundColor = orglCl;
             CenterText("*******************************************************");
 
             // Display the number of categories and count of books in each category
+
+            ConsoleColor orgl = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+
             int totalCategories = categoryCounts.Count;
+            
             CenterText($"Total number of categories: {totalCategories}");
             CenterText("Categories and the number of books in each:");
             foreach (var category in categoryCounts)
             {
                 CenterText($"- {category.category}: {category.count} books");
             }
+            Console.ForegroundColor = orgl;
             Console.WriteLine();
 
             CenterText("*******************************************************");
 
             // Display the total number of copies of all books
+            ConsoleColor org = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+
             CenterText($"Total number of copies of all books: {totalCopies}");
             Console.WriteLine();
-
+            Console.ForegroundColor = org;
             CenterText("*******************************************************");
 
             // Display the total number of borrowed books
+            ConsoleColor or = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
             CenterText($"Total number of borrowed books: {totalBorrowed}");
+            Console.ForegroundColor = or;
             Console.WriteLine();
 
             CenterText("*******************************************************");
 
             // Display the total number of returned books
+            ConsoleColor o = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
             CenterText($"Total number of returned books: {totalReturned}");
+            Console.ForegroundColor = o;
             Console.WriteLine();
 
             CenterText("*******************************************************");
@@ -1075,11 +1106,14 @@ namespace BasicLibrary
                 }
 
                 // maximum borrowed count
+                ConsoleColor j = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
                 CenterText($"The books most borrowed (Borrowed {maxBorrowed} times):");
                 foreach (int index in mostBorrowedIndices)
                 {
                     CenterText($"- {nameBook[index]}");
                 }
+                Console.ForegroundColor = j;
             }
             Console.WriteLine();
 
@@ -1102,11 +1136,14 @@ namespace BasicLibrary
                 }
 
                 // Display all books with the minimum borrowed count
+                ConsoleColor r = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
                 CenterText($"The books least borrowed (Borrowed {minBorrowed} times):");
                 foreach (int index in leastBorrowedIndices)
                 {
                     CenterText($"- {nameBook[index]}");
                 }
+                Console.ForegroundColor = r;
             }
         }
 

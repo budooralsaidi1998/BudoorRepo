@@ -96,8 +96,10 @@ namespace BasicLibrary
                 ConsoleColor orginalColor = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("\t\t\t\t\t\t\t\tenter the number of the option: ");
-                int num = int.Parse(Console.ReadLine());
                 Console.ForegroundColor = orginalColor;
+                int num = int.Parse(Console.ReadLine());
+                Console.Clear();
+                
 
 
 
@@ -108,28 +110,51 @@ namespace BasicLibrary
 
                     case 1:
                        bool IsLogin = false;
+                        Drowingadmin();
+                        ConsoleColor originlColor = Console.ForegroundColor;
 
-                       while (!IsLogin)
+                        // Set the desired color
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\t\t\t\t\t\t\t             ... Click enter key to Login ...");
+                        Console.ForegroundColor = originlColor;
+                        Console.ReadLine();
+                        while (!IsLogin)
                        {
                                 Console.Clear();
-                                Console.WriteLine(" ");
-                                Console.WriteLine("***************** Login admin  ********************");
-                                Console.WriteLine(" ");
+                            ConsoleColor oiginlColor = Console.ForegroundColor;
 
-                                Console.WriteLine("Enter your email: ");
+                            // Set the desired color
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine(" ");
+                                Console.WriteLine("\n\n\n\t\t\t\t\t\t ***************** Login admin  ********************");
+                                Console.WriteLine(" ");
+                            Console.ForegroundColor = oiginlColor;
+
+                            ConsoleColor iginlColor = Console.ForegroundColor;
+                            // Set the desired color
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+
+                            Console.Write(" \n\n\t\t\t\t\t\tEnter your email: ");
                                 string emailAdmin = Console.ReadLine();
 
-                                Console.WriteLine("Enter the password: ");
+                            Console.WriteLine(" ");
+
+                                Console.Write("\n\n\t\t\t\t\t\tEnter the password: ");
                                 string passwordAdmin = Console.ReadLine();
 
-                                Console.WriteLine("Re-enter the password: ");
-                                string reEnterPasswordAdmin = Console.ReadLine();
+                            Console.WriteLine(" ");
 
-                                // Check if the passwords match
-                                if (passwordAdmin != reEnterPasswordAdmin)
+                            Console.Write("\n\n\t\t\t\t\t\tRe-enter the password: ");
+
+                              
+
+                            string reEnterPasswordAdmin = Console.ReadLine();
+                            Console.ForegroundColor = oiginlColor;
+                            // Check if the passwords match
+                            if (passwordAdmin != reEnterPasswordAdmin)
                                 {
-                                    Console.WriteLine("Passwords do not match. Please try again.");
-                                    Console.WriteLine("Press any key to continue.");
+                                    Console.WriteLine("\n\n\t\t\t\t\t\tPasswords do not match. Please try again.");
+                                    Console.WriteLine("\n\n\t\t\t\t\t\tPress any key to continue.");
                                     Console.ReadKey();
                                     break;  // Restart the loop
                                 }
@@ -156,7 +181,7 @@ namespace BasicLibrary
                                  
                                 if (!emailFound1)
                                 {
-                                    Console.WriteLine("Admin email not found. Do you want to try logging in again? (yes or no)");
+                                    Console.Write("\n\n\t\t\t\t\t\tAdmin email not found. Do you want to try logging in again? (yes or no)");
                                     string ask = Console.ReadLine();
 
                                     if (ask.ToLower() != "yes" && ask.ToLower() != "y")
@@ -590,20 +615,36 @@ namespace BasicLibrary
             {
                 Console.WriteLine();
                 drwingeyeopen();
-                Console.WriteLine();
+                
+               
+                ConsoleColor originlClor = Console.ForegroundColor;
+                // Set the desired color
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n\t\t Iam Admin : " + adminId);
+                Console.ForegroundColor = originlClor;
+            
+                
 
-                Console.WriteLine(" Iam Admin : " + adminId);
-                Console.WriteLine("\n Enter the option of operation you need :");
-                Console.WriteLine("\n 1- Add New Book");
-                Console.WriteLine("\n 2- Display All Books");
-                Console.WriteLine("\n 3- Search for Book by Name");
-                Console.WriteLine("\n 4- Edit the book ");
-                Console.WriteLine("\n 5- Remove the book ");
-                Console.WriteLine("\n 6- Reporting the data ");
-                Console.WriteLine("\n 7- Save and Exit");
-                Console.WriteLine();
-                drwingeyeopen();
-
+                // Set the desired color
+                ConsoleColor originllor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 1-    Add New Book          |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 2-   Display All Books      |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 3- Search for Book by Name  |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 4-     Edit the book        |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 5-    Remove the book       |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 6-    Reporting the data    |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.WriteLine("\t\t\t\t\t\t\t\t| 7-     Save and Exit        |");
+                Console.WriteLine("\t\t\t\t\t\t\t\t------------------------------");
+                Console.Write("     \t\t\t\t\t\t\t\t");
+                Console.ForegroundColor = originllor;
                 int choice = int.Parse(Console.ReadLine());
                  
                 switch (choice)
@@ -652,7 +693,7 @@ namespace BasicLibrary
 
                 }
 
-                Console.WriteLine("press enter key to continue");
+                Console.WriteLine("\t\t\t\t\t\t\t\tpress enter key to continue");
 
                 string cont = Console.ReadLine();
 
@@ -687,14 +728,24 @@ namespace BasicLibrary
 
 
             string name;
+            ConsoleColor orgnlColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
             while (true) 
             {
-                Console.WriteLine("Enter Book Name:");
+                Console.WriteLine();
+                Console.WriteLine();
+                ConsoleColor orglColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("\t\t\t\t\t\t\t------ Input the details of book ------ ");
+                Console.ForegroundColor = orglColor;
+                Console.WriteLine();
+                
+                Console.Write("\t\t\t\t\t\t\t\tEnter Book Name:");
                 name = Console.ReadLine();
 
                 if (existingNames.Contains(name))
                 {
-                    Console.WriteLine("Name already exists. Try again.");
+                    Console.WriteLine("\t\t\t\t\t\t\t\tName already exists. Try again.");
                 }
                 else
                 {
@@ -704,18 +755,18 @@ namespace BasicLibrary
                 }
             }
 
-            Console.WriteLine("Enter Book Author :");
+            Console.Write("\t\t\t\t\t\t\t\tEnter Book Author :");
             string author = Console.ReadLine();
 
 
-            Console.WriteLine("Enter copies : ");
+            Console.Write("\t\t\t\t\t\t\t\tEnter copies : ");
             int copies = int.Parse(Console.ReadLine());
 
 
-            Console.WriteLine("Enter the price : ");
-            int price = int.Parse(Console.ReadLine());
+            Console.Write("\t\t\t\t\t\t\t\tEnter the price : ");
+            decimal price = decimal.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter Book category:");
+            Console.WriteLine("\t\t\t\t\t\t\t\tEnter Book category:");
          
             string Categoryselect = CategorBookMenu();
 
@@ -734,18 +785,18 @@ namespace BasicLibrary
                     break;
                 }
             }
-            Console.WriteLine("Enter the borrow period  : ");
+            Console.Write("\t\t\t\t\t\t\t\tEnter the borrow period  : ");
             int borrowporied = int.Parse(Console.ReadLine());
-
+            Console.ForegroundColor = orgnlColor;
 
             Books.Add((id, name, author, copies, 0, price, Categoryselect, borrowporied));
 
-            
-            
 
-          
-            Console.WriteLine("Book Added Succefully");
 
+
+            Console.WriteLine();
+            Console.WriteLine("\t\t\t\t\t\t\t\t------ Book Added Succefully -----");
+            
 
         }
 
@@ -823,6 +874,8 @@ namespace BasicLibrary
 
         static void SearchForBook()
         {
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine("Enter the book name or part of the name you want to search for:");
             string keyword = Console.ReadLine().ToLower(); // Convert input to lowercase for case-insensitive search
             bool found = false;
@@ -1062,18 +1115,19 @@ namespace BasicLibrary
         {
             bool validCategory = false;
             string ch1 = "";  // Initialize the variable
-
+            
             while (!validCategory)
-            {
-                Console.WriteLine("Choose the category of book:");
-                Console.WriteLine(" 1. ** History **");
-                Console.WriteLine(" 2. ** IT **");
-                Console.WriteLine(" 3. ** Software **");
-                Console.WriteLine(" 4. ** Science **");
-                Console.WriteLine(" 5. ** Stories **");
-
+            {ConsoleColor orglColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\t\t\t\t\t\t\t\tChoose the category of book:");
+                Console.WriteLine(" \t\t\t\t\t\t\t\t1.** History **");
+                Console.WriteLine("\t\t\t\t\t\t\t\t2. ** IT **");
+                Console.WriteLine(" \t\t\t\t\t\t\t\t3. ** Software **");
+                Console.WriteLine("\t\t\t\t\t\t\t\t4. ** Science **");
+                Console.WriteLine("\t\t\t\t\t\t\t\t5.** Stories **");
+                Console.Write("\t\t\t\t\t\t\t\t .");
                 string chooseCate = Console.ReadLine();
-
+                Console.ForegroundColor = orglColor;
                 switch (chooseCate)
                 {
                     case "1":
@@ -1098,11 +1152,11 @@ namespace BasicLibrary
                         break;
                     default:
                        
-                        Console.WriteLine("Incorrect choice, please try again...");
+                        Console.WriteLine("\t\t\t\t\t\t\t\tIncorrect choice, please try again...");
                         break;
                 }
             }
-
+           
             return ch1; // Return the selected category
         }
 
@@ -1165,7 +1219,7 @@ namespace BasicLibrary
                     Console.WriteLine("\n5. View profile user");
                     Console.WriteLine("\n6. Logout");
                     Console.WriteLine();
-                    drwingeyeopen();
+                   
                     int choice;
                     bool validInput = int.TryParse(Console.ReadLine(), out choice);
 
@@ -1930,20 +1984,39 @@ namespace BasicLibrary
         }
         static void Drowingadmin()
         {
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
             string dr = @" 
 
 
-                              _                             _       _           _       
-                __      _____| | ___ ___  _ __ ___         / \   __| |_ __ ___ (_)_ __  
-                \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \       / _ \ / _` | '_ ` _ \| | '_ \ 
-                 \ V  V /  __/ | (_| (_) | | | | | |     / ___ \ (_| | | | | | | | | | |
-                  \_/\_/ \___|_|\___\___/|_| |_| |_|    /_/   \_\__,_|_| |_| |_|_|_| |_|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                          _                             _       _           _       
+                                    '\./'   __      _____| | ___ ___  _ __ ___         / \   __| |_ __ ___ (_)_ __     '\./' 
+                                            \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \       / _ \ / _` | '_ ` _ \| | '_ \ 
+                       '\./'                 \ V  V /  __/ | (_| (_) | | | | | |     / ___ \ (_| | | | | | | | | | |                '\./' 
+                                  '\./'       \_/\_/ \___|_|\___\___/|_| |_| |_|    /_/   \_\__,_|_| |_| |_|_|_| |_|     '\./' 
 
 
 ";
-            Console.WriteLine(dr);
+            Console.WriteLine("\t"+dr);
+            Console.ForegroundColor = originalColor;
         }
-        static void drwingeyeopen() 
+        static void drwingeyeclose() 
         {
 
             // Save the current console color
@@ -1953,40 +2026,7 @@ namespace BasicLibrary
             Console.ForegroundColor = ConsoleColor.Green;
             string eye = @"
                           
- 
-
-
-
-
-
-
-
-
-                         -----        -----
-                     /\ |     |      |     | /\
-                       \|  /\ |------|  /\ |/
-                        |     |      |     |
-                         -----        -----
-                             _         _
-                              \       /
-                               ------- 
-                             WokeUp robot
-                        ";
-            Console.WriteLine("\t\t\t" + eye);
-            Console.ForegroundColor = originalColor;
-        }
-
-        static void drwingeyeclose()
-        {
-            // Save the current console color
-            ConsoleColor originalColor = Console.ForegroundColor;
-
-            // Set the desired color
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            // Define the ASCII art
-            string eye = @"
-                                                                '\./' 
+                          '\./' 
                                                                           _.-'''''-._
                                                      '\./'              .'  _     _  '.       '\./' 
                                  '\./'                                 /   ---   ---   \                   '\./'
@@ -1997,6 +2037,36 @@ namespace BasicLibrary
                                                                           '-._____.-'                    '\./' 
                                                                                       Zzz   
                                                                           Sleep Robot              
+
+
+
+                   
+                        ";
+            Console.WriteLine("\t\t\t" + eye);
+            Console.ForegroundColor = originalColor;
+        }
+
+        static void drwingeyeopen()
+        {
+            // Save the current console color
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            // Set the desired color
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            // Define the ASCII art
+            string eye = @"
+                                                                --.-- 
+                                                                          _.-'''''-._
+                                                     --.--              .'  _     _  '.       --.-- 
+                                 --.--                                 /   (o)   (o)   \                   --.--
+                                                                      |                 |
+                                          --.--                       |  \           /  |
+                                                               --.--   \  '.       .'  /      --.--                     --.--
+                                                      --.--             '.  `'---'`  .'
+                                                                          '-._____.-'                    --.-- 
+                                                                                         
+                                                                          WokeUp Robot              
 
                  ";
 

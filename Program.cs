@@ -60,6 +60,10 @@ namespace BasicLibrary
             do
             {
                 Console.Clear();
+
+                Console.WriteLine();
+                Drowing();
+
                 Console.WriteLine("enter the number of the option: ");
                 Console.WriteLine("1. login admin ");
                 Console.WriteLine("2. login user ");
@@ -100,7 +104,7 @@ namespace BasicLibrary
 
                                 bool emailFound1 = false;
                                 bool passwordCorrect1 = false;
-                                int adminId = -1;
+                               // int adminId = -1;
 
                                 // Loop through admin registrations to check email and password
                                 for (int i = 0; i < adminRegistration.Count; i++)
@@ -110,13 +114,14 @@ namespace BasicLibrary
                                         emailFound1 = true;  // Email exists
                                         if (adminRegistration[i].password == passwordAdmin)
                                         {
-                                            passwordCorrect1 = true;  // Email and password both match
-                                            adminId = adminRegistration[i].adminid;
+                                        adminId = adminRegistration[i].adminid;
+                                        passwordCorrect1 = true;  // Email and password both match
+                                           
                                             break;
                                         }
                                     }
                                 }
-
+                                 
                                 if (!emailFound1)
                                 {
                                     Console.WriteLine("Admin email not found. Do you want to try logging in again? (yes or no)");
@@ -219,9 +224,9 @@ namespace BasicLibrary
                             {
                                 Console.Clear();
                                 IsLogin = true;  // Successful login
-                                UserMenu();  
+                                UserMenu();
 
-
+                                break;
 
                             }
 
@@ -546,14 +551,15 @@ namespace BasicLibrary
 
         static void AdminMenu()
         {
-            bool Auth = false;
+           // bool Auth = false;
             bool ExitFlag = false;
 
             do
             {
                
-
-
+                Console.WriteLine();
+                Drowingadmin();
+                Console.WriteLine(" Iam Admin : " + adminId);
                 Console.WriteLine("\n Enter the option of operation you need :");
                 Console.WriteLine("\n 1- Add New Book");
                 Console.WriteLine("\n 2- Display All Books");
@@ -601,6 +607,7 @@ namespace BasicLibrary
                     case 7:
                         SaveBooksToFile();
                         SaveCategory();
+                        adminId = -1;
                         ExitFlag = true;
                         break;
 
@@ -1073,52 +1080,52 @@ namespace BasicLibrary
         //*********************************************************************************************************************************************
         static void UserMenu()
         {
-            Console.Clear();
-            bool ExitFlag = false;
 
-            Console.WriteLine("User ID is: " + userId);
+            bool shouldLogout = false; // Flag to indicate when to log out
 
-            DateTime nowdate = DateTime.Now.Date;
-
-            // Check for overdue books first
-            for (int i = 0; i < borrows.Count; i++)
+            while (!shouldLogout)
             {
-                if (borrows[i].userid == userId && !borrows[i].isreturn && borrows[i].returndate < nowdate)
-                {
-                    Console.WriteLine("YOU MUST RETURN THE BOOKS THAT YOU ARE LATE IN RETURNING.");
-                    Console.WriteLine("\n1. ** Return the book which is late **");
-                    int num = int.Parse(Console.ReadLine());
+                Console.Clear();
+                Console.WriteLine("User ID is: " + userId);
 
-                    switch (num)
+                DateTime nowdate = DateTime.Now.Date;
+
+                // Check for overdue books
+                bool hasOverdueBooks = false;
+                foreach (var borrow in borrows)
+                {
+                    if (borrow.userid == userId && !borrow.isreturn && borrow.returndate < nowdate)
                     {
-                        case 1:
-                            //Console.Clear();
+                        Console.WriteLine("YOU MUST RETURN THE BOOKS THAT YOU ARE LATE IN RETURNING.");
+                        Console.WriteLine("\n1. ** Return the book which is late **");
+
+                        int num;
+                        if (int.TryParse(Console.ReadLine(), out num) && num == 1)
+                        {
                             ReturnBookLate();
                             SaveborrowToFile();
-                            ExitFlag = true;
-                            break;
-                        default:
+                            hasOverdueBooks = true;
+                            break; // Exit the loop after handling late return
+                        }
+                        else
+                        {
                             Console.WriteLine("Invalid choice. Please try again.");
-                            break;
+                        }
                     }
-                    ExitFlag = false;
-                    
                 }
-            }
 
-            // After checking for late books, show the main user menu
-            if (!ExitFlag) // Only show the menu if there are no overdue books or after handling overdue books
-            {
-                do
+                // If there are no overdue books or after handling overdue books, show the main user menu
+                if (!hasOverdueBooks)
                 {
                     Console.Clear();
-                    Console.WriteLine(" U ARE USER : "+ userId);
+                    Drowinguser();
+                    Console.WriteLine("U ARE USER : " + userId);
                     Console.WriteLine("\nEnter the number of the operation you need:");
-                    Console.WriteLine("\n1. Borrow a books");
-                    Console.WriteLine("\n2. Return a books");
-                    Console.WriteLine("\n3. search a books");
-                    Console.WriteLine("\n4. view all  books");
-                    Console.WriteLine("\n5. view profile user ");
+                    Console.WriteLine("\n1. Borrow a book");
+                    Console.WriteLine("\n2. Return a book");
+                    Console.WriteLine("\n3. Search for a book");
+                    Console.WriteLine("\n4. View all books");
+                    Console.WriteLine("\n5. View profile user");
                     Console.WriteLine("\n6. Logout");
 
                     int choice;
@@ -1161,8 +1168,9 @@ namespace BasicLibrary
                             Console.Clear();
                             SaveBooksToFile();
                             SaveborrowToFile();
+
                             userId = -1; // Reset the user ID to indicate a logout
-                            ExitFlag = true; // Set exit flag to true to break out of the loop
+                            shouldLogout = true; // Set flag to true to exit the loop
                             break;
 
                         default:
@@ -1170,18 +1178,15 @@ namespace BasicLibrary
                             break;
                     }
 
-                    if (!ExitFlag)
-                    {
-                        Console.WriteLine("\tPress enter key to continue...");
-                        Console.ReadLine(); // Pause before clearing the screen
-                    }
-
-                } while (!ExitFlag); // Exit the loop only when ExitFlag is true
+                    Console.WriteLine("\tPress enter key to continue...");
+                    Console.ReadLine(); // Pause before clearing the screen
+                }
             }
 
-            // Reset ExitFlag in case it's needed for future sessions
-            ExitFlag = false;
+            // Reset the flag (though it will not be used as the loop has ended)
+            shouldLogout = false;
         }
+
 
 
         static void BarrowBooks()
@@ -1841,6 +1846,51 @@ namespace BasicLibrary
 
         }
 
+        static void Drowing()
+        {
+            string dr = @"
+
+                       _                          _ _ _                           
+        __      _____| | ___ ___  _ __ ___      | (_) |__  _ __ __ _ _ __ _   _  
+        \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \     | | | '_ \| '__/ _` | '__| | | | 
+         \ V  V /  __/ | (_| (_) | | | | | |    | | | |_) | | | (_| | |  | |_| | 
+          \_/\_/ \___|_|\___\___/|_| |_| |_|    |_|_|_.__/|_|  \__,_|_|   \__, | 
+                                                                          |___/  
+
+
+
+";
+            Console.WriteLine(dr);
+        }
+        static void Drowinguser()
+        {
+            string dr = @"
+
+
+                               _                                 _   _                   
+            __      __   ___  | |   ___    ___    _ __ ___      | | | |  ___    ___  _ __ 
+            \ \ /\ / /  / _ \ | |  / __|  / _ \  | '_ ` _ \     | | | | / __|  / _ \  '__|
+             \ V  V /  |  __/ | | | (__  | (_) | | | | | | |    | |_| | \__ \ |  __/  |   
+              \_/\_/    \___| |_|  \___|  \___/  |_| |_| |_|     \___/  |___/  \___| _|   
+
+";
+            Console.WriteLine(dr);
+        }
+        static void Drowingadmin()
+        {
+            string dr = @" 
+
+
+                              _                             _       _           _       
+                __      _____| | ___ ___  _ __ ___         / \   __| |_ __ ___ (_)_ __  
+                \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \       / _ \ / _` | '_ ` _ \| | '_ \ 
+                 \ V  V /  __/ | (_| (_) | | | | | |     / ___ \ (_| | | | | | | | | | |
+                  \_/\_/ \___|_|\___\___/|_| |_| |_|    /_/   \_\__,_|_| |_| |_|_|_| |_|
+
+
+";
+            Console.WriteLine(dr);
+        }
         //***********************************************************************************************************************************************
 
 
